@@ -71,7 +71,6 @@ public class Flip extends CommandBase {
 		            @Override
 		            public void run() 
 		            {
-		            	Data.auctiondata.clear();
 		            	
             	    	String name = sender.getName();
             	    	String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
@@ -166,6 +165,7 @@ public class Flip extends CommandBase {
             	    		count++;
             	    	}
             	    	initialDataset.clear();
+            	    	Data.auctiondata.clear();
             	    	for (Map.Entry<String, Double> entry : secondDataset.entrySet()) {
             	    		initialDataset.put(entry.getKey(), entry.getValue());
             	    	}
