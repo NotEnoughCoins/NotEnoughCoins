@@ -151,6 +151,7 @@ public class Flip extends CommandBase {
             	    	sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD+"Your Budget: "+
             	    			EnumChatFormatting.WHITE+String.valueOf((long)purse+"\n")));
             	    	int count = 0;
+            	    	Data.auctiondata.clear();
             	    	for (Map.Entry<String, Double> entry : sortedMap.entrySet()) {
             	    		Data.auctiondata.put(entry.getKey(), entry.getValue());
             	    		}
@@ -165,7 +166,6 @@ public class Flip extends CommandBase {
             	    		count++;
             	    	}
             	    	initialDataset.clear();
-            	    	Data.auctiondata.clear();
             	    	for (Map.Entry<String, Double> entry : secondDataset.entrySet()) {
             	    		initialDataset.put(entry.getKey(), entry.getValue());
             	    	}
