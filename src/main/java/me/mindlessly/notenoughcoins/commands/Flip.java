@@ -1,6 +1,13 @@
 package me.mindlessly.notenoughcoins.commands;
 
-import java.util.*;
+import java.text.DecimalFormat;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import net.minecraft.command.CommandBase;
@@ -12,13 +19,16 @@ import net.minecraftforge.common.config.Configuration;
 public class Flip extends CommandBase {
 
 	//Take initial set of lbins, take second set, and use compared set to identify the biggest gainers/losers
+	//namedSet is used to replace internal ids with actual item names
 	public HashMap<String, Double> initialDataset = new HashMap<>();
 	public HashMap<String, Double> secondDataset = new HashMap<>();
 	public HashMap<String, Double> comparedDataset = new HashMap<>();
+	public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
 	public static double purse;
 
 	private boolean enable = false;
 	public String signage = null;
+	public Timer timer = new Timer();
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -46,7 +56,7 @@ public class Flip extends CommandBase {
 			sender.addChatMessage(enableText);
 			ApiHandler.getBins(initialDataset);
 
-			Timer timer = new Timer();
+			
 			timer.schedule(
 				new TimerTask() {
 					@Override
@@ -77,7 +87,6 @@ public class Flip extends CommandBase {
 							double difference;
 							double price1 = initialDataset.get(key);
 							double price2;
-							//precaution for if entry magically dissapears on website
 
 							if (secondDataset.containsKey(key)) {
 								price2 = secondDataset.get(key);
@@ -93,7 +102,6 @@ public class Flip extends CommandBase {
 								signage = "+";
 							}
 
-							//temporary measure to test if my code is fucked
 
 							if (price2 <= purse && price2 < price1) {
 								comparedDataset.put(key, difference);
@@ -119,13 +127,17 @@ public class Flip extends CommandBase {
 						);
 						int count = 0;
 						Data.auctionData.clear();
+						namedDataset.clear();
+						namedDataset.putAll(sortedMap);
+						ApiHandler.itemIdsToNames(namedDataset);
 						Data.auctionData.putAll(sortedMap);
-						for (Map.Entry<String, Double> entry : sortedMap.entrySet()) {
+						for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
 							if (count == 3) {
 								break;
 							}
 
-							sender.addChatMessage(new ChatComponentText(entry.getKey() + signage + entry.getValue().longValue()));
+							DecimalFormat formatter = new DecimalFormat("#,###.00");
+							sender.addChatMessage(new ChatComponentText(entry.getKey() +" "+ signage + formatter.format(entry.getValue().longValue())));
 
 							count++;
 						}
@@ -142,6 +154,9 @@ public class Flip extends CommandBase {
 				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Flipper alerts disabled.")
 			);
 			sender.addChatMessage(enableText);
+			timer.cancel();
+			timer.purge();
+			timer = new Timer();
 		}
 	}
 }

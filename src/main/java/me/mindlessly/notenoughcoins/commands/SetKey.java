@@ -34,7 +34,7 @@ public class SetKey extends CommandBase {
 			sender.addChatMessage(runtext);
 		} else {
 			ChatComponentText error = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /setkey <key>")
+				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /neckey <key>")
 			);
 			sender.addChatMessage(error);
 		}

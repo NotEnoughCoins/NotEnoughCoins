@@ -2,12 +2,15 @@ package me.mindlessly.notenoughcoins.utils;
 
 import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
+
 import me.mindlessly.notenoughcoins.commands.Flip;
 
 public class ApiHandler {
@@ -21,6 +24,38 @@ public class ApiHandler {
 		} catch (Exception e) {
 			Reference.logger.error(e.getMessage(), e);
 		}
+		
+	}
+	
+	public static void itemIdsToNames(LinkedHashMap<String, Double> dataset) {
+		LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<String, Double>();
+		datasettemp.putAll(dataset);
+		dataset.clear();
+		
+		try {
+			JsonArray itemArray = getJson("https://api.hypixel.net/resources/skyblock/items")
+				.getAsJsonObject()
+				.get("items")
+				.getAsJsonArray();
+			
+			for (Map.Entry<String, Double> auction : datasettemp.entrySet()) {
+				String key = auction.getKey();
+				Double value = auction.getValue();
+				
+				for (JsonElement item : itemArray) {
+					if(item.getAsJsonObject().get("id").getAsString().contains(key)) {
+						String name = item.getAsJsonObject().get("name").getAsString();
+						dataset.put(name, value);
+					}
+				}
+				Flip.namedDataset.putAll(dataset);	
+			}
+			
+			} catch (Exception e) {
+			Reference.logger.error(e.getMessage(), e);
+		}
+					
+
 	}
 
 	public static String getUuid(String name) {
