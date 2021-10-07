@@ -87,29 +87,40 @@ public class Flip extends CommandBase {
 							double difference;
 							double price1 = initialDataset.get(key);
 							double price2;
+							
 
 							if (secondDataset.containsKey(key)) {
 								price2 = secondDataset.get(key);
+								
+								if (price1 > price2) {
+									difference = price1 - price2;
+									signage = "-";
+								} else {
+									continue;
+								}
+								
 							} else {
 								continue;
 							}
-
-							if (price1 >= price2) {
-								difference = price1 - price2;
-								signage = "-";
-							} else {
-								difference = price2 - price1;
-								signage = "+";
-							}
-
-
-							if (price2 <= purse && price2 < price1) {
-								comparedDataset.put(key, difference);
+							
+							if (price2 <= purse) {
+								if(Data.auctionData.containsKey(entry.getKey())) {
+									Double initialValue = Data.auctionData.get(entry.getKey());
+									//200k is a constant used just so the flips aren't repeating unnecessarily
+									if (difference - initialValue < 200000 || initialValue >= difference) {
+										continue;
+									}else {
+										comparedDataset.put(key, difference);
+									}
+									
+								}else {
+									comparedDataset.put(key, difference);
+								}
 							}
 						}
-						//Sorted hashmap by descending order of value (largest % change)
+						
+						//Sorted hashmap by descending order of value (largest change)
 						HashMap<String, Double> unsortedMap = comparedDataset;
-
 						//LinkedHashMap preserve the ordering of elements in which they are inserted
 						LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
 
@@ -142,7 +153,11 @@ public class Flip extends CommandBase {
 							count++;
 						}
 						initialDataset.clear();
-						initialDataset.putAll(secondDataset);
+						try {
+							ApiHandler.getBins(initialDataset);
+						}catch(Exception e) {
+							initialDataset.putAll(secondDataset);
+						}
 						secondDataset.clear();
 					}
 				},
