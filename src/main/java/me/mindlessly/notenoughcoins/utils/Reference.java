@@ -10,5 +10,5 @@ public class Reference {
 	public static final String VERSION = "0.1.2";
 	public static final String ACCEPTED_VERSIONS = "[1.8.9]";
 
-	public static final Logger logger = LogManager.getLogger("HypixelAddons");
+	public static final Logger logger = LogManager.getLogger("NotEnoughCoins");
 }
