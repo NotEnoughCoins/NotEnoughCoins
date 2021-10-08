@@ -3,8 +3,11 @@ package me.mindlessly.notenoughcoins.utils;
 import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonArray;
@@ -14,6 +17,10 @@ import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.commands.Flip;
 
 public class ApiHandler {
+	
+	// will make configurable
+	public static ArrayList<String> filter = new ArrayList<String>(
+		    Arrays.asList("COSMETIC"));
 
 	public static void getBins(HashMap<String, Double> dataset) {
 		try {
@@ -44,6 +51,9 @@ public class ApiHandler {
 				
 				for (JsonElement item : itemArray) {
 					if(item.getAsJsonObject().get("id").getAsString().contains(key)) {
+						if(filter.contains(item.getAsJsonObject().get("category").getAsString())) {
+							continue;
+						}
 						String name = item.getAsJsonObject().get("name").getAsString();
 						dataset.put(name, value);
 					}
