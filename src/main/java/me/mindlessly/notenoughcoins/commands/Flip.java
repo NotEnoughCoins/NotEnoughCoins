@@ -61,6 +61,7 @@ public class Flip extends CommandBase {
 				new TimerTask() {
 					@Override
 					public void run() {
+						comparedDataset.clear();
 						String name = sender.getName();
 						String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
 						try {
@@ -92,9 +93,12 @@ public class Flip extends CommandBase {
 							if (secondDataset.containsKey(key)) {
 								price2 = secondDataset.get(key);
 								
+								//Anything below this margin is quite useless
 								if (price1 > price2) {
 									difference = price1 - price2;
 									signage = "-";
+									comparedDataset.put(key, difference);
+									
 								} else {
 									continue;
 								}
@@ -102,21 +106,7 @@ public class Flip extends CommandBase {
 							} else {
 								continue;
 							}
-							
-							if (price2 <= purse) {
-								if(Data.auctionData.containsKey(entry.getKey())) {
-									Double initialValue = Data.auctionData.get(entry.getKey());
-									//200k is a constant used just so the flips aren't repeating unnecessarily
-									if (difference - initialValue < 200000 || initialValue >= difference) {
-										continue;
-									}else {
-										comparedDataset.put(key, difference);
-									}
 									
-								}else {
-									comparedDataset.put(key, difference);
-								}
-							}
 						}
 						
 						//Sorted hashmap by descending order of value (largest change)
@@ -141,7 +131,7 @@ public class Flip extends CommandBase {
 						namedDataset.clear();
 						namedDataset.putAll(sortedMap);
 						ApiHandler.itemIdsToNames(namedDataset);
-						Data.auctionData.putAll(sortedMap);
+						Data.auctionData.putAll(secondDataset);
 						for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
 							if (count == 3) {
 								break;
