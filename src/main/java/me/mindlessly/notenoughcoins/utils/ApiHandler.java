@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.commands.Flip;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 import java.util.Map.Entry;
@@ -14,13 +15,15 @@ import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 public class ApiHandler {
 
   // Will make configurable
-  private static ArrayList<String> filter =
-      new ArrayList<String>(
+  private static final ArrayList<String> filter =
+      new ArrayList<>(
           Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
 
   public static void getBins(HashMap<String, Double> dataset) {
     try {
-      JsonObject binJson = getJson("https://moulberry.codes/lowestbin.json").getAsJsonObject();
+      JsonObject binJson =
+          Objects.requireNonNull(getJson("https://moulberry.codes/lowestbin.json"))
+              .getAsJsonObject();
       for (Map.Entry<String, JsonElement> auction : binJson.entrySet()) {
         dataset.put(auction.getKey(), auction.getValue().getAsDouble());
       }
@@ -30,8 +33,7 @@ public class ApiHandler {
   }
 
   private static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
-    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<String, Double>();
-    datasettemp.putAll(initialDataset);
+    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
     initialDataset.clear();
 
     try {
@@ -69,13 +71,12 @@ public class ApiHandler {
 
   public static void itemIdsToNames(LinkedHashMap<String, Double> initialDataset) {
     getAuctionAverages(initialDataset);
-    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<String, Double>();
-    datasettemp.putAll(initialDataset);
+    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
     initialDataset.clear();
 
     try {
       JsonArray itemArray =
-          getJson("https://api.hypixel.net/resources/skyblock/items")
+          Objects.requireNonNull(getJson("https://api.hypixel.net/resources/skyblock/items"))
               .getAsJsonObject()
               .get("items")
               .getAsJsonArray();
@@ -113,7 +114,8 @@ public class ApiHandler {
 
   private static String getUuid(String name) {
     try {
-      return getJson("https://api.mojang.com/users/profiles/minecraft/" + name)
+      return Objects.requireNonNull(
+              getJson("https://api.mojang.com/users/profiles/minecraft/" + name))
           .getAsJsonObject()
           .get("id")
           .getAsString();
@@ -128,7 +130,8 @@ public class ApiHandler {
 
     try {
       JsonArray profilesArray =
-          getJson("https://api.hypixel.net/skyblock/profiles?key=" + key + "&uuid=" + uuid)
+          Objects.requireNonNull(
+                  getJson("https://api.hypixel.net/skyblock/profiles?key=" + key + "&uuid=" + uuid))
               .getAsJsonObject()
               .get("profiles")
               .getAsJsonArray();
@@ -181,7 +184,7 @@ public class ApiHandler {
 
     try {
       JsonArray auctionsArray =
-          getJson("https://api.hypixel.net/skyblock/auctions?page=" + i)
+          Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i))
               .getAsJsonObject()
               .get("auctions")
               .getAsJsonArray();
@@ -195,7 +198,7 @@ public class ApiHandler {
                   if (item.getAsJsonObject().get("starting_bid").getAsDouble() < entry.getValue()) {
                     if (item.getAsJsonObject().get("starting_bid").getAsDouble() > Flip.purse) {
                       String rawName = item.getAsJsonObject().get("item_name").getAsString();
-                      String name = new String(rawName.getBytes(), "UTF-8");
+                      String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
                       dataset.put(
                           name,
                           entry.getValue()
@@ -225,7 +228,7 @@ public class ApiHandler {
     int pages = 0;
     try {
       pages =
-          getJson("https://api.hypixel.net/skyblock/auctions?page=0")
+          Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=0"))
               .getAsJsonObject()
               .get("totalPages")
               .getAsInt();
