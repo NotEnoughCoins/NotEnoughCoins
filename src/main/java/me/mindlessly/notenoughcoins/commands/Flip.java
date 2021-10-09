@@ -70,11 +70,6 @@ public class Flip extends CommandBase {
               String name = sender.getName();
               String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
               try {
-                ApiHandler.getBins(initialDataset);
-              } catch (Exception e) {
-                sender.addChatMessage(new ChatComponentText("Could not load BINs."));
-              }
-              try {
                 ApiHandler.updatePurseCoins(id, name);
               } catch (Exception e) {
                 sender.addChatMessage(new ChatComponentText("Could not load purse."));
@@ -138,14 +133,20 @@ public class Flip extends CommandBase {
               cycle++;
             }
           },
-          2000,
-          2000);
+          1000,
+          1000);
 
       timer.schedule(
           new TimerTask() {
             @Override
             public void run() {
               auctionPages = ApiHandler.getNumberOfPages();
+              
+              try {
+                  ApiHandler.getBins(initialDataset);
+                } catch (Exception e) {
+                  sender.addChatMessage(new ChatComponentText("Could not load BINs."));
+                }
             }
           },
           60000,
