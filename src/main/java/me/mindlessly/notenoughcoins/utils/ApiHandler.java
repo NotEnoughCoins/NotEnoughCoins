@@ -41,7 +41,7 @@ public class ApiHandler {
 		initialDataset.clear();
 		
 		try {
-			JsonObject items = getJson("https://moulberry.codes/auction_averages/1day.json")
+			JsonObject items = getJson("https://moulberry.codes/auction_averages/1minute.json")
 				.getAsJsonObject();
 			
 			
