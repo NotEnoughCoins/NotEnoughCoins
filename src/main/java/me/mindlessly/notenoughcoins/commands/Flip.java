@@ -109,9 +109,9 @@ public class Flip extends CommandBase {
                               + EnumChatFormatting.YELLOW
                               + entry.getKey()
                               + " "
-                              + (profit > 200_000 || purse / 5 < 200_000
+                              + (profit > 200_000 || purse / 5 < 100_000
                                   ? EnumChatFormatting.GREEN
-                                  : profit > 100_000 || purse / 5 > 100_000
+                                  : profit > 100_000 || purse / 5 < 200_000
                                       ? EnumChatFormatting.GOLD
                                       : EnumChatFormatting.YELLOW)
                               + "+$"
