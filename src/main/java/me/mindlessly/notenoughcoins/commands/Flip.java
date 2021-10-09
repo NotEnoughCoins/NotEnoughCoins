@@ -107,7 +107,6 @@ public class Flip extends CommandBase {
                           EnumChatFormatting.AQUA
                               + "[NEC] "
                               + EnumChatFormatting.YELLOW
-                              + ""
                               + entry.getKey()
                               + " "
                               + EnumChatFormatting.GOLD
