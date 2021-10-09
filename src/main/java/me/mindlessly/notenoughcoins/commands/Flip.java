@@ -2,6 +2,7 @@ package me.mindlessly.notenoughcoins.commands;
 
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.event.ClickEvent;
@@ -12,7 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.config.Configuration;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class Flip extends CommandBase {
@@ -101,17 +101,18 @@ public class Flip extends CommandBase {
                   if (count == 3) {
                     break;
                   }
-                  DecimalFormat formatter = new DecimalFormat("#,###.00");
+                  long profit = Math.abs(entry.getValue().longValue());
                   IChatComponent result =
                       new ChatComponentText(
                           EnumChatFormatting.AQUA
                               + "[NEC] "
                               + EnumChatFormatting.YELLOW
-                              + "Flip found: "
+                              + ""
                               + entry.getKey()
-                              + " -> "
+                              + " "
                               + EnumChatFormatting.GOLD
-                              + formatter.format(Math.abs(entry.getValue().longValue())));
+                              + "+$"
+                              + Utils.formatValue(profit));
 
                   ChatStyle style =
                       new ChatStyle()
