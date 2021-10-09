@@ -46,15 +46,15 @@ public class ApiHandler {
           String key = auction.getKey();
           Double value = auction.getValue();
           if (jsonElement.getKey().equals(key)) {
-            if (jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+            if (jsonElement.getValue().getAsJsonObject().has("price")) {
               Double price =
-                  jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble();
+                  jsonElement.getValue().getAsJsonObject().get("price").getAsDouble();
               if (value < price) {
                 initialDataset.put(key, value);
               }
 
-            } else if (jsonElement.getValue().getAsJsonObject().has("price")) {
-              Double price = jsonElement.getValue().getAsJsonObject().get("price").getAsDouble();
+            } else if (jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+              Double price = jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble();
               if (value < price) {
                 initialDataset.put(key, value);
               }
