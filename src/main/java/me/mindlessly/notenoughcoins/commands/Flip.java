@@ -25,12 +25,10 @@ public class Flip extends CommandBase {
   public static double purse;
   public static ArrayList<String> commands = new ArrayList<String>();
 
-  public int auctionPages = 0;
-  public int cycle = 0;
-
+  private int auctionPages = 0;
+  private int cycle = 0;
+  private Timer timer = new Timer();
   private boolean enable = false;
-  public String signage = "-";
-  public Timer timer = new Timer();
 
   @Override
   public boolean canCommandSenderUseCommand(ICommandSender sender) {
