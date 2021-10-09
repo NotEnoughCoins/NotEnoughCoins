@@ -36,7 +36,8 @@ public class ApiHandler {
 
     try {
       JsonObject items =
-          getJson("https://moulberry.codes/auction_averages/1minute.json").getAsJsonObject();
+          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/1minute.json"))
+              .getAsJsonObject();
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
         for (Map.Entry<String, Double> auction : datasettemp.entrySet()) {
