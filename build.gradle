@@ -11,6 +11,17 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
+apply plugin: 'java'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+repositories {
+    mavenCentral()
+}
+test {
+    systemProperty "file.encoding", "utf-8"
+}
+
 version = "0.1.2"
 group = "me.mindlessly.nec"
 archivesBaseName = "nec"

@@ -1,4 +1,3 @@
-import me.mindlessly.notenoughcoins.commands.Data;
 import me.mindlessly.notenoughcoins.commands.Flip;
 import me.mindlessly.notenoughcoins.commands.SetKey;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
@@ -20,7 +19,6 @@ public class Main {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		ClientCommandHandler.instance.registerCommand(new Flip());
-		ClientCommandHandler.instance.registerCommand(new Data());
 		ClientCommandHandler.instance.registerCommand(new SetKey());
 	}
 }
