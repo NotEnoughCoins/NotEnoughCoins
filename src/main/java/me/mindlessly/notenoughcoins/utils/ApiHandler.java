@@ -17,7 +17,7 @@ public class ApiHandler {
   // Will make configurable
   private static final ArrayList<String> filter =
       new ArrayList<>(
-          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM","ACCESSORY"));
+          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM", "ACCESSORY"));
 
   public static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
     Flip.initialDataset.clear();
@@ -58,14 +58,12 @@ public class ApiHandler {
 
         for (JsonElement item : itemArray) {
           if (item.getAsJsonObject().get("id").getAsString().contains(key)) {
-        	  if (!item.getAsJsonObject().has("furniture")) {
-	            if (item.getAsJsonObject().has("category")) {
-	              if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
+            if (item.getAsJsonObject().has("category")) {
+              if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
 	                String name = item.getAsJsonObject().get("name").getAsString();
 	                initialDataset.put(name, value);
-	              }
-	            }
-	          }
+              }
+            }
           }
         }
         Flip.initialDataset.putAll(initialDataset);
