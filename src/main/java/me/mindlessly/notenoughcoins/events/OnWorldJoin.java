@@ -9,13 +9,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 public class OnWorldJoin {
 	
 	
 	@SubscribeEvent
-    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		if (!event.world.isRemote && event.entity == Minecraft.getMinecraft().thePlayer) {
+    public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 			if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")){
 				Timer timer = new Timer();
 				  timer.schedule(
@@ -26,7 +26,6 @@ public class OnWorldJoin {
 		              }
 		            },
 		            2000);
-			}
+				}
 		}
-	}
 }
