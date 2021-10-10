@@ -19,58 +19,29 @@ public class ApiHandler {
       new ArrayList<>(
           Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
 
-  public static void getBins(HashMap<String, Double> dataset) {
-    try {
-      JsonObject binJson =
-          Objects.requireNonNull(getJson("https://moulberry.codes/lowestbin.json"))
-              .getAsJsonObject();
-      for (Map.Entry<String, JsonElement> auction : binJson.entrySet()) {
-        dataset.put(auction.getKey(), auction.getValue().getAsDouble());
-      }
-    } catch (Exception e) {
-      Reference.logger.error(e.getMessage(), e);
-    }
-  }
-
-  private static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
-    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
-    initialDataset.clear();
+  public static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
+    Flip.initialDataset.clear();
+    Flip.secondDataset.clear();
 
     try {
       JsonObject items =
-          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/1hour.json"))
+          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3hour.json"))
               .getAsJsonObject();
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
-        for (Map.Entry<String, Double> auction : datasettemp.entrySet()) {
-          String key = auction.getKey();
-          Double value = auction.getValue();
-          if (jsonElement.getKey().equals(key)) {
-            if (jsonElement.getValue().getAsJsonObject().has("price")) {
-              Double price =
-                  jsonElement.getValue().getAsJsonObject().get("price").getAsDouble();
-              if (value < price) {
-                initialDataset.put(key, value);
-              }
-
-            } else if (jsonElement.getValue().getAsJsonObject().has("clean_price")) {
-              Double price = jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble();
-              if (value < price) {
-                initialDataset.put(key, value);
-              }
-            }
-          }
-
-          Flip.initialDataset.putAll(initialDataset);
-        }
+    	  if(jsonElement.getValue().getAsJsonObject().has("price")) {
+    		  initialDataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
+    	  }
+        
       }
     } catch (Exception e) {
       Reference.logger.error(e.getMessage(), e);
     }
+    Flip.initialDataset.putAll(initialDataset);
+    Flip.secondDataset.putAll(initialDataset);
   }
 
   public static void itemIdsToNames(LinkedHashMap<String, Double> initialDataset) {
-    getAuctionAverages(initialDataset);
     LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
     initialDataset.clear();
 
@@ -196,7 +167,7 @@ public class ApiHandler {
               if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
                 if (item.getAsJsonObject().has("starting_bid")) {
                   if (item.getAsJsonObject().get("starting_bid").getAsDouble() < entry.getValue()) {
-                    if (item.getAsJsonObject().get("starting_bid").getAsDouble() > Flip.purse) {
+                    if (item.getAsJsonObject().get("starting_bid").getAsDouble() <= Flip.purse) {
                       String rawName = item.getAsJsonObject().get("item_name").getAsString();
                       String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
                       dataset.put(
