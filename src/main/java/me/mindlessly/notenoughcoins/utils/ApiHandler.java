@@ -58,12 +58,14 @@ public class ApiHandler {
 
         for (JsonElement item : itemArray) {
           if (item.getAsJsonObject().get("id").getAsString().contains(key)) {
-            if (item.getAsJsonObject().has("category")) {
-              if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
-                String name = item.getAsJsonObject().get("name").getAsString();
-                initialDataset.put(name, value);
-              }
-            }
+        	  if (!item.getAsJsonObject().has("furniture")) {
+	            if (item.getAsJsonObject().has("category")) {
+	              if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
+	                String name = item.getAsJsonObject().get("name").getAsString();
+	                initialDataset.put(name, value);
+	              }
+	            }
+	          }
           }
         }
         Flip.initialDataset.putAll(initialDataset);

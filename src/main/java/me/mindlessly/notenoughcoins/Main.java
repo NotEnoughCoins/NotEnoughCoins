@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME, clientSideOnly = true)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME)
 public class Main {
 	
 
