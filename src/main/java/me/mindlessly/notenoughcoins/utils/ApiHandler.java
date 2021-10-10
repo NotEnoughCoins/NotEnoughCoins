@@ -25,7 +25,7 @@ public class ApiHandler {
 
     try {
       JsonObject items =
-          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3hour.json"))
+          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/1day.json"))
               .getAsJsonObject();
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
