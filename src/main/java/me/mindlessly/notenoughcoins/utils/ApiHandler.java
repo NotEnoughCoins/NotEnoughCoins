@@ -25,10 +25,14 @@ public class ApiHandler {
 
     try {
       JsonObject items =
-          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/1day.json"))
+          Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3day.json"))
               .getAsJsonObject();
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
+    	  if(jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+    		  initialDataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
+    		  continue;
+    	  }
     	  if(jsonElement.getValue().getAsJsonObject().has("price")) {
     		  initialDataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
     	  }
