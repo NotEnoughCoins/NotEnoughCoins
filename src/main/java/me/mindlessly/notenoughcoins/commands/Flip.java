@@ -157,7 +157,7 @@ public class Flip extends CommandBase {
 	              }
 	            },
 	            1000,
-	            1000);
+	            5000);
 
 	        timer.schedule(
 	            new TimerTask() {
