@@ -17,7 +17,7 @@ public class ApiHandler {
   // Will make configurable
   private static final ArrayList<String> filter =
       new ArrayList<>(
-          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
+          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM","ACCESSORY"));
 
   public static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
     Flip.initialDataset.clear();
