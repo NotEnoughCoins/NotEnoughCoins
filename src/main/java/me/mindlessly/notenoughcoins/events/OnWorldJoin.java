@@ -14,10 +14,9 @@ public class OnWorldJoin {
 	@SubscribeEvent
     public void onEntityJoinWorld(PlayerLoggedInEvent event) {
 			
-			EntityPlayer player = (EntityPlayer) event.player;
-			if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")){
-	    		    Flip.flip(player);
-			}
+		EntityPlayer player = (EntityPlayer) event.player;
+		if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")){
+    		    Flip.flip(player);
 		}
 	}
 }
