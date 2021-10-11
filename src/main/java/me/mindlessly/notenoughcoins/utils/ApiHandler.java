@@ -19,13 +19,26 @@ public class ApiHandler {
       new ArrayList<>(
           Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM", "ACCESSORY"));
   
+  private static final ArrayList<String> nameFilter =
+	      new ArrayList<>(
+	          Arrays.asList("STARRED", "SALMON", "PERFECT"));
+  
   
   public static void getBins(HashMap<String, Double> dataset) {
+	  	boolean skip = false;
 	    Flip.initialDataset.clear();
 		try {
 			JsonObject binJson = getJson("https://moulberry.codes/lowestbin.json").getAsJsonObject();
 			for (Map.Entry<String, JsonElement> auction : binJson.entrySet()) {
-				dataset.put(auction.getKey(), auction.getValue().getAsDouble());
+				skip = false;
+				for(String name: nameFilter) {
+					if(auction.getKey().contains(name)) {
+						skip = true;
+					}
+				}
+				if(!skip) {
+					dataset.put(auction.getKey(), auction.getValue().getAsDouble());
+				}
 			}
 		} catch (Exception e) {
 			Reference.logger.error(e.getMessage(), e);
@@ -43,6 +56,10 @@ public class ApiHandler {
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
     	  if(jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+    		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
+    	  }
+    	  
+    	  if(jsonElement.getValue().getAsJsonObject().has("price")) {
     		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
     	  }
         
@@ -63,6 +80,7 @@ public class ApiHandler {
   }
 
   public static void itemIdsToNames(LinkedHashMap<String, Double> initialDataset) {
+	Flip.namedDataset.clear();
     LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
     initialDataset.clear();
 
@@ -83,8 +101,8 @@ public class ApiHandler {
               if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
 	                String name = item.getAsJsonObject().get("name").getAsString();
 	                initialDataset.put(name, value);
+            	  }
               }
-            }
           }
         }
         Flip.initialDataset.putAll(initialDataset);
@@ -191,6 +209,9 @@ public class ApiHandler {
                     if (item.getAsJsonObject().get("starting_bid").getAsDouble() <= Flip.purse) {
                       String rawName = item.getAsJsonObject().get("item_name").getAsString();
                       String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
+                      if(dataset.containsKey(entry.getKey())) {
+                    	  continue;
+                      }
                       dataset.put(
                           name,
                           entry.getValue()

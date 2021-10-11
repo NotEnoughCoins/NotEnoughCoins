@@ -83,14 +83,14 @@ public class Flip extends CommandBase {
 	                    + ("Flipper alerts enabled."));
 	        sender.addChatMessage(enableText);
             ApiHandler.getBins(initialDataset);
-	        auctionPages = ApiHandler.getNumberOfPages();
+	        auctionPages = ApiHandler.getNumberOfPages() -1;
 
 	        timer.schedule(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	                if (cycle == auctionPages) {
-	                  cycle = 0;
+	                if (cycle < 0) {
+	                  cycle = auctionPages;
 	                }
 
 	                String name = sender.getName();
@@ -100,7 +100,6 @@ public class Flip extends CommandBase {
 	                } catch (Exception e) {
 	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
 	                }
-	                ApiHandler.getAuctionAverages(secondDataset);
 	                ApiHandler.itemIdsToNames(initialDataset);
 	                ApiHandler.getFlips(namedDataset, cycle, commands);
 	                if (namedDataset.size() > 0) {
@@ -157,11 +156,11 @@ public class Flip extends CommandBase {
 	                  }
 	                }
 	                namedDataset.clear();
-	                cycle++;
+	                cycle--;
 	              }
 	            },
-	            400,
-	            400);
+	            50,
+	            50);
 
 	        timer.schedule(
 	            new TimerTask() {
@@ -176,8 +175,8 @@ public class Flip extends CommandBase {
 	                  }
 	              }
 	            },
-	            60000,
-	            60000);
+	            10000,
+	            10000);
 
 	      } else {
 	        ChatComponentText enableText =
