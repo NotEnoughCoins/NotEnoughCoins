@@ -71,6 +71,9 @@ public class Flip extends CommandBase {
   }
   
   public static void flip(EntityPlayer sender) {
+	  timer.cancel();
+	  timer.purge();
+	  timer = new Timer();
 	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 	        ChatComponentText enableText =
 	            new ChatComponentText(
@@ -79,7 +82,7 @@ public class Flip extends CommandBase {
 	                    + EnumChatFormatting.GREEN
 	                    + ("Flipper alerts enabled."));
 	        sender.addChatMessage(enableText);
-	        ApiHandler.getAuctionAverages(initialDataset);
+            ApiHandler.getBins(initialDataset);
 	        auctionPages = ApiHandler.getNumberOfPages();
 
 	        timer.schedule(
@@ -97,7 +100,8 @@ public class Flip extends CommandBase {
 	                } catch (Exception e) {
 	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
 	                }
-	                ApiHandler.itemIdsToNames(secondDataset);
+	                ApiHandler.getAuctionAverages(secondDataset);
+	                ApiHandler.itemIdsToNames(initialDataset);
 	                ApiHandler.getFlips(namedDataset, cycle, commands);
 	                if (namedDataset.size() > 0) {
 	                  purse = Math.round(purse);
@@ -156,8 +160,8 @@ public class Flip extends CommandBase {
 	                cycle++;
 	              }
 	            },
-	            1000,
-	            5000);
+	            400,
+	            400);
 
 	        timer.schedule(
 	            new TimerTask() {
@@ -166,7 +170,7 @@ public class Flip extends CommandBase {
 	                auctionPages = ApiHandler.getNumberOfPages();
 	                
 	                try {
-	                    ApiHandler.getAuctionAverages(initialDataset);
+	                    ApiHandler.getBins(initialDataset);
 	                  } catch (Exception e) {
 	                    sender.addChatMessage(new ChatComponentText("Could not load BINs."));
 	                  }

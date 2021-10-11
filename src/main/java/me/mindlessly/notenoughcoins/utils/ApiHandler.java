@@ -18,11 +18,24 @@ public class ApiHandler {
   private static final ArrayList<String> filter =
       new ArrayList<>(
           Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM", "ACCESSORY"));
+  
+  
+  public static void getBins(HashMap<String, Double> dataset) {
+	    Flip.initialDataset.clear();
+		try {
+			JsonObject binJson = getJson("https://moulberry.codes/lowestbin.json").getAsJsonObject();
+			for (Map.Entry<String, JsonElement> auction : binJson.entrySet()) {
+				dataset.put(auction.getKey(), auction.getValue().getAsDouble());
+			}
+		} catch (Exception e) {
+			Reference.logger.error(e.getMessage(), e);
+		}
+		Flip.initialDataset.putAll(dataset);
+		
+  }
 
-  public static void getAuctionAverages(LinkedHashMap<String, Double> initialDataset) {
-    Flip.initialDataset.clear();
-    Flip.secondDataset.clear();
-
+  public static void getAuctionAverages(LinkedHashMap<String, Double> dataset) {
+	Flip.secondDataset.clear();
     try {
       JsonObject items =
           Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3day.json"))
@@ -30,19 +43,23 @@ public class ApiHandler {
 
       for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
     	  if(jsonElement.getValue().getAsJsonObject().has("clean_price")) {
-    		  initialDataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
-    		  continue;
-    	  }
-    	  if(jsonElement.getValue().getAsJsonObject().has("price")) {
-    		  initialDataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
+    		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
     	  }
         
       }
     } catch (Exception e) {
       Reference.logger.error(e.getMessage(), e);
     }
-    Flip.initialDataset.putAll(initialDataset);
-    Flip.secondDataset.putAll(initialDataset);
+    
+    Flip.secondDataset.putAll(dataset);
+    
+    for(Map.Entry<String, Double> entry : Flip.secondDataset.entrySet()) {
+    	if(Flip.initialDataset.containsKey(entry.getKey())) {
+    		if(Flip.initialDataset.get(entry.getKey()) > entry.getValue()) {
+    			Flip.initialDataset.remove(entry.getKey());
+    		}
+    	}
+    }
   }
 
   public static void itemIdsToNames(LinkedHashMap<String, Double> initialDataset) {
@@ -61,7 +78,7 @@ public class ApiHandler {
         Double value = auction.getValue();
 
         for (JsonElement item : itemArray) {
-          if (item.getAsJsonObject().get("id").getAsString().contains(key)) {
+          if (item.getAsJsonObject().get("id").getAsString().equals(key)) {
             if (item.getAsJsonObject().has("category")) {
               if (!(filter.contains(item.getAsJsonObject().get("category").getAsString()))) {
 	                String name = item.getAsJsonObject().get("name").getAsString();
