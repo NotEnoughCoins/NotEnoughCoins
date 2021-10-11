@@ -166,7 +166,7 @@ public class Flip extends CommandBase {
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	                auctionPages = ApiHandler.getNumberOfPages();
+	                auctionPages = ApiHandler.getNumberOfPages() - 1;
 	                
 	                try {
 	                    ApiHandler.getBins(initialDataset);
