@@ -17,11 +17,11 @@ public class ApiHandler {
   // Will make configurable
   private static final ArrayList<String> filter =
       new ArrayList<>(
-          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM", "ACCESSORY"));
+          Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
   
   private static final ArrayList<String> nameFilter =
 	      new ArrayList<>(
-	          Arrays.asList("STARRED", "SALMON", "PERFECT"));
+	          Arrays.asList("STARRED", "SALMON", "PERFECT", "BEASTMASTER", "MASTER_SKULL"));
   
   
   public static void getBins(HashMap<String, Double> dataset) {
@@ -209,9 +209,9 @@ public class ApiHandler {
                     if (item.getAsJsonObject().get("starting_bid").getAsDouble() <= Flip.purse) {
                       String rawName = item.getAsJsonObject().get("item_name").getAsString();
                       String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
-                      if(dataset.containsKey(entry.getKey())) {
+                      /*if(dataset.containsKey(entry.getKey())) {
                     	  continue;
-                      }
+                      }*/
                       dataset.put(
                           name,
                           entry.getValue()
