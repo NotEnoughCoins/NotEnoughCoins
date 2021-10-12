@@ -22,9 +22,9 @@ test {
     systemProperty "file.encoding", "utf-8"
 }
 
-version = "0.2.5"
+version = "0.2.6"
 group = "me.mindlessly.nec"
-archivesBaseName = "nec"
+archivesBaseName = "NotEnoughCoins"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
