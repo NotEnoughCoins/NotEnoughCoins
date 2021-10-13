@@ -89,8 +89,8 @@ public class Flip extends CommandBase {
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	                if (cycle < 0) {
-	                  cycle = auctionPages;
+	                if (cycle < auctionPages) {
+	                  cycle = 0;
 	                }
 
 	                String name = sender.getName();
@@ -119,9 +119,6 @@ public class Flip extends CommandBase {
 	                  int count = 0;
 
 	                  for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
-	                    if (count == 3) {
-	                      break;
-	                    }
 	                    long profit = Math.abs(entry.getValue().longValue());
 	                    IChatComponent result =
 	                        new ChatComponentText(
@@ -156,11 +153,11 @@ public class Flip extends CommandBase {
 	                  }
 	                }
 	                namedDataset.clear();
-	                cycle--;
+	                cycle++;
 	              }
 	            },
-	            40,
-	            40);
+	            10,
+	            10);
 
 	        timer.schedule(
 	            new TimerTask() {
