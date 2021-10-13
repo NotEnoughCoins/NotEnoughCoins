@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.commands.Flip;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -59,8 +61,8 @@ public class ApiHandler {
     		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
     	  }
     	  
-    	  if(jsonElement.getValue().getAsJsonObject().has("price")) {
-    		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
+    	  if(jsonElement.getValue().getAsJsonObject().has("price") && !jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+    		  dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
     	  }
         
       }
@@ -81,7 +83,8 @@ public class ApiHandler {
 
   public static void itemIdsToNames(LinkedHashMap<String, Double> initialDataset) {
 	Flip.namedDataset.clear();
-    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<>(initialDataset);
+    LinkedHashMap<String, Double> datasettemp = new LinkedHashMap<String, Double>();
+    datasettemp.putAll(initialDataset);
     initialDataset.clear();
 
     try {
@@ -105,9 +108,9 @@ public class ApiHandler {
               }
           }
         }
-        Flip.initialDataset.putAll(initialDataset);
       }
-      LinkedHashMap<String, Double> unsortedMap = Flip.namedDataset;
+      Flip.secondDataset.putAll(initialDataset);
+      LinkedHashMap<String, Double> unsortedMap = Flip.secondDataset;
       // LinkedHashMap preserve the ordering of elements in which they are inserted
       LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
 
@@ -116,7 +119,7 @@ public class ApiHandler {
           .sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder()))
           .forEachOrdered(x -> sortedMap.put(x.getKey(), (double) Math.round(x.getValue())));
 
-      Flip.namedDataset = sortedMap;
+      Flip.secondDataset = sortedMap;
     } catch (Exception e) {
       Reference.logger.error(e.getMessage(), e);
     }
@@ -189,8 +192,9 @@ public class ApiHandler {
   }
 
   public static void getFlips(
-      LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
+    LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
     Flip.commands.clear();
+    
 
     try {
       JsonArray auctionsArray =
@@ -200,7 +204,7 @@ public class ApiHandler {
               .getAsJsonArray();
 
       for (JsonElement item : auctionsArray) {
-        for (HashMap.Entry<String, Double> entry : Flip.initialDataset.entrySet()) {
+        for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
           if (item.getAsJsonObject().get("item_name").getAsString().contains(entry.getKey())) {
             if (item.getAsJsonObject().has("bin")) {
               if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
@@ -212,14 +216,17 @@ public class ApiHandler {
                       /*if(dataset.containsKey(entry.getKey())) {
                     	  continue;
                       }*/
-                      dataset.put(
-                          name,
-                          entry.getValue()
-                              - item.getAsJsonObject().get("starting_bid").getAsLong());
+                      
+                      if(entry.getValue() - item.getAsJsonObject().get("starting_bid").getAsLong() > 50000) {
+                          Flip.namedDataset.put(
+                                  name,
+                                  entry.getValue()
+                                      - item.getAsJsonObject().get("starting_bid").getAsLong());
 
-                      if (item.getAsJsonObject().has("uuid")) {
-                        commands.add(
-                            "/viewauction " + item.getAsJsonObject().get("uuid").getAsString());
+                          if (item.getAsJsonObject().has("uuid")) {
+                            commands.add(
+                                "/viewauction " + item.getAsJsonObject().get("uuid").getAsString());
+                         }
                       }
                     }
                   }
@@ -233,7 +240,6 @@ public class ApiHandler {
       Reference.logger.error(e.getMessage(), e);
     }
 
-    Flip.namedDataset.putAll(dataset);
     Flip.commands.addAll(commands);
   }
 

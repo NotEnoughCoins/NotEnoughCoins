@@ -83,13 +83,14 @@ public class Flip extends CommandBase {
 	                    + ("Flipper alerts enabled."));
 	        sender.addChatMessage(enableText);
             ApiHandler.getBins(initialDataset);
-	        auctionPages = ApiHandler.getNumberOfPages() -1;
+            ApiHandler.itemIdsToNames(initialDataset);
 
-	        timer.schedule(
+	        timer.scheduleAtFixedRate(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	                if (cycle < auctionPages) {
+		            auctionPages = ApiHandler.getNumberOfPages() - 1;
+	                if (cycle == auctionPages) {
 	                  cycle = 0;
 	                }
 
@@ -100,8 +101,7 @@ public class Flip extends CommandBase {
 	                } catch (Exception e) {
 	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
 	                }
-	                ApiHandler.itemIdsToNames(initialDataset);
-	                ApiHandler.getFlips(namedDataset, cycle, commands);
+	                ApiHandler.getFlips(secondDataset, cycle, commands);
 	                if (namedDataset.size() > 0) {
 	                  purse = Math.round(purse);
 	                  /*ChatComponentText runtext = new ChatComponentText(
@@ -156,24 +156,24 @@ public class Flip extends CommandBase {
 	                cycle++;
 	              }
 	            },
-	            10,
-	            10);
+	            40,
+	            40);
 
 	        timer.schedule(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	                auctionPages = ApiHandler.getNumberOfPages() - 1;
-	                
+	      	        auctionPages = ApiHandler.getNumberOfPages() -1;
 	                try {
 	                    ApiHandler.getBins(initialDataset);
+		                ApiHandler.itemIdsToNames(initialDataset);
 	                  } catch (Exception e) {
 	                    sender.addChatMessage(new ChatComponentText("Could not load BINs."));
 	                  }
 	              }
 	            },
-	            10000,
-	            10000);
+	            60000,
+	            60000);
 
 	      } else {
 	        ChatComponentText enableText =
