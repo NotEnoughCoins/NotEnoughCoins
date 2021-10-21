@@ -77,9 +77,8 @@ public class Flip extends CommandBase {
   
   
   public static void flip(EntityPlayer sender) {
-	  Executors.newScheduledThreadPool(5);
 	  ScheduledExecutorService scheduledExecutorService =
-		        Executors.newScheduledThreadPool(5);
+		        Executors.newScheduledThreadPool(2);
 	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 	        ChatComponentText enableText =
 	            new ChatComponentText(
@@ -162,8 +161,8 @@ public class Flip extends CommandBase {
 	                cycle++;
 	              }
 	            },
-	            40,
-	            40, TimeUnit.MILLISECONDS);
+	            100,
+	            100, TimeUnit.MILLISECONDS);
 
             scheduledExecutorService.scheduleAtFixedRate(
 	            new TimerTask() {
