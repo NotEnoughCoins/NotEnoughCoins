@@ -183,8 +183,8 @@ public class Flip extends CommandBase {
 	                }
 	              }
 	            },
-	            10000,
-	            10000, TimeUnit.MILLISECONDS);
+	            60000,
+	            60000, TimeUnit.MILLISECONDS);
 
 	      } else {
 	        ChatComponentText enableText =
