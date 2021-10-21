@@ -1,5 +1,13 @@
 package me.mindlessly.notenoughcoins.commands;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
@@ -13,11 +21,6 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.config.Configuration;
-
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Flip extends CommandBase {
 
@@ -90,6 +93,7 @@ public class Flip extends CommandBase {
 	            new TimerTask() {
 	              @Override
 	              public void run() {
+	            	sender.addChatComponentMessage(new ChatComponentText("Test"));
 		            auctionPages = ApiHandler.getNumberOfPages() - 1;
 	                if (cycle == auctionPages) {
 	                  cycle = 0;
@@ -184,7 +188,7 @@ public class Flip extends CommandBase {
 	                    + EnumChatFormatting.RED
 	                    + ("Flipper alerts disabled."));
 	        sender.addChatMessage(enableText);
-	        scheduledExecutorService.shutdown();
+	        scheduledExecutorService.shutdownNow();
 	      }
   }
 }
