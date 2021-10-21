@@ -89,23 +89,22 @@ public class Flip extends CommandBase {
 	        sender.addChatMessage(enableText);
             ApiHandler.getBins(initialDataset);
             ApiHandler.itemIdsToNames(initialDataset);
-
+  	        auctionPages = ApiHandler.getNumberOfPages() -1;
+            String name = sender.getName();
+            String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
+            try {
+              ApiHandler.updatePurseCoins(id, name);
+            } catch (Exception e) {
+              sender.addChatMessage(new ChatComponentText("Could not load purse."));
+            }
             scheduledExecutorService.scheduleAtFixedRate(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-		            auctionPages = ApiHandler.getNumberOfPages() - 1;
 	                if (cycle == auctionPages) {
 	                  cycle = 0;
 	                }
 
-	                String name = sender.getName();
-	                String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
-	                try {
-	                  ApiHandler.updatePurseCoins(id, name);
-	                } catch (Exception e) {
-	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
-	                }
 	                ApiHandler.getFlips(secondDataset, cycle, commands);
 	                if (namedDataset.size() > 0) {
 	                  purse = Math.round(purse);
@@ -175,10 +174,17 @@ public class Flip extends CommandBase {
 	                  } catch (Exception e) {
 	                    sender.addChatMessage(new ChatComponentText("Could not load BINs."));
 	                  }
+	                String name = sender.getName();
+	                String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
+	                try {
+	                  ApiHandler.updatePurseCoins(id, name);
+	                } catch (Exception e) {
+	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
+	                }
 	              }
 	            },
-	            60000,
-	            60000, TimeUnit.MILLISECONDS);
+	            10000,
+	            10000, TimeUnit.MILLISECONDS);
 
 	      } else {
 	        ChatComponentText enableText =
