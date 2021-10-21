@@ -75,7 +75,9 @@ public class Flip extends CommandBase {
     flip((EntityPlayer) sender.getCommandSenderEntity());
   }
   
+  
   public static void flip(EntityPlayer sender) {
+	  Executors.newScheduledThreadPool(5);
 	  ScheduledExecutorService scheduledExecutorService =
 		        Executors.newScheduledThreadPool(5);
 	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
@@ -93,7 +95,6 @@ public class Flip extends CommandBase {
 	            new TimerTask() {
 	              @Override
 	              public void run() {
-	            	sender.addChatComponentMessage(new ChatComponentText("Test"));
 		            auctionPages = ApiHandler.getNumberOfPages() - 1;
 	                if (cycle == auctionPages) {
 	                  cycle = 0;
