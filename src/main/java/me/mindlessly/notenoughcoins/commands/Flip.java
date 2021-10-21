@@ -15,6 +15,9 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Flip extends CommandBase {
 
@@ -29,7 +32,6 @@ public class Flip extends CommandBase {
 
   private static int auctionPages = 0;
   private static int cycle = 0;
-  private static Timer timer = new Timer();
 
   @Override
   public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -71,9 +73,8 @@ public class Flip extends CommandBase {
   }
   
   public static void flip(EntityPlayer sender) {
-	  timer.cancel();
-	  timer.purge();
-	  timer = new Timer();
+	  ScheduledExecutorService scheduledExecutorService =
+		        Executors.newScheduledThreadPool(5);
 	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 	        ChatComponentText enableText =
 	            new ChatComponentText(
@@ -85,7 +86,7 @@ public class Flip extends CommandBase {
             ApiHandler.getBins(initialDataset);
             ApiHandler.itemIdsToNames(initialDataset);
 
-	        timer.scheduleAtFixedRate(
+            scheduledExecutorService.scheduleAtFixedRate(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
@@ -157,9 +158,9 @@ public class Flip extends CommandBase {
 	              }
 	            },
 	            40,
-	            40);
+	            40, TimeUnit.MILLISECONDS);
 
-	        timer.schedule(
+            scheduledExecutorService.scheduleAtFixedRate(
 	            new TimerTask() {
 	              @Override
 	              public void run() {
@@ -173,7 +174,7 @@ public class Flip extends CommandBase {
 	              }
 	            },
 	            60000,
-	            60000);
+	            60000, TimeUnit.MILLISECONDS);
 
 	      } else {
 	        ChatComponentText enableText =
@@ -183,9 +184,7 @@ public class Flip extends CommandBase {
 	                    + EnumChatFormatting.RED
 	                    + ("Flipper alerts disabled."));
 	        sender.addChatMessage(enableText);
-	        timer.cancel();
-	        timer.purge();
-	        timer = new Timer();
+	        scheduledExecutorService.shutdown();
 	      }
   }
 }
