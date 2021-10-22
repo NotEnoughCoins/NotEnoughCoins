@@ -220,7 +220,7 @@ public class ApiHandler {
                       
                       long minflip = 50000;
                       if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "MinProfit")){
-                    	  minflip = Long.valueOf(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "MinFlip"));
+                    	  minflip = Long.valueOf(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "MinProfit"));
                       }
                       if(entry.getValue() - item.getAsJsonObject().get("starting_bid").getAsLong() > minflip) {
                           Flip.namedDataset.put(
