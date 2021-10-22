@@ -9,7 +9,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
-public class MinFlip extends CommandBase {
+public class MinProfit extends CommandBase {
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -18,18 +18,18 @@ public class MinFlip extends CommandBase {
 
 	@Override
 	public String getCommandName() {
-		return "minflip";
+		return "minprofit";
 	}
 
 	@Override
 	public String getCommandUsage(ICommandSender sender) {
-		return "/minflip <key>";
+		return "/minprofit <key>";
 	}
 
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		ChatComponentText error = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /minflip <Minimum price you would like flips to be>"));
+				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /minprofit <Minimum profit>"));
 		if (args.length > 0) {
 			try {
 				Long.valueOf(args[0]);
@@ -37,9 +37,9 @@ public class MinFlip extends CommandBase {
 				sender.addChatMessage(error);
 				return;
 			}
-			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "MinFlip", args[0]);
+			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "MinProfit", args[0]);
 			ChatComponentText runtext = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Minimum flip price set to " + Utils.formatValue(Long.valueOf(args[0])))
+				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Minimum profit price set to " + Utils.formatValue(Long.valueOf(args[0])))
 			);
 			sender.addChatMessage(runtext);
 		} else {
