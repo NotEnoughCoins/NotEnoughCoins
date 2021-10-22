@@ -1,5 +1,6 @@
 package me.mindlessly.notenoughcoins;
 import me.mindlessly.notenoughcoins.commands.Flip;
+import me.mindlessly.notenoughcoins.commands.MinFlip;
 import me.mindlessly.notenoughcoins.commands.SetKey;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
@@ -26,6 +27,7 @@ public class Main {
 	public void init(FMLInitializationEvent event) {
 		ClientCommandHandler.instance.registerCommand(new Flip());
 		ClientCommandHandler.instance.registerCommand(new SetKey());
+		ClientCommandHandler.instance.registerCommand(new MinFlip());
 		MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
 	}
 }

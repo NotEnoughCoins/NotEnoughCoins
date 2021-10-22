@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.commands.Flip;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.common.config.Configuration;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -217,7 +218,14 @@ public class ApiHandler {
                     	  continue;
                       }*/
                       
-                      if(entry.getValue() - item.getAsJsonObject().get("starting_bid").getAsLong() > 50000) {
+                      long minflip = 50000;
+                      if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "MinFlip")){
+                    	  minflip = Long.valueOf(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "MinFlip"));
+                      }
+                      if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")){
+                    	  
+                      }
+                      if(entry.getValue() - item.getAsJsonObject().get("starting_bid").getAsLong() > minflip) {
                           Flip.namedDataset.put(
                                   name,
                                   entry.getValue()
