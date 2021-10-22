@@ -4,6 +4,7 @@ import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
