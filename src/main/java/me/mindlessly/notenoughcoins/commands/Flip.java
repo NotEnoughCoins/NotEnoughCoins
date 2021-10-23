@@ -196,6 +196,8 @@ public class Flip extends CommandBase {
 	                    + ("Flipper alerts disabled."));
 	        sender.addChatMessage(enableText);
 	        scheduledExecutorService.shutdownNow();
+	        scheduledExecutorService =
+	    	        Executors.newScheduledThreadPool(2);
 	      }
   }
 }
