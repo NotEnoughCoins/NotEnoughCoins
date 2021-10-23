@@ -35,6 +35,9 @@ public class Flip extends CommandBase {
 
   private static int auctionPages = 0;
   private static int cycle = 0;
+  
+  public static ScheduledExecutorService scheduledExecutorService =
+	        Executors.newScheduledThreadPool(2);
 
   @Override
   public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -77,8 +80,6 @@ public class Flip extends CommandBase {
   
   
   public static void flip(EntityPlayer sender) {
-	  ScheduledExecutorService scheduledExecutorService =
-		        Executors.newScheduledThreadPool(2);
 	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 	        ChatComponentText enableText =
 	            new ChatComponentText(
