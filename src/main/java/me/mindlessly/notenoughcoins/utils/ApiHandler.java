@@ -222,8 +222,8 @@ public class ApiHandler {
               .get("auctions")
               .getAsJsonArray();
 
-      for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
-        for (JsonElement item : auctionsArray) {
+      for (JsonElement item : auctionsArray) {
+        for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
           if (item.getAsJsonObject().get("item_name").getAsString().contains(entry.getKey())) {
             if (item.getAsJsonObject().has("bin")) {
               if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
