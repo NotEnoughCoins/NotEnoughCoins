@@ -39,7 +39,7 @@ public class Flip extends CommandBase {
   private static int cycle = 0;
   
   public static ScheduledExecutorService scheduledExecutorService =
-	        Executors.newScheduledThreadPool(2);
+	        Executors.newScheduledThreadPool(8);
 
   @Override
   public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -148,6 +148,7 @@ public class Flip extends CommandBase {
 	                  }
 	                }
 	                namedDataset.clear();
+	                //sender.addChatMessage(new ChatComponentText(String.valueOf(cycle)));
 	                cycle++;
 	              }
 	            },
@@ -187,7 +188,7 @@ public class Flip extends CommandBase {
 	        sender.addChatMessage(enableText);
 	        scheduledExecutorService.shutdownNow();
 	        scheduledExecutorService =
-	    	        Executors.newScheduledThreadPool(2);
+	    	        Executors.newScheduledThreadPool(8);
 	      }
   }
 }
