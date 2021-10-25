@@ -192,20 +192,38 @@ public class ApiHandler {
     }
   }
 
-  public static void getFlips(
+  public static boolean getFlips(
     LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
     Flip.commands.clear();
-    
 
     try {
+    	JsonObject auctionPage = 
+			  Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i))
+              .getAsJsonObject();
+    	
+    	Long lastUpdated =
+    			auctionPage
+                .get("lastUpdated")
+                .getAsLong();
+	
+	  if(Flip.updatedDataset.containsKey(i)) {
+     	 if(lastUpdated == Flip.updatedDataset.get(i)) {
+     		 return false;
+     	 }
+     	 else {
+     		 Flip.updatedDataset.remove(i);
+     		 Flip.updatedDataset.put(i, lastUpdated);
+     	 }
+      }
+    	
+    	
       JsonArray auctionsArray =
-          Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i))
-              .getAsJsonObject()
+    		   auctionPage
               .get("auctions")
               .getAsJsonArray();
 
-      for (JsonElement item : auctionsArray) {
-        for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
+      for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
+        for (JsonElement item : auctionsArray) {
           if (item.getAsJsonObject().get("item_name").getAsString().contains(entry.getKey())) {
             if (item.getAsJsonObject().has("bin")) {
               if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
@@ -214,10 +232,7 @@ public class ApiHandler {
                     if (item.getAsJsonObject().get("starting_bid").getAsDouble() <= Flip.purse) {
                       String rawName = item.getAsJsonObject().get("item_name").getAsString();
                       String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
-                      /*if(dataset.containsKey(entry.getKey())) {
-                    	  continue;
-                      }*/
-                      
+                  
                       long minflip = 50000;
                       if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "MinProfit")){
                     	  minflip = Long.valueOf(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "MinProfit"));
@@ -246,6 +261,7 @@ public class ApiHandler {
     }
 
     Flip.commands.addAll(commands);
+    return true;
   }
 
   public static int getNumberOfPages() {

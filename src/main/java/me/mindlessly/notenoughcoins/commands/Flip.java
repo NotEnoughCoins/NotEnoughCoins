@@ -30,6 +30,8 @@ public class Flip extends CommandBase {
   public static LinkedHashMap<String, Double> initialDataset = new LinkedHashMap<>();
   public static LinkedHashMap<String, Double> secondDataset = new LinkedHashMap<>();
   public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
+  public static LinkedHashMap<Integer, Long> updatedDataset = new LinkedHashMap<>();
+  
   public static double purse;
   public static ArrayList<String> commands = new ArrayList<String>();
 
@@ -106,63 +108,53 @@ public class Flip extends CommandBase {
 	                  cycle = 0;
 	                }
 
-	                ApiHandler.getFlips(secondDataset, cycle, commands);
-	                if (namedDataset.size() > 0) {
-	                  purse = Math.round(purse);
-	                  /*ChatComponentText runtext = new ChatComponentText(
-	                  	EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.AQUA + ("Suggested Flips:")
-	                  );
-	                  sender.addChatMessage(runtext);
-	                  if (!enable) {
-	                  	return;
-	                  }
-	                  sender.addChatMessage(
-	                  		new ChatComponentText(
-	                  			EnumChatFormatting.GOLD + "Your Budget: " + EnumChatFormatting.WHITE + (long) purse + "\n"
-	                  		)
-	                  	);*/
-	                  int count = 0;
-
-	                  for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
-	                    long profit = Math.abs(entry.getValue().longValue());
-	                    IChatComponent result =
-	                        new ChatComponentText(
-	                            EnumChatFormatting.AQUA
-	                                + "[NEC] "
-	                                + EnumChatFormatting.YELLOW
-	                                + entry.getKey()
-	                                + " "
-	                                + (profit > 200_000 || purse / 5 < 100_000
-	                                    ? EnumChatFormatting.GREEN
-	                                    : profit > 100_000 || purse / 5 < 200_000
-	                                        ? EnumChatFormatting.GOLD
-	                                        : EnumChatFormatting.YELLOW)
-	                                + "+$"
-	                                + Utils.formatValue(profit));
-
-	                    ChatStyle style =
-	                        new ChatStyle()
-	                            .setChatClickEvent(
-	                                new ClickEvent(Action.RUN_COMMAND, commands.get(count)) {
-	                                  @Override
-	                                  public Action getAction() {
-	                                    // custom behavior
-	                                    return Action.RUN_COMMAND;
-	                                  }
-	                                });
-	                    result.setChatStyle(style);
-
-	                    sender.addChatMessage(result);
-
-	                    count++;
+	                boolean print = ApiHandler.getFlips(secondDataset, cycle, commands);
+	                if(print) {
+		                if (namedDataset.size() > 0) {
+		                  purse = Math.round(purse);
+		                  int count = 0;
+	
+		                  for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
+		                    long profit = Math.abs(entry.getValue().longValue());
+		                    IChatComponent result =
+		                        new ChatComponentText(
+		                            EnumChatFormatting.AQUA
+		                                + "[NEC] "
+		                                + EnumChatFormatting.YELLOW
+		                                + entry.getKey()
+		                                + " "
+		                                + (profit > 200_000 || purse / 5 < 100_000
+		                                    ? EnumChatFormatting.GREEN
+		                                    : profit > 100_000 || purse / 5 < 200_000
+		                                        ? EnumChatFormatting.GOLD
+		                                        : EnumChatFormatting.YELLOW)
+		                                + "+$"
+		                                + Utils.formatValue(profit));
+	
+		                    ChatStyle style =
+		                        new ChatStyle()
+		                            .setChatClickEvent(
+		                                new ClickEvent(Action.RUN_COMMAND, commands.get(count)) {
+		                                  @Override
+		                                  public Action getAction() {
+		                                    // custom behavior
+		                                    return Action.RUN_COMMAND;
+		                                  }
+		                                });
+		                    result.setChatStyle(style);
+	
+		                    sender.addChatMessage(result);
+		                    sender.addChatMessage(new ChatComponentText(String.valueOf(count)));
+		                    count++;
+		                  }
 	                  }
 	                }
 	                namedDataset.clear();
 	                cycle++;
 	              }
 	            },
-	            100,
-	            100, TimeUnit.MILLISECONDS);
+	            1,
+	            1, TimeUnit.MILLISECONDS);
 
             scheduledExecutorService.scheduleAtFixedRate(
 	            new TimerTask() {
