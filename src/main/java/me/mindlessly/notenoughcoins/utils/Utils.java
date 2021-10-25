@@ -13,7 +13,6 @@ public class Utils {
 
   static JsonElement getJson(String jsonUrl) {
     try {
-      // Shamelessly pulling data from Moulberry's website
       URL url = new URL(jsonUrl);
       URLConnection conn = url.openConnection();
       return new JsonParser().parse(new InputStreamReader(conn.getInputStream()));

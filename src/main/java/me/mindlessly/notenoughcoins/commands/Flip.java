@@ -143,12 +143,12 @@ public class Flip extends CommandBase {
 		                                });
 		                    result.setChatStyle(style);
 		                    sender.addChatMessage(result);
+			                //sender.addChatMessage(new ChatComponentText(String.valueOf(cycle)));
 		                    count++;
 		                  }
 	                  }
 	                }
 	                namedDataset.clear();
-	                //sender.addChatMessage(new ChatComponentText(String.valueOf(cycle)));
 	                cycle++;
 	              }
 	            },
