@@ -142,9 +142,7 @@ public class Flip extends CommandBase {
 		                                  }
 		                                });
 		                    result.setChatStyle(style);
-	
 		                    sender.addChatMessage(result);
-		                    sender.addChatMessage(new ChatComponentText(String.valueOf(count)));
 		                    count++;
 		                  }
 	                  }
