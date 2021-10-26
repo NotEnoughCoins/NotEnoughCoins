@@ -93,7 +93,7 @@ public class Flip extends CommandBase {
 				public void run() {
 					flipper(sender);
 				}
-			}, 20000, 20000, TimeUnit.MILLISECONDS);
+			}, 100, 100, TimeUnit.MILLISECONDS);
 
 			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 				@Override
@@ -113,7 +113,7 @@ public class Flip extends CommandBase {
 						sender.addChatMessage(new ChatComponentText("Could not load purse."));
 					}
 				}
-			}, 100, 100, TimeUnit.MILLISECONDS);
+			}, 60000, 60000, TimeUnit.MILLISECONDS);
 
 		} else {
 			ChatComponentText enableText = new ChatComponentText(
@@ -164,7 +164,7 @@ public class Flip extends CommandBase {
 			};
 			fetch.start();
 			try {
-				fetch.join(1000);
+				fetch.join();
 			} catch (InterruptedException e) {
 				Reference.logger.error(e.getMessage(), e);
 			}
