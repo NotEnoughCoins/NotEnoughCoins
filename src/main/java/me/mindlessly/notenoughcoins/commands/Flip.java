@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -24,172 +25,149 @@ import net.minecraftforge.common.config.Configuration;
 
 public class Flip extends CommandBase {
 
-  // Take initial set of lbins, take second set, and use compared set to identify the biggest
-  // gainers/losers
-  // namedSet is used to replace internal ids with actual item names
-  public static LinkedHashMap<String, Double> initialDataset = new LinkedHashMap<>();
-  public static LinkedHashMap<String, Double> secondDataset = new LinkedHashMap<>();
-  public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
-  public static LinkedHashMap<Integer, Long> updatedDataset = new LinkedHashMap<>();
-  
-  public static double purse;
-  public static ArrayList<String> commands = new ArrayList<String>();
+	// Take initial set of lbins, take second set, and use compared set to identify
+	// the biggest
+	// gainers/losers
+	// namedSet is used to replace internal ids with actual item names
+	public static LinkedHashMap<String, Double> initialDataset = new LinkedHashMap<>();
+	public static LinkedHashMap<String, Double> secondDataset = new LinkedHashMap<>();
+	public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
+	public static LinkedHashMap<Integer, Long> updatedDataset = new LinkedHashMap<>();
 
-  private static int auctionPages = 0;
-  private static int cycle = 0;
-  
-  public static ScheduledExecutorService scheduledExecutorService =
-	        Executors.newScheduledThreadPool(8);
+	public static double purse;
+	public static ArrayList<String> commands = new ArrayList<String>();
 
-  @Override
-  public boolean canCommandSenderUseCommand(ICommandSender sender) {
-    return true;
-  }
+	private static int auctionPages = 0;
 
-  @Override
-  public String getCommandName() {
-    return "flip";
-  }
+	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
 
-  @Override
-  public String getCommandUsage(ICommandSender sender) {
-    return "/flip";
-  }
-  
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
+		return true;
+	}
 
-  @Override
-  public void processCommand(ICommandSender sender, String[] args) {
-	if(ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")) {
-		if(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
-	    	ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, 
-	    			"Flip", 
-	    			"false");
-	    	
-	    }else if(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("false")) {
-	    	ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL,
-	    			"Flip", 
-	    			"true");
-	    }
-	    
-	}else{
-    	ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL,
-    			"Flip", 
-    			"true");
-    	}
+	@Override
+	public String getCommandName() {
+		return "flip";
+	}
 
-    flip((EntityPlayer) sender.getCommandSenderEntity());
-  }
-  
-  
-  public static void flip(EntityPlayer sender) {
-	    if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
-	        ChatComponentText enableText =
-	            new ChatComponentText(
-	                EnumChatFormatting.GOLD
-	                    + ("NEC ")
-	                    + EnumChatFormatting.GREEN
-	                    + ("Flipper alerts enabled."));
-	        sender.addChatMessage(enableText);
-            ApiHandler.getBins(initialDataset);
-            ApiHandler.itemIdsToNames(initialDataset);
-  	        auctionPages = ApiHandler.getNumberOfPages() -1;
-            String name = sender.getName();
-            String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
-            try {
-              ApiHandler.updatePurseCoins(id, name);
-            } catch (Exception e) {
-              sender.addChatMessage(new ChatComponentText("Could not load purse."));
-            }
-	            scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-	              @Override
-	              public void run() {
-	                flipper(sender);
-	              }
-	            },
-	            1,
-	            1, TimeUnit.MILLISECONDS);
+	@Override
+	public String getCommandUsage(ICommandSender sender) {
+		return "/flip";
+	}
 
-            scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-	              @Override
-	              public void run() {
-	      	        auctionPages = ApiHandler.getNumberOfPages() -1;
-	                try {
-	                    ApiHandler.getBins(initialDataset);
-		                ApiHandler.itemIdsToNames(initialDataset);
-	                  } catch (Exception e) {
-	                    sender.addChatMessage(new ChatComponentText("Could not load BINs."));
-	                  }
-	                String name = sender.getName();
-	                String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
-	                try {
-	                  ApiHandler.updatePurseCoins(id, name);
-	                } catch (Exception e) {
-	                  sender.addChatMessage(new ChatComponentText("Could not load purse."));
-	                }
-	              }
-	            },
-	            60000,
-	            60000, TimeUnit.MILLISECONDS);
+	@Override
+	public void processCommand(ICommandSender sender, String[] args) {
+		if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "Flip")) {
+			if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
+				ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "Flip", "false");
 
-	      } else {
-	        ChatComponentText enableText =
-	            new ChatComponentText(
-	                EnumChatFormatting.GOLD
-	                    + ("NEC ")
-	                    + EnumChatFormatting.RED
-	                    + ("Flipper alerts disabled."));
-	        sender.addChatMessage(enableText);
-	        scheduledExecutorService.shutdownNow();
-	        scheduledExecutorService =
-	    	        Executors.newScheduledThreadPool(8);
-	      }
-  }
-  
-  public static void flipper(EntityPlayer sender) {
-      auctionPages = ApiHandler.getNumberOfPages() -1;
-	  if (cycle == auctionPages) {
-          cycle = 0;
-        }
-        boolean print = ApiHandler.getFlips(secondDataset, cycle, commands);
-        if(print) {
-            if (namedDataset.size() > 0) {
-              purse = Math.round(purse);
-              int count = 0;
+			} else if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("false")) {
+				ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "Flip", "true");
+			}
 
-              for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
-                long profit = Math.abs(entry.getValue().longValue());
-                IChatComponent result =
-                    new ChatComponentText(
-                        EnumChatFormatting.AQUA
-                            + "[NEC] "
-                            + EnumChatFormatting.YELLOW
-                            + entry.getKey()
-                            + " "
-                            + (profit > 200_000 || purse / 5 < 100_000
-                                ? EnumChatFormatting.GREEN
-                                : profit > 100_000 || purse / 5 < 200_000
-                                    ? EnumChatFormatting.GOLD
-                                    : EnumChatFormatting.YELLOW)
-                            + "+$"
-                            + Utils.formatValue(profit));
+		} else {
+			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "Flip", "true");
+		}
 
-                ChatStyle style =
-                    new ChatStyle()
-                        .setChatClickEvent(
-                            new ClickEvent(Action.RUN_COMMAND, commands.get(count)) {
-                              @Override
-                              public Action getAction() {
-                                // custom behavior
-                                return Action.RUN_COMMAND;
-                              }
-                            });
-                result.setChatStyle(style);
-                sender.addChatMessage(result);
-                count++;
-              }
-          }
-        }
-        namedDataset.clear();
-        cycle++;
-  }
+		flip((EntityPlayer) sender.getCommandSenderEntity());
+	}
+
+	public static void flip(EntityPlayer sender) {
+		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
+			ChatComponentText enableText = new ChatComponentText(
+					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Flipper alerts enabled."));
+			sender.addChatMessage(enableText);
+			ApiHandler.getBins(initialDataset);
+			ApiHandler.itemIdsToNames(initialDataset);
+			auctionPages = ApiHandler.getNumberOfPages() - 1;
+			String name = sender.getName();
+			String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
+			try {
+				ApiHandler.updatePurseCoins(id, name);
+			} catch (Exception e) {
+				sender.addChatMessage(new ChatComponentText("Could not load purse."));
+			}
+			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+				@Override
+				public void run() {
+					flipper(sender);
+				}
+			}, 20000, 20000, TimeUnit.MILLISECONDS);
+
+			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+				@Override
+				public void run() {
+					auctionPages = ApiHandler.getNumberOfPages() - 1;
+					try {
+						ApiHandler.getBins(initialDataset);
+						ApiHandler.itemIdsToNames(initialDataset);
+					} catch (Exception e) {
+						sender.addChatMessage(new ChatComponentText("Could not load BINs."));
+					}
+					String name = sender.getName();
+					String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
+					try {
+						ApiHandler.updatePurseCoins(id, name);
+					} catch (Exception e) {
+						sender.addChatMessage(new ChatComponentText("Could not load purse."));
+					}
+				}
+			}, 100, 100, TimeUnit.MILLISECONDS);
+
+		} else {
+			ChatComponentText enableText = new ChatComponentText(
+					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Flipper alerts disabled."));
+			sender.addChatMessage(enableText);
+			scheduledExecutorService.shutdownNow();
+			scheduledExecutorService = Executors.newScheduledThreadPool(2);
+		}
+	}
+
+	public static void flipper(EntityPlayer sender) {
+		for (int iterate = 0; iterate < auctionPages; iterate++) {
+			final int page = iterate;
+			Thread fetch = new Thread() {
+				public void run() {
+					boolean print = ApiHandler.getFlips(secondDataset, page, commands);
+					if (print) {
+						if (namedDataset.size() > 0) {
+							purse = Math.round(purse);
+							int count = 0;
+
+							for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
+								long profit = Math.abs(entry.getValue().longValue());
+								IChatComponent result = new ChatComponentText(EnumChatFormatting.AQUA + "[NEC] "
+										+ EnumChatFormatting.YELLOW + entry.getKey() + " "
+										+ (profit > 200_000 || purse / 5 < 100_000 ? EnumChatFormatting.GREEN
+												: profit > 100_000 || purse / 5 < 200_000 ? EnumChatFormatting.GOLD
+														: EnumChatFormatting.YELLOW)
+										+ "+$" + Utils.formatValue(profit));
+
+								ChatStyle style = new ChatStyle()
+										.setChatClickEvent(new ClickEvent(Action.RUN_COMMAND, commands.get(count)) {
+											@Override
+											public Action getAction() {
+												// custom behavior
+												return Action.RUN_COMMAND;
+											}
+										});
+								result.setChatStyle(style);
+								sender.addChatMessage(result);
+								count++;
+							}
+						}
+					}
+					namedDataset.clear();
+				}
+
+			};
+			fetch.start();
+			try {
+				fetch.join(1000);
+			} catch (InterruptedException e) {
+				Reference.logger.error(e.getMessage(), e);
+			}
+		}
+	}
 }

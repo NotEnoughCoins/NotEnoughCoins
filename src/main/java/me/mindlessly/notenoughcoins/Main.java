@@ -1,4 +1,5 @@
 package me.mindlessly.notenoughcoins;
+
 import me.mindlessly.notenoughcoins.commands.Flip;
 import me.mindlessly.notenoughcoins.commands.MinProfit;
 import me.mindlessly.notenoughcoins.commands.SetKey;
@@ -12,11 +13,8 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-
-
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME)
 public class Main {
-	
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

@@ -7,6 +7,6 @@ public class Reference {
 
 	public static final String MOD_ID = "nec";
 	public static final String NAME = "NotEnoughCoins";
-	
+
 	public static final Logger logger = LogManager.getLogger("NotEnoughCoins");
 }

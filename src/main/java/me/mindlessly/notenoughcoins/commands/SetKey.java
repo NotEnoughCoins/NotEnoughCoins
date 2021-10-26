@@ -29,13 +29,11 @@ public class SetKey extends CommandBase {
 		if (args.length > 0) {
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "APIKey", args[0]);
 			ChatComponentText runtext = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("API Key set to " + args[0])
-			);
+					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("API Key set to " + args[0]));
 			sender.addChatMessage(runtext);
 		} else {
 			ChatComponentText error = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /neckey <key>")
-			);
+					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /neckey <key>"));
 			sender.addChatMessage(error);
 		}
 	}

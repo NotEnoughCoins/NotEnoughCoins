@@ -27,7 +27,8 @@ public class ConfigHandler {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
-			if (config.hasCategory(category)) config.removeCategory(new ConfigCategory(category));
+			if (config.hasCategory(category))
+				config.removeCategory(new ConfigCategory(category));
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
@@ -42,7 +43,8 @@ public class ConfigHandler {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
-			if (config.getCategory(category).containsKey(key)) config.getCategory(category).remove(key);
+			if (config.getCategory(category).containsKey(key))
+				config.getCategory(category).remove(key);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
@@ -144,7 +146,8 @@ public class ConfigHandler {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
-			if (config.getCategory(category).containsKey(key)) return config.get(category, key, false).getBoolean();
+			if (config.getCategory(category).containsKey(key))
+				return config.get(category, key, false).getBoolean();
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
@@ -262,7 +265,8 @@ public class ConfigHandler {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
-			if (!config.hasCategory(category)) return false;
+			if (!config.hasCategory(category))
+				return false;
 			return config.getCategory(category).containsKey(key);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");

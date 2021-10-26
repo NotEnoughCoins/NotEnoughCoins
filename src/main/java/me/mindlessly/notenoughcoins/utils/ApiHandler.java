@@ -257,7 +257,7 @@ public class ApiHandler {
         }
       }
     } catch (Exception e) {
-      Reference.logger.error(e.getMessage(), e);
+		Reference.logger.error(e.getMessage(), e);
     }
 
     Flip.commands.addAll(commands);

@@ -33,14 +33,14 @@ public class MinProfit extends CommandBase {
 		if (args.length > 0) {
 			try {
 				Long.valueOf(args[0]);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				sender.addChatMessage(error);
 				return;
 			}
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "MinProfit", args[0]);
 			ChatComponentText runtext = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Minimum profit price set to " + Utils.formatValue(Long.valueOf(args[0])))
-			);
+					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN
+							+ ("Minimum profit price set to " + Utils.formatValue(Long.valueOf(args[0]))));
 			sender.addChatMessage(runtext);
 		} else {
 			sender.addChatMessage(error);
