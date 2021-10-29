@@ -24,7 +24,7 @@ public class ApiHandler {
   
   private static final ArrayList<String> nameFilter =
 	      new ArrayList<>(
-	          Arrays.asList("STARRED", "SALMON", "PERFECT", "BEASTMASTER", "MASTER_SKULL", "BLAZE"));
+	          Arrays.asList("STARRED", "SALMON", "PERFECT", "BEASTMASTER", "MASTER_SKULL", "BLAZE", "TITANIUM"));
   
   
   public static void getBins(HashMap<String, Double> dataset) {

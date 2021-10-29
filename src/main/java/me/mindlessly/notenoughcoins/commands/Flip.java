@@ -39,7 +39,8 @@ public class Flip extends CommandBase {
 
 	private static int auctionPages = 0;
 
-	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(2);
+	private static int flipSpeed = 4;
+	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender sender) {
@@ -69,6 +70,12 @@ public class Flip extends CommandBase {
 		} else {
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "Flip", "true");
 		}
+		
+		if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "FlipSpeed")) {
+			scheduledExecutorService.shutdownNow();
+			flipSpeed = Integer.valueOf(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "FlipSpeed"));
+			scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
+		}
 
 		flip((EntityPlayer) sender.getCommandSenderEntity());
 	}
@@ -88,13 +95,17 @@ public class Flip extends CommandBase {
 			} catch (Exception e) {
 				sender.addChatMessage(new ChatComponentText("Could not load purse."));
 			}
-			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-				@Override
-				public void run() {
-					flipper(sender);
-				}
-			}, 100, 100, TimeUnit.MILLISECONDS);
-
+			for (int i = 0; i < flipSpeed; i++) {
+				final int start = i;
+				Thread thread = new Thread() {
+					public void run() {
+						flipper(sender, start, flipSpeed);
+				
+					}
+				};
+				thread.start();
+			}
+				
 			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 				@Override
 				public void run() {
@@ -120,14 +131,14 @@ public class Flip extends CommandBase {
 					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Flipper alerts disabled."));
 			sender.addChatMessage(enableText);
 			scheduledExecutorService.shutdownNow();
-			scheduledExecutorService = Executors.newScheduledThreadPool(2);
+			scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
 		}
 	}
 
-	public static void flipper(EntityPlayer sender) {
-		for (int iterate = 0; iterate < auctionPages; iterate++) {
+	public static void flipper(EntityPlayer sender, int start, int increment) {
+		for (int iterate = start; iterate < auctionPages; iterate += increment) {
 			final int page = iterate;
-			Thread fetch = new Thread() {
+			scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 				public void run() {
 					boolean print = ApiHandler.getFlips(secondDataset, page, commands);
 					if (print) {
@@ -161,13 +172,7 @@ public class Flip extends CommandBase {
 					namedDataset.clear();
 				}
 
-			};
-			fetch.start();
-			try {
-				fetch.join();
-			} catch (InterruptedException e) {
-				Reference.logger.error(e.getMessage(), e);
-			}
+			}, 100, 100, TimeUnit.MILLISECONDS);
 		}
 	}
 }
