@@ -29,7 +29,7 @@ public class MinProfit extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		ChatComponentText error = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /minprofit <Minimum profit>"));
+				EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Usage: /minprofit <Minimum profit>"));
 		if (args.length > 0) {
 			try {
 				Long.valueOf(args[0]);
@@ -39,7 +39,7 @@ public class MinProfit extends CommandBase {
 			}
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "MinProfit", args[0]);
 			ChatComponentText runtext = new ChatComponentText(
-					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN
+					EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.GREEN
 							+ ("Minimum profit price set to " + Utils.formatValue(Long.valueOf(args[0]))));
 			sender.addChatMessage(runtext);
 		} else {

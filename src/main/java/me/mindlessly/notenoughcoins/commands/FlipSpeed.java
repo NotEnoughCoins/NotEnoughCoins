@@ -29,7 +29,7 @@ public class FlipSpeed extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
 		ChatComponentText error = new ChatComponentText(
-				EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Usage: /flipspeed <speed>"));
+				EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Usage: /flipspeed <speed>"));
 		if (args.length > 0 ) {
 			try {
 				int speed = Integer.valueOf(args[0]);
@@ -43,7 +43,7 @@ public class FlipSpeed extends CommandBase {
 			}
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "FlipSpeed", args[0]);
 			ChatComponentText runtext = new ChatComponentText(
-					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN
+					EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.GREEN
 							+ ("Flip speed set to " + args[0]));
 			sender.addChatMessage(runtext);
 		} else {

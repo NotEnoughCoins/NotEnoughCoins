@@ -83,7 +83,7 @@ public class Flip extends CommandBase {
 	public static void flip(EntityPlayer sender) {
 		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 			ChatComponentText enableText = new ChatComponentText(
-					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Flipper alerts enabled."));
+					EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.GREEN + ("Flipper alerts enabled."));
 			sender.addChatMessage(enableText);
 			ApiHandler.getBins(initialDataset);
 			ApiHandler.itemIdsToNames(initialDataset);
@@ -93,7 +93,8 @@ public class Flip extends CommandBase {
 			try {
 				ApiHandler.updatePurseCoins(id, name);
 			} catch (Exception e) {
-				sender.addChatMessage(new ChatComponentText("Could not load purse."));
+				sender.addChatMessage(new ChatComponentText(
+					EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Could not load purse.")));
 			}
 			for (int i = 0; i < flipSpeed; i++) {
 				final int start = i;
@@ -114,21 +115,23 @@ public class Flip extends CommandBase {
 						ApiHandler.getBins(initialDataset);
 						ApiHandler.itemIdsToNames(initialDataset);
 					} catch (Exception e) {
-						sender.addChatMessage(new ChatComponentText("Could not load BINs."));
+						sender.addChatMessage(new ChatComponentText(
+						EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Could not load BINS.")));
 					}
 					String name = sender.getName();
 					String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
 					try {
 						ApiHandler.updatePurseCoins(id, name);
 					} catch (Exception e) {
-						sender.addChatMessage(new ChatComponentText("Could not load purse."));
+						sender.addChatMessage(new ChatComponentText(
+					    EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Could not load purse.")));
 					}
 				}
 			}, 60000, 60000, TimeUnit.MILLISECONDS);
 
 		} else {
 			ChatComponentText enableText = new ChatComponentText(
-					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Flipper alerts disabled."));
+					EnumChatFormatting.GOLD + ("[NEC] ") + EnumChatFormatting.RED + ("Flipper alerts disabled."));
 			sender.addChatMessage(enableText);
 			scheduledExecutorService.shutdownNow();
 			scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);

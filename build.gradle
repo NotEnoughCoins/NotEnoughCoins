@@ -36,6 +36,14 @@ minecraft {
     mappings = "stable_22"
 }
 
+jar {
+    manifest.attributes(
+		'Main-Class': 'NECInstallerFrame',
+		'FMLCorePluginContainsFMLMod': true,
+		"ForceLoadAsMod": true,
+    )
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
