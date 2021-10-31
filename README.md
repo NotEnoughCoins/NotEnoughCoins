@@ -6,4 +6,5 @@ A Skyblock Flipping Mod.
 <li>/flip - Returns a list of suggested items to flip whenever one is found.</li>
 <li>/minprofit - Set the minimum profit for a flip.</li>
 <li>/flipspeed - Select the number of async threads you want the flipper to use.</li>
+<li>Discord - https://discord.gg/QaV9M6uGr8 </li>
 </ul>
