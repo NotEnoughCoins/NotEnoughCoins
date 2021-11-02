@@ -1,9 +1,11 @@
 package me.mindlessly.notenoughcoins;
 
-import me.mindlessly.notenoughcoins.commands.Flip;
-import me.mindlessly.notenoughcoins.commands.FlipSpeed;
-import me.mindlessly.notenoughcoins.commands.MinProfit;
-import me.mindlessly.notenoughcoins.commands.SetKey;
+import me.mindlessly.notenoughcoins.commands.NECCommand;
+import me.mindlessly.notenoughcoins.commands.subcommands.MinProfit;
+import me.mindlessly.notenoughcoins.commands.subcommands.SetKey;
+import me.mindlessly.notenoughcoins.commands.subcommands.Speed;
+import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
+import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Reference;
@@ -17,17 +19,19 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME)
 public class Main {
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		ConfigHandler.init();
-	}
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        ConfigHandler.init();
+    }
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		ClientCommandHandler.instance.registerCommand(new Flip());
-		ClientCommandHandler.instance.registerCommand(new SetKey());
-		ClientCommandHandler.instance.registerCommand(new MinProfit());
-		ClientCommandHandler.instance.registerCommand(new FlipSpeed());
-		MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
-	}
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        ClientCommandHandler.instance.registerCommand(new NECCommand(new Subcommand[]{
+                new MinProfit(),
+                new SetKey(),
+                new Speed(),
+                new Toggle(),
+        }));
+        MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
+    }
 }
