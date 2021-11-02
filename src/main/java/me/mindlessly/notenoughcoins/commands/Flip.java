@@ -39,7 +39,7 @@ public class Flip extends CommandBase {
 
 	private static int auctionPages = 0;
 
-	private static int flipSpeed = 4;
+	private static int flipSpeed = 1;
 	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
 
 	@Override
@@ -85,8 +85,13 @@ public class Flip extends CommandBase {
 			ChatComponentText enableText = new ChatComponentText(
 					EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Flipper alerts enabled."));
 			sender.addChatMessage(enableText);
-			ApiHandler.getBins(initialDataset);
-			ApiHandler.itemIdsToNames(initialDataset);
+			try {
+				ApiHandler.getBins(initialDataset);
+				ApiHandler.itemIdsToNames(initialDataset);
+			}
+			catch(Exception e) {
+				Reference.logger.error(e.getMessage(), e);
+			}
 			auctionPages = ApiHandler.getNumberOfPages() - 1;
 			String name = sender.getName();
 			String id = ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "APIKey");
