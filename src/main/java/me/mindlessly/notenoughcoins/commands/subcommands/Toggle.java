@@ -67,6 +67,7 @@ public class Toggle implements Subcommand {
                 auctionPages = ApiHandler.getNumberOfPages() - 1;
                 try {
                     ApiHandler.getBins(initialDataset);
+                    ApiHandler.getAuctionAverages(initialDataset);
                     ApiHandler.itemIdsToNames(initialDataset);
                 } catch (Exception e) {
                     sender.addChatMessage(new ChatComponentText("Could not load BINs."));
