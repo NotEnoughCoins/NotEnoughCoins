@@ -54,17 +54,19 @@ public class ApiHandler {
     public static void getAuctionAverages(LinkedHashMap<String, Double> dataset) {
         Toggle.secondDataset.clear();
         try {
-            JsonObject items =
-                    Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3day.json"))
-                            .getAsJsonObject();
+            JsonObject items = Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3day.json"))
+                    .getAsJsonObject();
 
             for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
                 if (jsonElement.getValue().getAsJsonObject().has("clean_price")) {
-                    dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
+                    dataset.put(jsonElement.getKey(),
+                            (jsonElement.getValue().getAsJsonObject().get("clean_price").getAsDouble()));
                 }
 
-                if (jsonElement.getValue().getAsJsonObject().has("price") && !jsonElement.getValue().getAsJsonObject().has("clean_price")) {
-                    dataset.put(jsonElement.getKey(), (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
+                if (jsonElement.getValue().getAsJsonObject().has("price")
+                        && !jsonElement.getValue().getAsJsonObject().has("clean_price")) {
+                    dataset.put(jsonElement.getKey(),
+                            (jsonElement.getValue().getAsJsonObject().get("price").getAsDouble()));
                 }
 
             }
@@ -89,11 +91,8 @@ public class ApiHandler {
         initialDataset.clear();
 
         try {
-            JsonArray itemArray =
-                    Objects.requireNonNull(getJson("https://api.hypixel.net/resources/skyblock/items"))
-                            .getAsJsonObject()
-                            .get("items")
-                            .getAsJsonArray();
+            JsonArray itemArray = Objects.requireNonNull(getJson("https://api.hypixel.net/resources/skyblock/items"))
+                    .getAsJsonObject().get("items").getAsJsonArray();
 
             for (Map.Entry<String, Double> auction : datasettemp.entrySet()) {
                 String key = auction.getKey();
@@ -116,8 +115,7 @@ public class ApiHandler {
             LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
 
             // Use Comparator.reverseOrder() for reverse ordering
-            unsortedMap.entrySet().stream()
-                    .sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder()))
+            unsortedMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder()))
                     .forEachOrdered(x -> sortedMap.put(x.getKey(), (double) Math.round(x.getValue())));
 
             Toggle.secondDataset = sortedMap;
@@ -128,11 +126,8 @@ public class ApiHandler {
 
     private static String getUuid(String name) {
         try {
-            return Objects.requireNonNull(
-                            getJson("https://api.mojang.com/users/profiles/minecraft/" + name))
-                    .getAsJsonObject()
-                    .get("id")
-                    .getAsString();
+            return Objects.requireNonNull(getJson("https://api.mojang.com/users/profiles/minecraft/" + name))
+                    .getAsJsonObject().get("id").getAsString();
         } catch (Exception e) {
             Reference.logger.error(e.getMessage(), e);
             return null;
@@ -143,12 +138,9 @@ public class ApiHandler {
         String uuid = getUuid(name);
 
         try {
-            JsonArray profilesArray =
-                    Objects.requireNonNull(
-                                    getJson("https://api.hypixel.net/skyblock/profiles?key=" + key + "&uuid=" + uuid))
-                            .getAsJsonObject()
-                            .get("profiles")
-                            .getAsJsonArray();
+            JsonArray profilesArray = Objects
+                    .requireNonNull(getJson("https://api.hypixel.net/skyblock/profiles?key=" + key + "&uuid=" + uuid))
+                    .getAsJsonObject().get("profiles").getAsJsonArray();
 
             // Get last played profile
             int profileIndex = 0;
@@ -156,17 +148,8 @@ public class ApiHandler {
             for (int i = 0; i < profilesArray.size(); i++) {
                 Instant lastSaveLoop;
                 try {
-                    lastSaveLoop =
-                            Instant.ofEpochMilli(
-                                    profilesArray
-                                            .get(i)
-                                            .getAsJsonObject()
-                                            .get("members")
-                                            .getAsJsonObject()
-                                            .get(uuid)
-                                            .getAsJsonObject()
-                                            .get("last_save")
-                                            .getAsLong());
+                    lastSaveLoop = Instant.ofEpochMilli(profilesArray.get(i).getAsJsonObject().get("members")
+                            .getAsJsonObject().get(uuid).getAsJsonObject().get("last_save").getAsLong());
                 } catch (Exception e) {
                     continue;
                 }
@@ -177,37 +160,24 @@ public class ApiHandler {
                 }
             }
 
-            Toggle.purse =
-                    profilesArray
-                            .get(profileIndex)
-                            .getAsJsonObject()
-                            .get("members")
-                            .getAsJsonObject()
-                            .get(uuid)
-                            .getAsJsonObject()
-                            .get("coin_purse")
-                            .getAsDouble();
+            Toggle.purse = profilesArray.get(profileIndex).getAsJsonObject().get("members").getAsJsonObject().get(uuid)
+                    .getAsJsonObject().get("coin_purse").getAsDouble();
         } catch (Exception e) {
             Reference.logger.error(e.getMessage(), e);
         }
     }
 
-    public static boolean getFlips(
-            LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
+    public static boolean getFlips(LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
         Toggle.commands.clear();
 
         try {
-            JsonObject auctionPage =
-                    Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i))
-                            .getAsJsonObject();
+            JsonObject auctionPage = Objects
+                    .requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i)).getAsJsonObject();
 
-            long lastUpdated =
-                    auctionPage
-                            .get("lastUpdated")
-                            .getAsLong();
+            Long lastUpdated = auctionPage.get("lastUpdated").getAsLong();
 
             if (Toggle.updatedDataset.containsKey(i)) {
-                if (lastUpdated == Toggle.updatedDataset.get(i)) {
+                if (lastUpdated.equals(Toggle.updatedDataset.get(i))) {
                     return false;
                 } else {
                     Toggle.updatedDataset.remove(i);
@@ -215,36 +185,41 @@ public class ApiHandler {
                 }
             }
 
-
-            JsonArray auctionsArray =
-                    auctionPage
-                            .get("auctions")
-                            .getAsJsonArray();
+            JsonArray auctionsArray = auctionPage.get("auctions").getAsJsonArray();
 
             for (JsonElement item : auctionsArray) {
                 for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
                     if (item.getAsJsonObject().get("item_name").getAsString().contains(entry.getKey())) {
                         if (item.getAsJsonObject().has("bin")) {
                             if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
-                                if (item.getAsJsonObject().has("starting_bid")) {
-                                    if (item.getAsJsonObject().get("starting_bid").getAsDouble() < entry.getValue()) {
-                                        if (item.getAsJsonObject().get("starting_bid").getAsDouble() <= Toggle.purse) {
-                                            String rawName = item.getAsJsonObject().get("item_name").getAsString();
-                                            String name = new String(rawName.getBytes(), StandardCharsets.UTF_8);
+                                if (item.getAsJsonObject().has("claimed")) {
+                                    if (item.getAsJsonObject().get("claimed").getAsString().contains("false")) {
+                                        if (item.getAsJsonObject().has("starting_bid")) {
+                                            if (item.getAsJsonObject().get("starting_bid").getAsDouble() < entry
+                                                    .getValue()) {
+                                                if (item.getAsJsonObject().get("starting_bid")
+                                                        .getAsDouble() <= Toggle.purse) {
+                                                    String rawName = item.getAsJsonObject().get("item_name")
+                                                            .getAsString();
+                                                    String name = new String(rawName.getBytes(),
+                                                            StandardCharsets.UTF_8);
 
-                                            long minflip = 50000;
-                                            if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "MinProfit")) {
-                                                minflip = Long.parseLong(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "MinProfit"));
-                                            }
-                                            if (entry.getValue() - item.getAsJsonObject().get("starting_bid").getAsLong() > minflip) {
-                                                Toggle.namedDataset.put(
-                                                        name,
-                                                        entry.getValue()
-                                                                - item.getAsJsonObject().get("starting_bid").getAsLong());
+                                                    long minflip = 50000;
+                                                    if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL,
+                                                            "MinProfit")) {
+                                                        minflip = Long.parseLong(ConfigHandler.getString(
+                                                                Configuration.CATEGORY_GENERAL, "MinProfit"));
+                                                    }
+                                                    if (entry.getValue() - item.getAsJsonObject().get("starting_bid")
+                                                            .getAsLong() > minflip) {
+                                                        Toggle.namedDataset.put(name, entry.getValue() - item
+                                                                .getAsJsonObject().get("starting_bid").getAsLong());
 
-                                                if (item.getAsJsonObject().has("uuid")) {
-                                                    commands.add(
-                                                            "/viewauction " + item.getAsJsonObject().get("uuid").getAsString());
+                                                        if (item.getAsJsonObject().has("uuid")) {
+                                                            commands.add("/viewauction "
+                                                                    + item.getAsJsonObject().get("uuid").getAsString());
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -266,11 +241,8 @@ public class ApiHandler {
     public static int getNumberOfPages() {
         int pages = 0;
         try {
-            pages =
-                    Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=0"))
-                            .getAsJsonObject()
-                            .get("totalPages")
-                            .getAsInt();
+            pages = Objects.requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=0"))
+                    .getAsJsonObject().get("totalPages").getAsInt();
         } catch (Exception e) {
             Reference.logger.error(e.getMessage(), e);
         }

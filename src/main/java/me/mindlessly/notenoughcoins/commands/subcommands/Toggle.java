@@ -32,7 +32,7 @@ public class Toggle implements Subcommand {
     public static double purse;
     public static ArrayList<String> commands = new ArrayList<>();
     private static int auctionPages = 0;
-    private static int flipSpeed = 4;
+    private static int flipSpeed = 1;
     public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
     public Toggle() {
     }
