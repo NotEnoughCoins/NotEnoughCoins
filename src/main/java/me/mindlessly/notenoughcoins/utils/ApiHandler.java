@@ -78,7 +78,7 @@ public class ApiHandler {
 
         for (Map.Entry<String, Double> entry : Toggle.avgDataset.entrySet()) {
             if (Toggle.initialDataset.containsKey(entry.getKey())) {
-                if (Toggle.initialDataset.get(entry.getKey()) > entry.getValue()) {
+                if (Toggle.initialDataset.get(entry.getKey()) * 0.75 > entry.getValue()) {
                     Toggle.initialDataset.remove(entry.getKey());
                 }
             }
