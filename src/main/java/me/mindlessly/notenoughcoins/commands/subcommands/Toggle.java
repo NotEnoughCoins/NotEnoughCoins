@@ -28,6 +28,7 @@ public class Toggle implements Subcommand {
     public static LinkedHashMap<String, Double> initialDataset = new LinkedHashMap<>();
     public static LinkedHashMap<String, Double> secondDataset = new LinkedHashMap<>();
     public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
+    public static LinkedHashMap<String, Double> avgDataset = new LinkedHashMap<>();
     public static LinkedHashMap<Integer, Long> updatedDataset = new LinkedHashMap<>();
     public static double purse;
     public static ArrayList<String> commands = new ArrayList<>();
@@ -42,6 +43,7 @@ public class Toggle implements Subcommand {
             Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", sender);
             try {
                 ApiHandler.getBins(initialDataset);
+                ApiHandler.getAuctionAverages(avgDataset);
                 ApiHandler.itemIdsToNames(initialDataset);
             }
             catch(Exception e) {
@@ -65,7 +67,7 @@ public class Toggle implements Subcommand {
                 auctionPages = ApiHandler.getNumberOfPages() - 1;
                 try {
                     ApiHandler.getBins(initialDataset);
-                    ApiHandler.getAuctionAverages(initialDataset);
+                    ApiHandler.getAuctionAverages(avgDataset);
                     ApiHandler.itemIdsToNames(initialDataset);
                 } catch (Exception e) {
                     sender.addChatMessage(new ChatComponentText("Could not load BINs."));

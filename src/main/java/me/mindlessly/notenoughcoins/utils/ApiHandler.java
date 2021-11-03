@@ -52,9 +52,9 @@ public class ApiHandler {
     }
 
     public static void getAuctionAverages(LinkedHashMap<String, Double> dataset) {
-        Toggle.secondDataset.clear();
+        Toggle.avgDataset.clear();
         try {
-            JsonObject items = Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/3day.json"))
+            JsonObject items = Objects.requireNonNull(getJson("https://moulberry.codes/auction_averages/1day.json"))
                     .getAsJsonObject();
 
             for (Entry<String, JsonElement> jsonElement : items.entrySet()) {
@@ -74,9 +74,9 @@ public class ApiHandler {
             Reference.logger.error(e.getMessage(), e);
         }
 
-        Toggle.secondDataset.putAll(dataset);
+        Toggle.avgDataset.putAll(dataset);
 
-        for (Map.Entry<String, Double> entry : Toggle.secondDataset.entrySet()) {
+        for (Map.Entry<String, Double> entry : Toggle.avgDataset.entrySet()) {
             if (Toggle.initialDataset.containsKey(entry.getKey())) {
                 if (Toggle.initialDataset.get(entry.getKey()) > entry.getValue()) {
                     Toggle.initialDataset.remove(entry.getKey());
