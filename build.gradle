@@ -22,7 +22,7 @@ test {
     systemProperty "file.encoding", "utf-8"
 }
 
-version = "0.5"
+version = "0.5.1"
 group = "me.mindlessly.nec"
 archivesBaseName = "NotEnoughCoins"
 
