@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v1.0.0
         with:
           name: NotEnoughCoins
-          path: "*.jar"
+          path: "*/build/libs/*.jar"
