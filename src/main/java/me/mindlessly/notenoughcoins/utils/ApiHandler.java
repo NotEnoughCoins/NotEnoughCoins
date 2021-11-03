@@ -116,7 +116,7 @@ public class ApiHandler {
 
             // Use Comparator.reverseOrder() for reverse ordering
             unsortedMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .forEachOrdered(x -> sortedMap.put(x.getKey(), (double) x.getValue()));
+                    .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
 
             Toggle.secondDataset = sortedMap;
         } catch (Exception e) {
@@ -167,7 +167,7 @@ public class ApiHandler {
         }
     }
 
-    public static boolean getFlips(LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands) {
+    public static boolean getFlips(LinkedHashMap<String, Double> dataset, int i, ArrayList<String> commands, ArrayList<String> ignored) {
         Toggle.commands.clear();
 
         try {
@@ -189,44 +189,38 @@ public class ApiHandler {
 
             for (JsonElement item : auctionsArray) {
                 for (HashMap.Entry<String, Double> entry : dataset.entrySet()) {
-                    if (item.getAsJsonObject().get("item_name").getAsString().contains(entry.getKey())) {
-                        if (item.getAsJsonObject().has("bin")) {
-                            if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
-                                if (item.getAsJsonObject().has("claimed")) {
-                                    if (item.getAsJsonObject().get("claimed").getAsString().contains("false")) {
-                                        if (item.getAsJsonObject().has("starting_bid")) {
-                                            if (item.getAsJsonObject().get("starting_bid").getAsDouble() < entry
-                                                    .getValue()) {
-                                                if (item.getAsJsonObject().get("starting_bid")
-                                                        .getAsDouble() <= Toggle.purse) {
-                                                    String rawName = item.getAsJsonObject().get("item_name")
-                                                            .getAsString();
-                                                    String name = new String(rawName.getBytes(),
-                                                            StandardCharsets.UTF_8);
+                    String uuid = item.getAsJsonObject().get("uuid").getAsString();
+                    String rawName = item.getAsJsonObject().get("item_name").getAsString();
+                    if (!ignored.contains(uuid)) {
+                        if (rawName.contains(entry.getKey())) {
+                            if (item.getAsJsonObject().has("bin")) {
+                                if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
+                                    if (item.getAsJsonObject().has("claimed")) {
+                                        if (item.getAsJsonObject().get("claimed").getAsString().contains("false")) {
+                                            if (item.getAsJsonObject().has("starting_bid")) {
+                                                double startingBid = item.getAsJsonObject().get("starting_bid").getAsDouble();
+                                                if (startingBid < entry.getValue()) {
+                                                    if (startingBid <= Toggle.purse) {
+                                                        String name = new String(rawName.getBytes(),
+                                                                StandardCharsets.UTF_8);
 
-                                                    long minflip = 50000;
-                                                    if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL,
-                                                            "MinProfit")) {
-                                                        minflip = Long.parseLong(ConfigHandler.getString(
-                                                                Configuration.CATEGORY_GENERAL, "MinProfit"));
-                                                    }
-                                                    Double profit = 0d;
-                                                    if (entry.getValue() - item.getAsJsonObject().get("starting_bid")
-                                                            .getAsLong() > minflip) {
-                                                        if (item.getAsJsonObject()
-                                                                .get("starting_bid").getAsLong() >= 1000000) {
-                                                            profit = (entry.getValue() - item.getAsJsonObject()
-                                                                    .get("starting_bid").getAsDouble()) *0.99;
-                                                        } else {
-                                                            profit = (entry.getValue() - item.getAsJsonObject()
-                                                                    .get("starting_bid").getAsDouble());
+                                                        long minProfit = 50000;
+                                                        if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL,
+                                                                "MinProfit")) {
+                                                            minProfit = Long.parseLong(ConfigHandler.getString(
+                                                                    Configuration.CATEGORY_GENERAL, "MinProfit"));
                                                         }
-                                                        if (profit > 0 && profit > minflip) {
-                                                            Toggle.namedDataset.put(name, profit);
-
-                                                            if (item.getAsJsonObject().has("uuid")) {
-                                                                commands.add("/viewauction " + item.getAsJsonObject()
-                                                                        .get("uuid").getAsString());
+                                                        double profit;
+                                                        if (entry.getValue() - startingBid > minProfit) {
+                                                            if (startingBid >= 1000000) {
+                                                                profit = (entry.getValue() - startingBid) * 0.99;
+                                                            } else {
+                                                                profit = (entry.getValue() - startingBid);
+                                                            }
+                                                            if (profit > minProfit) {
+                                                                Toggle.namedDataset.put(name, profit);
+                                                                commands.add("/viewauction " + uuid);
+                                                                ignored.add(uuid);
                                                             }
                                                         }
                                                     }

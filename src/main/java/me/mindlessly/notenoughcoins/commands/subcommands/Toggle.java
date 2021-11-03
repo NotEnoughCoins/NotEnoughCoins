@@ -30,6 +30,7 @@ public class Toggle implements Subcommand {
     public static LinkedHashMap<String, Double> namedDataset = new LinkedHashMap<>();
     public static LinkedHashMap<String, Double> avgDataset = new LinkedHashMap<>();
     public static LinkedHashMap<Integer, Long> updatedDataset = new LinkedHashMap<>();
+    public static ArrayList<String> ignoredUUIDs = new ArrayList<>();
     public static double purse;
     public static ArrayList<String> commands = new ArrayList<>();
     private static int auctionPages = 0;
@@ -92,7 +93,7 @@ public class Toggle implements Subcommand {
         for (int iterate = start; iterate < auctionPages; iterate += increment) {
             final int page = iterate;
             scheduledExecutorService.scheduleAtFixedRate(() -> {
-                boolean print = ApiHandler.getFlips(secondDataset, page, commands);
+                boolean print = ApiHandler.getFlips(secondDataset, page, commands, ignoredUUIDs);
                 if (print) {
                     if (namedDataset.size() > 0) {
                         purse = Math.round(purse);
