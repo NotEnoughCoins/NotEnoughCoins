@@ -1,6 +1,7 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,17 +26,14 @@ public class Speed implements Subcommand {
         if (args.length > 0) {
             try {
                 int speed = Integer.parseInt(args[0]);
-                if (speed > 10) {
+                if (speed > Runtime.getRuntime().availableProcessors()) {
                     return false;
                 }
             } catch (Exception e) {
                 return false;
             }
             ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "FlipSpeed", args[0]);
-            ChatComponentText runtext = new ChatComponentText(
-                    EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN
-                            + ("Flip speed set to " + args[0]));
-            sender.addChatMessage(runtext);
+            Utils.sendMessageWithPrefix("&aFlip speed set to " + args[0], sender);
             return true;
         } else {
             return false;

@@ -30,10 +30,7 @@ public class MinProfit implements Subcommand {
                 return false;
             }
             ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "MinProfit", args[0]);
-            ChatComponentText runtext = new ChatComponentText(
-                    EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN
-                            + ("Minimum profit price set to " + Utils.formatValue(Long.parseLong(args[0]))));
-            sender.addChatMessage(runtext);
+            Utils.sendMessageWithPrefix("&aMinimum profit price set to " + Utils.formatValue(Long.parseLong(args[0])), sender);
             return true;
         } else {
             return false;

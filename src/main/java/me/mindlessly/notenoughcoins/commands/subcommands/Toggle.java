@@ -39,9 +39,7 @@ public class Toggle implements Subcommand {
 
     public static void flip(EntityPlayer sender) {
         if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
-            ChatComponentText enableText = new ChatComponentText(
-                    EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.GREEN + ("Flipper alerts enabled."));
-            sender.addChatMessage(enableText);
+            Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", sender);
             try {
                 ApiHandler.getBins(initialDataset);
                 ApiHandler.itemIdsToNames(initialDataset);
@@ -82,9 +80,7 @@ public class Toggle implements Subcommand {
             }, 60000, 60000, TimeUnit.MILLISECONDS);
 
         } else {
-            ChatComponentText enableText = new ChatComponentText(
-                    EnumChatFormatting.GOLD + ("NEC ") + EnumChatFormatting.RED + ("Flipper alerts disabled."));
-            sender.addChatMessage(enableText);
+            Utils.sendMessageWithPrefix("&cFlipper alerts disabled.", sender);
             scheduledExecutorService.shutdownNow();
             scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
         }
@@ -157,8 +153,7 @@ public class Toggle implements Subcommand {
             flipSpeed = Integer.parseInt(ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "FlipSpeed"));
             scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
         }
-
-        flip((EntityPlayer) sender.getCommandSenderEntity());
+        scheduledExecutorService.schedule(() -> flip((EntityPlayer) sender.getCommandSenderEntity()), 0, TimeUnit.SECONDS);
         return true;
     }
 }
