@@ -193,41 +193,34 @@ public class ApiHandler {
                     String rawName = item.getAsJsonObject().get("item_name").getAsString();
                     if (!ignored.contains(uuid)) {
                         if (rawName.contains(entry.getKey())) {
-                            if (item.getAsJsonObject().has("bin")) {
-                                if (item.getAsJsonObject().get("bin").getAsString().contains("true")) {
-                                    if (item.getAsJsonObject().has("claimed")) {
-                                        if (item.getAsJsonObject().get("claimed").getAsString().contains("false")) {
-                                            if (item.getAsJsonObject().has("starting_bid")) {
-                                                double startingBid = item.getAsJsonObject().get("starting_bid").getAsDouble();
-                                                if (startingBid < entry.getValue()) {
-                                                    if (startingBid <= Toggle.purse) {
-                                                        String name = new String(rawName.getBytes(),
-                                                                StandardCharsets.UTF_8);
+                            if (item.getAsJsonObject().has("bin") && item.getAsJsonObject().get("bin").getAsBoolean()) {
+                                if (item.getAsJsonObject().has("claimed") && (!item.getAsJsonObject().get("claimed").getAsBoolean())) {
+                                    double startingBid = item.getAsJsonObject().get("starting_bid").getAsDouble();
+                                    if (startingBid < entry.getValue()) {
+                                        if (startingBid <= Toggle.purse) {
+                                            String name = new String(rawName.getBytes(),
+                                                    StandardCharsets.UTF_8);
 
-                                                        long minProfit = 50000;
-                                                        if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL,
-                                                                "MinProfit")) {
-                                                            minProfit = Long.parseLong(ConfigHandler.getString(
-                                                                    Configuration.CATEGORY_GENERAL, "MinProfit"));
-                                                        }
-                                                        double profit;
-                                                        if (entry.getValue() - startingBid > minProfit) {
-                                                            if (startingBid >= 1000000) {
-                                                                profit = (entry.getValue() - startingBid) * 0.99;
-                                                            } else {
-                                                                profit = (entry.getValue() - startingBid);
-                                                            }
-                                                            if (profit > minProfit) {
-                                                                Toggle.namedDataset.put(name, profit);
-                                                                commands.add("/viewauction " + uuid);
-                                                                ignored.add(uuid);
-                                                            }
-                                                        }
-                                                    }
+                                            long minProfit = Long.parseLong(
+                                                    ConfigHandler.config.getString("MinProfit",
+                                                            Configuration.CATEGORY_GENERAL, "50000",
+                                                            "The minimum amount of profit need for the mod to show the flip in the chat")
+                                            );
+                                            double profit;
+                                            if (entry.getValue() - startingBid > minProfit) {
+                                                if (startingBid >= 1000000) {
+                                                    profit = (entry.getValue() - startingBid) * 0.99;
+                                                } else {
+                                                    profit = (entry.getValue() - startingBid);
+                                                }
+                                                if (profit > minProfit) {
+                                                    Toggle.namedDataset.put(name, profit);
+                                                    commands.add("/viewauction " + uuid);
+                                                    ignored.add(uuid);
                                                 }
                                             }
                                         }
-                                    }
+                                                }
                                 }
                             }
                         }

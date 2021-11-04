@@ -109,13 +109,7 @@ public class Toggle implements Subcommand {
                                     + "+$" + Utils.formatValue(profit));
 
                             ChatStyle style = new ChatStyle()
-                                    .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, commands.get(count)) {
-                                        @Override
-                                        public Action getAction() {
-                                            // custom behavior
-                                            return Action.RUN_COMMAND;
-                                        }
-                                    });
+                                    .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, commands.get(count)));
                             result.setChatStyle(style);
                             sender.addChatMessage(result);
                             count++;

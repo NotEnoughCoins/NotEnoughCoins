@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME)
 public class Main {
+    public static boolean checkedForUpdate = false;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
