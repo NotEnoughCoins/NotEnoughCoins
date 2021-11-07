@@ -31,7 +31,7 @@ public class Main {
                 new MinProfit(),
                 new SetKey(),
                 new Speed(),
-                new Toggle(),
+                new Toggle()
         }));
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
     }
