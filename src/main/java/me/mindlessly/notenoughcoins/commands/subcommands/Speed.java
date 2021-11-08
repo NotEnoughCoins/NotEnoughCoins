@@ -26,7 +26,7 @@ public class Speed implements Subcommand {
         if (args.length > 0) {
             try {
                 int speed = Integer.parseInt(args[0]);
-                if (speed > Runtime.getRuntime().availableProcessors()) {
+                if (speed > Runtime.getRuntime().availableProcessors() || speed < 1) {
                     return false;
                 }
             } catch (Exception e) {
