@@ -3,8 +3,6 @@ package me.mindlessly.notenoughcoins.commands.subcommands;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
 public class Speed implements Subcommand {
