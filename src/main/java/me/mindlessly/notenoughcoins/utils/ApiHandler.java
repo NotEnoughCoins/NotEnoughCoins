@@ -224,6 +224,9 @@ public class ApiHandler {
 														"The minimum amount of profit need for the mod to show the flip in the chat"));
 												double profit;
 												double percentProfit;
+												int minPercentProfit = Integer.parseInt(ConfigHandler.config.getString(
+														"MinPercent", Configuration.CATEGORY_GENERAL, "50",
+														"The minimum amount of profit percentage need for the mod to show the flip in the chat"));
 												if (entry.getValue() - startingBid > minProfit) {
 													if (startingBid >= 1000000) {
 														profit = (entry.getValue() - startingBid)
@@ -236,7 +239,7 @@ public class ApiHandler {
 														percentProfit = (((entry.getValue() - startingBid)
 																- (entry.getValue() * 0.01)) / startingBid) * 100;
 													}
-													if (profit > minProfit) {
+													if (profit > minProfit && percentProfit > minPercentProfit) {
 														Toggle.namedDataset.put(name, profit);
 														Toggle.commands.add("/viewauction " + uuid);
 														Toggle.rawNames.add(entry.getKey());
