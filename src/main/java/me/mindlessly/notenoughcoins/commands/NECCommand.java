@@ -76,7 +76,7 @@ public class NECCommand extends CommandBase {
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, "toggle", "minpercent", "minprofit", "setkey", "speed");
+            return getListOfStringsMatchingLastWord(args, "toggle", "minpercent", "minprofit", "setkey", "speed", "alertsound");
         }
         return null;
     }
