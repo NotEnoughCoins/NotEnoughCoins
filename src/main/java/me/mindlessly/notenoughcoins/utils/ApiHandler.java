@@ -27,7 +27,7 @@ public class ApiHandler {
 
 	private static final ArrayList<String> nameFilter = new ArrayList<>(
 			Arrays.asList("STARRED", "SALMON", "PERFECT", "BEASTMASTER", "MASTER_SKULL", "BLAZE", "TITANIUM",
-					"SUPER_HEAVY", "WAND_OF", "FARM_ARMOR", "PURE_MITHRIL", "STEEL_CHESTPLATE"));
+					"SUPER_HEAVY", "WAND_OF", "FARM_ARMOR", "PURE_MITHRIL", "STEEL_CHESTPLATE", "MIDAS"));
 
 	public static void getBins(HashMap<String, Double> dataset) {
 		boolean skip;
