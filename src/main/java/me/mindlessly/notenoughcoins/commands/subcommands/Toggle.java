@@ -52,7 +52,17 @@ public class Toggle implements Subcommand {
 
 	public static void flip(EntityPlayer sender) {
 		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
-			Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", sender);
+			if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "alertsound")) {
+				if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "alertsound").equals("true")) {
+					Toggle.alertSound = true;
+				} else {
+					Toggle.alertSound = false;
+				}
+			} else {
+				Toggle.alertSound = true;
+				ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "alertsound", "true");
+				Utils.sendMessageWithPrefix("&aAlert sound enabled", sender);
+			}
 			try {
 				ApiHandler.getBins(initialDataset);
 				ApiHandler.getAuctionAverages(avgDataset, demandDataset);
