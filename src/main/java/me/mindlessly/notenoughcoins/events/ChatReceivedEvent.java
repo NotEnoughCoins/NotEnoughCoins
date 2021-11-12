@@ -15,7 +15,7 @@ public class ChatReceivedEvent {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void chat(@Nonnull ClientChatReceivedEvent event) {
         if(!event.message.getUnformattedText().startsWith("Your new API key is ")) return;
-        String[] key = event.message.getUnformattedText().split("key is §2");
+        String[] key = event.message.getUnformattedText().split("key is ");
         ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "APIKey", key[1]);
         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + ("NEC ") + "§aAPI Key set to " + key[1]));
     }
