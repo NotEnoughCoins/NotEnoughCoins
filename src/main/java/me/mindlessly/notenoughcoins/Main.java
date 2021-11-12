@@ -2,6 +2,7 @@ package me.mindlessly.notenoughcoins;
 
 import me.mindlessly.notenoughcoins.commands.NECCommand;
 import me.mindlessly.notenoughcoins.commands.subcommands.*;
+import me.mindlessly.notenoughcoins.events.ChatReceivedEvent;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Reference;
@@ -32,5 +33,6 @@ public class Main {
                 new AlertSound(),
         }));
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
+        MinecraftForge.EVENT_BUS.register(new ChatReceivedEvent());
     }
 }
