@@ -46,7 +46,7 @@ public class NECCommand extends CommandBase {
             commandUsages.add(EnumChatFormatting.AQUA + "/nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
         }
         sender.addChatMessage(new ChatComponentText(
-                EnumChatFormatting.GOLD + "NEC " + EnumChatFormatting.GREEN + "v" + Reference.VERSION + "\n" +
+                EnumChatFormatting.GOLD + "NEC " + EnumChatFormatting.GREEN + Reference.VERSION + "\n" +
                         String.join("\n", commandUsages)
         ));
     }

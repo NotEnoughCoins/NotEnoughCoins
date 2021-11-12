@@ -29,6 +29,7 @@ public class Main {
                 new SetKey(),
                 new Speed(),
                 new Toggle(),
+                new AlertSound(),
         }));
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
     }

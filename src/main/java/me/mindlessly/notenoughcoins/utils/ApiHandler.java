@@ -225,7 +225,7 @@ public class ApiHandler {
 												double profit;
 												double percentProfit;
 												int minPercentProfit = Integer.parseInt(ConfigHandler.config.getString(
-														"MinPercent", Configuration.CATEGORY_GENERAL, "50",
+														"MinPercent", Configuration.CATEGORY_GENERAL, "10",
 														"The minimum amount of profit percentage need for the mod to show the flip in the chat"));
 												if (entry.getValue() - startingBid > minProfit) {
 													if (startingBid >= 1000000) {
