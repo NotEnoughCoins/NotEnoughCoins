@@ -6,4 +6,4 @@ A SkyBlock Flipping Mod.
 - `/nec toggle` - Enables the mod to return a list of suggested items to flip whenever one is found.
 - `/nec minprofit <amount>` - Set the minimum profit for a flip.
 - `/nec speed <speed>` - Select the number of async threads you want the flipper to use.
-- Discord - https://discord.gg/QaV9M6uGr8
+- Discord - https://discord.gg/b3JBsh8fEd
