@@ -32,6 +32,7 @@ public class AlertSound implements Subcommand {
 				Utils.sendMessageWithPrefix("&aAlert sound enabled", sender);
 			}
 		} else {
+			Toggle.alertSound = true;
 			ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "alertsound", "true");
 			Utils.sendMessageWithPrefix("&aAlert sound enabled", sender);
 		}
