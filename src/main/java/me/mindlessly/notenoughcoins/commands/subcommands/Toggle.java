@@ -45,6 +45,7 @@ public class Toggle implements Subcommand {
 	private static int flipSpeed = 1;
 	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
 	public static boolean alertSound;
+	public static String UUID;
 
 	public Toggle() {
 	}
@@ -79,6 +80,7 @@ public class Toggle implements Subcommand {
 					ApiHandler.getBins(initialDataset);
 					ApiHandler.getAuctionAverages(avgDataset, demandDataset);
 					ApiHandler.itemIdsToNames(initialDataset);
+					UUID = ApiHandler.getUuid(sender.getName());
 				} catch (Exception e) {
 					sender.addChatMessage(new ChatComponentText("Could not load BINs."));
 				}
