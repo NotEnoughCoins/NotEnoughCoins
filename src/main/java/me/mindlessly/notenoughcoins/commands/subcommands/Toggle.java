@@ -54,19 +54,16 @@ public class Toggle implements Subcommand {
 		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 			if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "alertsound")) {
 				if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "alertsound").equals("true")) {
-					Toggle.alertSound = true;
+					alertSound = true;
 				} else {
-					Toggle.alertSound = false;
+					alertSound = false;
 				}
-			} else {
-				Toggle.alertSound = true;
-				ConfigHandler.writeConfig(Configuration.CATEGORY_GENERAL, "alertsound", "true");
-				Utils.sendMessageWithPrefix("&aAlert sound enabled", sender);
 			}
 			try {
 				ApiHandler.getBins(initialDataset);
 				ApiHandler.getAuctionAverages(avgDataset, demandDataset);
 				ApiHandler.itemIdsToNames(initialDataset);
+				UUID = ApiHandler.getUuid(sender.getName());
 			} catch (Exception e) {
 				Reference.logger.error(e.getMessage(), e);
 			}
@@ -90,7 +87,6 @@ public class Toggle implements Subcommand {
 					ApiHandler.getBins(initialDataset);
 					ApiHandler.getAuctionAverages(avgDataset, demandDataset);
 					ApiHandler.itemIdsToNames(initialDataset);
-					UUID = ApiHandler.getUuid(sender.getName());
 				} catch (Exception e) {
 					sender.addChatMessage(new ChatComponentText("Could not load BINs."));
 				}
