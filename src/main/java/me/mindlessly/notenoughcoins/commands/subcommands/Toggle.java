@@ -44,14 +44,15 @@ public class Toggle implements Subcommand {
 	private static int auctionPages = 0;
 	private static int flipSpeed = 1;
 	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
-	public static boolean alertSound;
-	public static String UUID;
+	public static boolean alertSound = false;
+	public static String UUID = "";
 
 	public Toggle() {
 	}
 
 	public static void flip(EntityPlayer sender) {
 		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
+			Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", sender);
 			if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "alertsound")) {
 				if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "alertsound").equals("true")) {
 					alertSound = true;
