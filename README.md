@@ -9,3 +9,7 @@ A SkyBlock Flipping Mod.
 - `/nec speed <speed>` - Select the number of async threads you want the flipper to use.
 - `/nec alertsound` - Toggle pings for flips.
 - Discord - https://discord.gg/b3JBsh8fEd
+
+<p align="center">
+   <img alt="Downloads" src="https://img.shields.io/github/downloads/mindlesslydev/notenoughcoins/total.svg" />
+</p>
