@@ -27,7 +27,7 @@ public class ApiHandler {
 
 	private static final ArrayList<String> nameFilter = new ArrayList<>(
 			Arrays.asList("STARRED", "SALMON", "PERFECT", "BEASTMASTER", "MASTER_SKULL", "BLAZE", "TITANIUM",
-					"SUPER_HEAVY", "WAND_OF", "FARM_ARMOR", "PURE_MITHRIL", "STEEL_CHESTPLATE"));
+					"SUPER_HEAVY", "WAND_OF", "FARM_ARMOR", "PURE_MITHRIL", "STEEL_CHESTPLATE", "MIDAS", "TRIBAL_SPEAR"));
 
 	public static void getBins(HashMap<String, Double> dataset) {
 		boolean skip;
@@ -140,7 +140,7 @@ public class ApiHandler {
 		}
 	}
 
-	private static String getUuid(String name) {
+	public static String getUuid(String name) {
 		try {
 			return Objects.requireNonNull(getJson("https://api.mojang.com/users/profiles/minecraft/" + name))
 					.getAsJsonObject().get("id").getAsString();
@@ -207,7 +207,7 @@ public class ApiHandler {
 					String uuid = item.getAsJsonObject().get("uuid").getAsString();
 					String auctioneer = item.getAsJsonObject().get("auctioneer").getAsString();
 					String rawName = item.getAsJsonObject().get("item_name").getAsString();
-					if (!Minecraft.getMinecraft().thePlayer.getUniqueID().toString().equals(auctioneer)) {
+					if (!Toggle.UUID.equals(auctioneer)) {
 						if (!ignored.contains(uuid)) {
 							if (rawName.contains(entry.getKey())) {
 								if (item.getAsJsonObject().has("bin")
@@ -224,6 +224,9 @@ public class ApiHandler {
 														"The minimum amount of profit need for the mod to show the flip in the chat"));
 												double profit;
 												double percentProfit;
+												int minPercentProfit = Integer.parseInt(ConfigHandler.config.getString(
+														"MinPercent", Configuration.CATEGORY_GENERAL, "10",
+														"The minimum amount of profit percentage need for the mod to show the flip in the chat"));
 												if (entry.getValue() - startingBid > minProfit) {
 													if (startingBid >= 1000000) {
 														profit = (entry.getValue() - startingBid)
@@ -236,7 +239,7 @@ public class ApiHandler {
 														percentProfit = (((entry.getValue() - startingBid)
 																- (entry.getValue() * 0.01)) / startingBid) * 100;
 													}
-													if (profit > minProfit) {
+													if (profit > minProfit && percentProfit > minPercentProfit) {
 														Toggle.namedDataset.put(name, profit);
 														Toggle.commands.add("/viewauction " + uuid);
 														Toggle.rawNames.add(entry.getKey());

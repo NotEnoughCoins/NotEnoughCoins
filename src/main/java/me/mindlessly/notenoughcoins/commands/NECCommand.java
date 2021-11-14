@@ -5,6 +5,7 @@ import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -46,7 +47,7 @@ public class NECCommand extends CommandBase {
             commandUsages.add(EnumChatFormatting.AQUA + "/nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
         }
         sender.addChatMessage(new ChatComponentText(
-                EnumChatFormatting.GOLD + "NEC " + EnumChatFormatting.GREEN + "v" + Reference.VERSION + "\n" +
+                EnumChatFormatting.GOLD + "NEC " + EnumChatFormatting.GREEN + Reference.VERSION + "\n" +
                         String.join("\n", commandUsages)
         ));
     }
@@ -70,5 +71,13 @@ public class NECCommand extends CommandBase {
         Utils.sendMessageWithPrefix(EnumChatFormatting.RED + "The subcommand wasn't found, please refer to the help message below for the list of subcommands",
                 sender);
         sendHelp(sender);
+    }
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args, "toggle", "minpercent", "minprofit", "setkey", "speed", "alertsound");
+        }
+        return null;
     }
 }

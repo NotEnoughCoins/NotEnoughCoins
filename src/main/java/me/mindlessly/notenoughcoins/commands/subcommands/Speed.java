@@ -3,8 +3,6 @@ package me.mindlessly.notenoughcoins.commands.subcommands;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
 public class Speed implements Subcommand {
@@ -26,7 +24,7 @@ public class Speed implements Subcommand {
         if (args.length > 0) {
             try {
                 int speed = Integer.parseInt(args[0]);
-                if (speed > Runtime.getRuntime().availableProcessors()) {
+                if (speed > Runtime.getRuntime().availableProcessors() || speed < 1) {
                     return false;
                 }
             } catch (Exception e) {

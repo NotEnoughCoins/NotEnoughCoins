@@ -1,9 +1,20 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
@@ -11,14 +22,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Toggle implements Subcommand {
 	// Take initial set of lbins, take second set, and use compared set to identify
@@ -39,6 +44,8 @@ public class Toggle implements Subcommand {
 	private static int auctionPages = 0;
 	private static int flipSpeed = 1;
 	public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(flipSpeed);
+	public static boolean alertSound = false;
+	public static String UUID = "";
 
 	public Toggle() {
 	}
@@ -46,10 +53,18 @@ public class Toggle implements Subcommand {
 	public static void flip(EntityPlayer sender) {
 		if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "Flip").equals("true")) {
 			Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", sender);
+			if (ConfigHandler.hasKey(Configuration.CATEGORY_GENERAL, "alertsound")) {
+				if (ConfigHandler.getString(Configuration.CATEGORY_GENERAL, "alertsound").equals("true")) {
+					alertSound = true;
+				} else {
+					alertSound = false;
+				}
+			}
 			try {
 				ApiHandler.getBins(initialDataset);
 				ApiHandler.getAuctionAverages(avgDataset, demandDataset);
 				ApiHandler.itemIdsToNames(initialDataset);
+				UUID = ApiHandler.getUuid(sender.getName());
 			} catch (Exception e) {
 				Reference.logger.error(e.getMessage(), e);
 			}
@@ -126,6 +141,16 @@ public class Toggle implements Subcommand {
 									new ClickEvent(ClickEvent.Action.RUN_COMMAND, commands.get(count)));
 							result.setChatStyle(style);
 							sender.addChatMessage(result);
+							if (alertSound) {
+								SoundHandler soundHandler = Minecraft.getMinecraft().getSoundHandler();
+								if (soundHandler != null && Minecraft.getMinecraft().theWorld != null) {
+									soundHandler
+											.playSound(PositionedSoundRecord.create(new ResourceLocation("note.pling"),
+													(float) Minecraft.getMinecraft().thePlayer.posX,
+													(float) Minecraft.getMinecraft().thePlayer.posY,
+													(float) Minecraft.getMinecraft().thePlayer.posZ));
+								}
+							}
 							count++;
 							noSales = false;
 						}

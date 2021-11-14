@@ -1,11 +1,8 @@
 package me.mindlessly.notenoughcoins;
 
 import me.mindlessly.notenoughcoins.commands.NECCommand;
-import me.mindlessly.notenoughcoins.commands.subcommands.MinProfit;
-import me.mindlessly.notenoughcoins.commands.subcommands.SetKey;
-import me.mindlessly.notenoughcoins.commands.subcommands.Speed;
-import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
-import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
+import me.mindlessly.notenoughcoins.commands.subcommands.*;
+import me.mindlessly.notenoughcoins.events.ChatReceivedEvent;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
 import me.mindlessly.notenoughcoins.utils.ConfigHandler;
 import me.mindlessly.notenoughcoins.utils.Reference;
@@ -28,11 +25,14 @@ public class Main {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ClientCommandHandler.instance.registerCommand(new NECCommand(new Subcommand[]{
+                new MinPercent(),
                 new MinProfit(),
                 new SetKey(),
                 new Speed(),
-                new Toggle()
+                new Toggle(),
+                new AlertSound()
         }));
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
+        MinecraftForge.EVENT_BUS.register(new ChatReceivedEvent());
     }
 }
