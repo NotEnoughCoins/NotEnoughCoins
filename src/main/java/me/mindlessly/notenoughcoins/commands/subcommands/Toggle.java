@@ -1,8 +1,8 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
-import me.mindlessly.notenoughcoins.utils.Config;
-import me.mindlessly.notenoughcoins.utils.Reference;
+import me.mindlessly.notenoughcoins.config.Config;
+import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -55,7 +55,7 @@ public class Toggle implements Subcommand {
     public static void flip() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (Config.enabled) {
-            Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", player);
+            Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
             try {
                 ApiHandler.getBins(initialDataset);
                 ApiHandler.getAuctionAverages(avgDataset, demandDataset);
@@ -92,7 +92,7 @@ public class Toggle implements Subcommand {
             }, 60000, 60000, TimeUnit.MILLISECONDS);
 
         } else {
-            Utils.sendMessageWithPrefix("&cFlipper alerts disabled.", player);
+            Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
             scheduledExecutorService.shutdownNow();
             scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
         }
@@ -169,6 +169,8 @@ public class Toggle implements Subcommand {
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
         Config.enabled = !Config.enabled;
+        if(Config.enabled) Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
+        else Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
         updateConfig();
         return true;
     }

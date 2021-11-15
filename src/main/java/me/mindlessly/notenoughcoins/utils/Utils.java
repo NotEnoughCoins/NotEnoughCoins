@@ -2,10 +2,10 @@ package me.mindlessly.notenoughcoins.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
+import gg.essential.universal.UChat;
+import gg.essential.universal.wrappers.message.UTextComponent;
+import me.mindlessly.notenoughcoins.Reference;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -20,7 +20,6 @@ public class Utils {
 
     static JsonElement getJson(String jsonUrl) {
         try {
-
             URL url = new URL(jsonUrl);
             URLConnection conn = url.openConnection();
             conn.setRequestProperty("Connection", "close");
@@ -51,16 +50,14 @@ public class Utils {
         return NumberFormat.getInstance().format(amount);
     }
 
-    public static void sendMessageWithPrefix(String message, ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + ("NEC ") + message.replaceAll("&", "§")));
+    public static void sendMessageWithPrefix(String message) {
+        UChat.chat(EnumChatFormatting.GOLD + ("NEC ") + message.replaceAll("&", "§"));
     }
 
-    public static void sendMessageWithPrefix(String message, ClickEvent clickEvent, ICommandSender sender) {
-        ChatComponentText result = new ChatComponentText(EnumChatFormatting.GOLD + ("NEC ") + message.replaceAll("&", "§"));
-        ChatStyle style = new ChatStyle();
-        style.setChatClickEvent(clickEvent);
-        result.setChatStyle(style);
-        sender.addChatMessage(result);
+    public static void sendMessageWithPrefix(String message, ClickEvent clickEvent) {
+        UTextComponent result = new UTextComponent(EnumChatFormatting.GOLD + ("NEC ") + message.replaceAll("&", "§"));
+        result.setChatStyle(new ChatStyle().setChatClickEvent(clickEvent));
+        UChat.chat(result);
     }
 
     public static void checkForUpdate() {
@@ -68,7 +65,7 @@ public class Utils {
                 .getAsJsonArray().get(0).getAsJsonObject().get("tag_name").getAsString();
         if (!Objects.equals(latestVersion, Reference.VERSION)) {
             Utils.sendMessageWithPrefix("&aAn update (" + latestVersion + ") is available at https://github.com/mindlesslydev/NotEnoughCoins/releases",
-                    new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/mindlesslydev/NotEnoughCoins/releases"), Minecraft.getMinecraft().thePlayer);
+                    new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/mindlesslydev/NotEnoughCoins/releases"));
         }
     }
 }

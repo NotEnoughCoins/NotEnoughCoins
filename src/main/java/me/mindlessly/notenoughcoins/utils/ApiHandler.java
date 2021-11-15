@@ -3,19 +3,15 @@ package me.mindlessly.notenoughcoins.utils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
+import me.mindlessly.notenoughcoins.config.Config;
 import net.minecraft.client.Minecraft;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 
@@ -181,7 +177,6 @@ public class ApiHandler {
     }
 
     public static boolean getFlips(LinkedHashMap<String, Double> dataset, int i, ArrayList<String> ignored) {
-
         try {
             JsonObject auctionPage = Objects
                     .requireNonNull(getJson("https://api.hypixel.net/skyblock/auctions?page=" + i)).getAsJsonObject();
@@ -204,6 +199,7 @@ public class ApiHandler {
                     String uuid = item.getAsJsonObject().get("uuid").getAsString();
                     String auctioneer = item.getAsJsonObject().get("auctioneer").getAsString();
                     String rawName = item.getAsJsonObject().get("item_name").getAsString();
+
                     if (!ApiHandler.UUID.equals(auctioneer)) {
                         if (!ignored.contains(uuid)) {
                             if (rawName.contains(entry.getKey())) {

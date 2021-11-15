@@ -1,12 +1,13 @@
 package me.mindlessly.notenoughcoins.commands;
 
-import gg.essential.api.utils.GuiUtil;
+import gg.essential.api.EssentialAPI;
+import me.mindlessly.notenoughcoins.Main;
+import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
-import me.mindlessly.notenoughcoins.utils.Config;
-import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -56,33 +57,31 @@ public class NECCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length == 0) {
-            GuiUtil.open(Objects.requireNonNull(Config.INSTANCE.gui()));
+            EssentialAPI.getGuiUtil().openScreen(Main.config.gui());
             return;
         }
         for (Subcommand subcommand : this.subcommands) {
             if (Objects.equals(args[0], subcommand.getCommandName())) {
                 if (!subcommand.processCommand(sender, Arrays.copyOfRange(args, 1, args.length))) {
                     // processCommand returned false
-                    Utils.sendMessageWithPrefix("&cFailed to execute command, command usage: /nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender),
-                            sender);
+                    Utils.sendMessageWithPrefix("&cFailed to execute command, command usage: /nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
                 }
                 return;
             }
         }
-        Utils.sendMessageWithPrefix(EnumChatFormatting.RED + "The subcommand wasn't found, please refer to the help message below for the list of subcommands",
-                sender);
+        Utils.sendMessageWithPrefix(EnumChatFormatting.RED + "The subcommand wasn't found, please refer to the help message below for the list of subcommands");
         sendHelp(sender);
     }
-    // This causes crash upon TAB for some reason
-    //@Override
-    //public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-    //    List<String> possibilities = new LinkedList<>();
-    //    for (Subcommand subcommand : subcommands) {
-    //        possibilities.add(subcommand.getCommandName());
-    //    }
-    //    if (args.length == 1) {
-    //        return getListOfStringsMatchingLastWord(args, possibilities);
-    //    }
-    //    return null;
-    //}
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+        List<String> possibilities = new LinkedList<>();
+        for (Subcommand subcommand : subcommands) {
+            possibilities.add(subcommand.getCommandName());
+        }
+        if (args.length == 1) {
+            return getListOfStringsMatchingLastWord(args, possibilities);
+        }
+        return null;
+    }
 }

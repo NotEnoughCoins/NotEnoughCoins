@@ -1,4 +1,4 @@
-package me.mindlessly.notenoughcoins.utils;
+package me.mindlessly.notenoughcoins;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

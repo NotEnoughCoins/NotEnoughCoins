@@ -2,7 +2,7 @@ package me.mindlessly.notenoughcoins.events;
 
 import me.mindlessly.notenoughcoins.Main;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.utils.Config;
+import me.mindlessly.notenoughcoins.config.Config;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;

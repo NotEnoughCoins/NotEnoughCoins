@@ -27,7 +27,7 @@ repositories {
 }
 dependencies {
     implementation "gg.essential:loader-launchwrapper:1.1.2"
-    implementation "gg.essential:essential-1.8.9-forge:1560+"
+    implementation "gg.essential:essential-1.8.9-forge:1543+release-launch"
 }
 shadowJar {
     dependencies {
@@ -60,6 +60,9 @@ jar {
     manifest {
         attributes("TweakClass": "gg.essential.loader.stage0.EssentialSetupTweaker")
     }
+}
+sourceJar {
+    enabled = false
 }
 
 // Automatic version replacements
