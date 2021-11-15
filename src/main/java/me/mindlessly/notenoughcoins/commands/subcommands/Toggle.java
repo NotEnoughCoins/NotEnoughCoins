@@ -58,6 +58,7 @@ public class Toggle implements Subcommand {
 				ApiHandler.getBins(initialDataset);
 				ApiHandler.getAuctionAverages(avgDataset, demandDataset);
 				ApiHandler.itemIdsToNames(initialDataset);
+				ApiHandler.UUID = ApiHandler.getUuid(player.getName());
 			} catch (Exception e) {
 				Reference.logger.error(e.getMessage(), e);
 			}

@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 
 public class ApiHandler {
-	public static final String UUID = getUuid(Minecraft.getMinecraft().thePlayer.getName());
+	public static String UUID;
 	// Will make configurable
 	private static final ArrayList<String> filter = new ArrayList<>(
 			Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
@@ -142,7 +142,7 @@ public class ApiHandler {
 					.getAsJsonObject().get("id").getAsString();
 		} catch (Exception e) {
 			Reference.logger.error(e.getMessage(), e);
-			return null;
+			return "";
 		}
 	}
 
