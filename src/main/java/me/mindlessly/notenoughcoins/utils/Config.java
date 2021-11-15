@@ -46,7 +46,7 @@ public class Config extends Vigilant {
             category = "Flipping",
             subcategory = "Basic",
             name = "Alert Sounds",
-            description = "Whether a sound should be played upon flip sent"
+            description = "Whether a pling sound should be played upon flip sent"
     )
     public static boolean alertSounds = true;
     @Property(

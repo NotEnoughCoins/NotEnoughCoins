@@ -1,5 +1,6 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
+import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.Config;
 import me.mindlessly.notenoughcoins.utils.Reference;
@@ -134,14 +135,7 @@ public class Toggle implements Subcommand {
                             result.setChatStyle(style);
                             player.addChatMessage(result);
                             if (Config.alertSounds) {
-                                SoundHandler soundHandler = Minecraft.getMinecraft().getSoundHandler();
-                                if (soundHandler != null && Minecraft.getMinecraft().theWorld != null) {
-                                    soundHandler
-                                            .playSound(PositionedSoundRecord.create(new ResourceLocation("note.pling"),
-                                                    (float) Minecraft.getMinecraft().thePlayer.posX,
-                                                    (float) Minecraft.getMinecraft().thePlayer.posY,
-                                                    (float) Minecraft.getMinecraft().thePlayer.posZ));
-                                }
+                                USound.INSTANCE.playPlingSound();
                             }
                             count++;
                             noSales = false;
