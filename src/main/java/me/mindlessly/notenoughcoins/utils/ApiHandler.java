@@ -257,6 +257,6 @@ public class ApiHandler {
         } catch (Exception e) {
             Reference.logger.error(e.getMessage(), e);
         }
-        return pages;
-    }
+		return pages;
+	}
 }
