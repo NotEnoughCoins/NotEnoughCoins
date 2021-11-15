@@ -1,12 +1,11 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
+import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.config.Config;
 import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
@@ -14,7 +13,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -45,17 +43,22 @@ public class Toggle implements Subcommand {
     public Toggle() {
     }
 
-    public static void updateConfig() {
+    public static void updateConfig(boolean showMessage) {
         scheduledExecutorService.shutdownNow();
         scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
-        scheduledExecutorService.schedule(Toggle::flip, 0,
+        scheduledExecutorService.schedule(() -> flip(showMessage), 0,
                 TimeUnit.SECONDS);
     }
 
-    public static void flip() {
+    public static void flip(boolean showMessage) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (Config.enabled) {
+<<<<<<< HEAD
             Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
+=======
+            if (showMessage)
+                Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", player);
+>>>>>>> branch 'master' of https://github.com/mindlesslydev/NotEnoughCoins.git
             try {
                 ApiHandler.getBins(initialDataset);
                 ApiHandler.getAuctionAverages(avgDataset, demandDataset);
@@ -92,7 +95,12 @@ public class Toggle implements Subcommand {
             }, 60000, 60000, TimeUnit.MILLISECONDS);
 
         } else {
+<<<<<<< HEAD
             Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
+=======
+            if (showMessage)
+                Utils.sendMessageWithPrefix("&cFlipper alerts disabled.", player);
+>>>>>>> branch 'master' of https://github.com/mindlesslydev/NotEnoughCoins.git
             scheduledExecutorService.shutdownNow();
             scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
         }
@@ -134,14 +142,7 @@ public class Toggle implements Subcommand {
                             result.setChatStyle(style);
                             player.addChatMessage(result);
                             if (Config.alertSounds) {
-                                SoundHandler soundHandler = Minecraft.getMinecraft().getSoundHandler();
-                                if (soundHandler != null && Minecraft.getMinecraft().theWorld != null) {
-                                    soundHandler
-                                            .playSound(PositionedSoundRecord.create(new ResourceLocation("note.pling"),
-                                                    (float) Minecraft.getMinecraft().thePlayer.posX,
-                                                    (float) Minecraft.getMinecraft().thePlayer.posY,
-                                                    (float) Minecraft.getMinecraft().thePlayer.posZ));
-                                }
+                                USound.INSTANCE.playPlingSound();
                             }
                             count++;
                             noSales = false;
@@ -169,9 +170,13 @@ public class Toggle implements Subcommand {
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
         Config.enabled = !Config.enabled;
+<<<<<<< HEAD
         if(Config.enabled) Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
         else Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
         updateConfig();
+=======
+        updateConfig(true);
+>>>>>>> branch 'master' of https://github.com/mindlesslydev/NotEnoughCoins.git
         return true;
     }
 }
