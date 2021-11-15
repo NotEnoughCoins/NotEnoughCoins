@@ -19,11 +19,11 @@ public class OnWorldJoin {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Toggle.flip();
+                    Toggle.flip(true);
                 }
             }, 2000);
         } else {
-            Toggle.updateConfig();
+            Toggle.updateConfig(true);
         }
         if (!Main.checkedForUpdate) {
             timer.schedule(new TimerTask() {

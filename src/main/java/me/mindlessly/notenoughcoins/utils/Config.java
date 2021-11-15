@@ -77,7 +77,7 @@ public class Config extends Vigilant {
                 "threads",
                 "enabled",
                 "apiKey"
-        ).forEach(property -> registerListener(property, e -> Toggle.updateConfig()));
+        ).forEach(property -> registerListener(property, e -> Toggle.updateConfig(false)));
         Arrays.asList(
                 "minProfit",
                 "minProfitPercentage",

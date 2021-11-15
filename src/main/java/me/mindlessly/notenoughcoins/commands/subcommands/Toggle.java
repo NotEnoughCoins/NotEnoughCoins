@@ -6,8 +6,6 @@ import me.mindlessly.notenoughcoins.utils.Config;
 import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.ClickEvent;
@@ -15,7 +13,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,17 +43,18 @@ public class Toggle implements Subcommand {
     public Toggle() {
     }
 
-    public static void updateConfig() {
+    public static void updateConfig(boolean showMessage) {
         scheduledExecutorService.shutdownNow();
         scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
-        scheduledExecutorService.schedule(Toggle::flip, 0,
+        scheduledExecutorService.schedule(() -> flip(showMessage), 0,
                 TimeUnit.SECONDS);
     }
 
-    public static void flip() {
+    public static void flip(boolean showMessage) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (Config.enabled) {
-            Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", player);
+            if (showMessage)
+                Utils.sendMessageWithPrefix("&aFlipper alerts enabled.", player);
             try {
                 ApiHandler.getBins(initialDataset);
                 ApiHandler.getAuctionAverages(avgDataset, demandDataset);
@@ -93,7 +91,8 @@ public class Toggle implements Subcommand {
             }, 60000, 60000, TimeUnit.MILLISECONDS);
 
         } else {
-            Utils.sendMessageWithPrefix("&cFlipper alerts disabled.", player);
+            if (showMessage)
+                Utils.sendMessageWithPrefix("&cFlipper alerts disabled.", player);
             scheduledExecutorService.shutdownNow();
             scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
         }
@@ -163,7 +162,7 @@ public class Toggle implements Subcommand {
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
         Config.enabled = !Config.enabled;
-        updateConfig();
+        updateConfig(true);
         return true;
     }
 }
