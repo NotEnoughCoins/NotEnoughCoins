@@ -12,31 +12,30 @@ import java.util.TimerTask;
 
 public class OnWorldJoin {
 
-	
 	boolean hasRan = false;
-	
-    @SubscribeEvent
-    public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-        Timer timer = new Timer();
-        if (Config.enabled && !hasRan) {
-            hasRan = false;
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Toggle.flip(true);
-                }
-            }, 2000);
-        } else {
-            Toggle.updateConfig(true);
-        }
-        if (!Main.checkedForUpdate) {
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Utils.checkForUpdate();
-                    Main.checkedForUpdate = true;
-                }
-            }, 2000);
-        }
-    }
+
+	@SubscribeEvent
+	public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
+		Timer timer = new Timer();
+		if (Config.enabled && !hasRan) {
+			hasRan = false;
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					Toggle.flip(true);
+				}
+			}, 2000);
+		} else {
+			Toggle.updateConfig(true);
+		}
+		if (!Main.checkedForUpdate) {
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					Utils.checkForUpdate();
+					Main.checkedForUpdate = true;
+				}
+			}, 2000);
+		}
+	}
 }
