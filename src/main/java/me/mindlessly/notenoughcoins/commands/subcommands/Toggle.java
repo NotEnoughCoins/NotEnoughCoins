@@ -46,7 +46,7 @@ public class Toggle implements Subcommand {
 	public static void updateConfig(boolean showMessage) {
 		scheduledExecutorService.shutdownNow();
 		scheduledExecutorService = Executors.newScheduledThreadPool(Config.threads);
-		scheduledExecutorService.schedule(() -> flip(showMessage), 0, TimeUnit.SECONDS);
+		scheduledExecutorService.schedule(() -> flip(showMessage), 1, TimeUnit.SECONDS);
 	}
 
 	public static void flip(boolean showMessage) {
