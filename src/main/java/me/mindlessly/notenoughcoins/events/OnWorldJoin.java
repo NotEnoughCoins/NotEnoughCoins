@@ -20,7 +20,7 @@ public class OnWorldJoin {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Toggle.flip(false);
+                    Toggle.flip(true);
                 }
             }, 2000);
         } else {
