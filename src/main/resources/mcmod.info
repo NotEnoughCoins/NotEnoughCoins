@@ -1,14 +1,17 @@
 [
-{
-  "modid": "nec",
-  "name": "NotEnoughCoins",
-  "description": "Become rich in Hypixel Skyblock.",
-  "mcversion": "1.8.9",
-  "url": "https://github.com/mindlesslydev/NotEnoughCoins",
-  "updateUrl": "https://github.com/mindlesslydev/NotEnoughCoins",
-  "authorList": ["Mindlessly"],
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "nec",
+    "name": "NotEnoughCoins",
+    "description": "Become rich in Hypixel Skyblock.",
+    "version": "${version}",
+    "mcversion": "1.8.9",
+    "url": "https://github.com/mindlesslydev/NotEnoughCoins",
+    "updateUrl": "https://github.com/mindlesslydev/NotEnoughCoins",
+    "authorList": [
+      "Mindlessly"
+    ],
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]

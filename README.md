@@ -2,10 +2,11 @@
 
 A SkyBlock Flipping Mod.
 
-- `/nec setkey <api key>` - Set API key so the mod knows what it is.
+- `/nec` - Shows the config GUI
+- `/nec help` - Shows the help message containing all the subcommands and their usage
 - `/nec toggle` - Enables the mod to return a list of suggested items to flip whenever one is found.
-- `/nec minprofit <amount>` - Set the minimum profit for a flip.
-- `/nec minpercent <amount>` - Set the minimum percentage profit for a flip.
-- `/nec speed <speed>` - Select the number of async threads you want the flipper to use.
-- `/nec alertsound` - Toggle pings for flips.
 - Discord - https://discord.gg/b3JBsh8fEd
+
+<p align="center">
+   <img alt="Downloads" src="https://img.shields.io/github/downloads/mindlesslydev/notenoughcoins/total.svg" />
+</p>

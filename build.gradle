@@ -1,28 +1,47 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 buildscript {
     repositories {
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.minecraftforge.net/' }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.github.asbyth:ForgeGradle:8708bf3e01'
+        classpath 'com.github.Skytils:ForgeGradle:6f5327'
+        classpath "com.github.johnrengelman:shadow:6.1.0"
     }
 }
 
-
 apply plugin: 'net.minecraftforge.gradle.forge'
-
+apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'java'
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url = "https://repo.sk1er.club/repository/maven-public" }
+    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+}
+dependencies {
+    implementation "gg.essential:loader-launchwrapper:1.1.2"
+    implementation "gg.essential:essential-1.8.9-forge:1543+release-launch"
+}
+shadowJar {
+    dependencies {
+        include(dependency("gg.essential:loader-launchwrapper:1.1.2"))
+    }
+}
+reobf {
+    shadowJar {} // Reobfuscate the shadowed JAR
 }
 test {
     systemProperty "file.encoding", "utf-8"
 }
 
-version = "0.6.2"
+version = "0.7"
 group = "me.mindlessly.nec"
 archivesBaseName = "NotEnoughCoins"
 
@@ -34,23 +53,39 @@ minecraft {
     runDir = "run"
 
     mappings = "stable_22"
+    // clientRunArgs += ["--tweakClass=gg.essential.loader.stage0.EssentialSetupTweaker"]
+}
+
+jar {
+    manifest {
+        attributes("TweakClass": "gg.essential.loader.stage0.EssentialSetupTweaker")
+    }
+}
+sourceJar {
+    enabled = false
+}
+
+// Automatic version replacements
+task processSource(type: Sync) {
+    from sourceSets.main.java
+    inputs.property 'version', project.version
+    filter(ReplaceTokens, tokens: [version: project.version])
+    into "$buildDir/src"
+}
+
+compileJava {
+    source = processSource.outputs
 }
 
 processResources {
-    // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
- }
+}

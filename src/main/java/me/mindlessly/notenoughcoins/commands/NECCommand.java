@@ -1,7 +1,9 @@
 package me.mindlessly.notenoughcoins.commands;
 
+import gg.essential.api.EssentialAPI;
+import me.mindlessly.notenoughcoins.Main;
+import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
-import me.mindlessly.notenoughcoins.utils.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -41,7 +43,7 @@ public class NECCommand extends CommandBase {
         return "/nec <subcommand> <arguments>";
     }
 
-    private void sendHelp(ICommandSender sender) {
+    public void sendHelp(ICommandSender sender) {
         List<String> commandUsages = new LinkedList<>();
         for (Subcommand subcommand : this.subcommands) {
             commandUsages.add(EnumChatFormatting.AQUA + "/nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
@@ -55,28 +57,30 @@ public class NECCommand extends CommandBase {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         if (args.length == 0) {
-            sendHelp(sender);
+            EssentialAPI.getGuiUtil().openScreen(Main.config.gui());
             return;
         }
         for (Subcommand subcommand : this.subcommands) {
             if (Objects.equals(args[0], subcommand.getCommandName())) {
                 if (!subcommand.processCommand(sender, Arrays.copyOfRange(args, 1, args.length))) {
                     // processCommand returned false
-                    Utils.sendMessageWithPrefix("&cFailed to execute command, usage: /nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender),
-                            sender);
+                    Utils.sendMessageWithPrefix("&cFailed to execute command, command usage: /nec " + subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
                 }
                 return;
             }
         }
-        Utils.sendMessageWithPrefix(EnumChatFormatting.RED + "The subcommand wasn't found, please refer to the help message below for the list of subcommands",
-                sender);
+        Utils.sendMessageWithPrefix(EnumChatFormatting.RED + "The subcommand wasn't found, please refer to the help message below for the list of subcommands");
         sendHelp(sender);
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+        List<String> possibilities = new LinkedList<>();
+        for (Subcommand subcommand : subcommands) {
+            possibilities.add(subcommand.getCommandName());
+        }
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, "toggle", "minpercent", "minprofit", "setkey", "speed", "alertsound");
+            return getListOfStringsMatchingLastWord(args, possibilities);
         }
         return null;
     }
