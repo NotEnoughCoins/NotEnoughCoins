@@ -53,7 +53,6 @@ public class Toggle implements Subcommand {
     public static void flip(boolean showMessage) {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (Config.enabled) {
-            Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
             if (showMessage)
                 Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
             try {

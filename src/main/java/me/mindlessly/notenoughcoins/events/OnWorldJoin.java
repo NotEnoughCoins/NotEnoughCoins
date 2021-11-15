@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 public class OnWorldJoin {
 
+	
     @SubscribeEvent
     public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         Timer timer = new Timer();
@@ -19,7 +20,7 @@ public class OnWorldJoin {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Toggle.flip(true);
+                    Toggle.flip(false);
                 }
             }, 2000);
         } else {
