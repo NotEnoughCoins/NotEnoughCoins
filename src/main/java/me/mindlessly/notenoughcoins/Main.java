@@ -1,37 +1,31 @@
 package me.mindlessly.notenoughcoins;
 
 import me.mindlessly.notenoughcoins.commands.NECCommand;
-import me.mindlessly.notenoughcoins.commands.subcommands.*;
+import me.mindlessly.notenoughcoins.commands.subcommands.Help;
+import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
+import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
 import me.mindlessly.notenoughcoins.events.ChatReceivedEvent;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
-import me.mindlessly.notenoughcoins.utils.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Config;
 import me.mindlessly.notenoughcoins.utils.Reference;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.NAME)
+@Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
 public class Main {
     public static boolean checkedForUpdate = false;
-
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        ConfigHandler.init();
-    }
+    public static NECCommand commandManager = new NECCommand(new Subcommand[]{
+            new Toggle(),
+            new Help()
+    });
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        ClientCommandHandler.instance.registerCommand(new NECCommand(new Subcommand[]{
-                new MinPercent(),
-                new MinProfit(),
-                new SetKey(),
-                new Speed(),
-                new Toggle(),
-                new AlertSound()
-        }));
+        Config.INSTANCE.preload();
+        ClientCommandHandler.instance.registerCommand(commandManager);
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
         MinecraftForge.EVENT_BUS.register(new ChatReceivedEvent());
     }
