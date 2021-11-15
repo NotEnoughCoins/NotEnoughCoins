@@ -27,7 +27,7 @@ repositories {
 }
 dependencies {
     implementation "gg.essential:loader-launchwrapper:1.1.2"
-    implementation "gg.essential:essential-1.8.9-forge:1543+release-launch"
+    implementation "gg.essential:essential-1.8.9-forge:1560+"
 }
 shadowJar {
     dependencies {
