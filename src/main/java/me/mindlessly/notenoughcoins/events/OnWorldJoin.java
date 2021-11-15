@@ -13,10 +13,13 @@ import java.util.TimerTask;
 public class OnWorldJoin {
 
 	
+	boolean hasRan = false;
+	
     @SubscribeEvent
     public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         Timer timer = new Timer();
-        if (Config.enabled) {
+        if (Config.enabled && !hasRan) {
+            hasRan = false;
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
