@@ -91,7 +91,6 @@ public class Toggle implements Subcommand {
             }, 60000, 60000, TimeUnit.MILLISECONDS);
 
         } else {
-            Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
             if (showMessage)
                 Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
             scheduledExecutorService.shutdownNow();
@@ -163,8 +162,6 @@ public class Toggle implements Subcommand {
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
         Config.enabled = !Config.enabled;
-        if(Config.enabled) Utils.sendMessageWithPrefix("&aFlipper alerts enabled.");
-        else Utils.sendMessageWithPrefix("&cFlipper alerts disabled.");
         updateConfig(true);
         return true;
     }
