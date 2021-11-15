@@ -8,11 +8,12 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChatReceivedEvent {
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void chat(ClientChatReceivedEvent event) {
-        if (!event.message.getUnformattedText().startsWith("Your new API key is ")) return;
-        String key = event.message.getUnformattedText().split("key is ")[1];
-        Config.apiKey = key;
-        UChat.chat(EnumChatFormatting.GOLD + ("NEC ") + "§aAPI Key set to " + key);
-    }
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void chat(ClientChatReceivedEvent event) {
+		if (!event.message.getUnformattedText().startsWith("Your new API key is "))
+			return;
+		String key = event.message.getUnformattedText().split("key is ")[1];
+		Config.apiKey = key;
+		UChat.chat(EnumChatFormatting.GOLD + ("NEC ") + "§aAPI Key set to " + key);
+	}
 }
