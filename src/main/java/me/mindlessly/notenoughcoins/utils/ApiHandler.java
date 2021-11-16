@@ -122,15 +122,6 @@ public class ApiHandler {
 				}
 			}
 			Toggle.secondDataset.putAll(initialDataset);
-			LinkedHashMap<String, Double> unsortedMap = Toggle.secondDataset;
-			// LinkedHashMap preserve the ordering of elements in which they are inserted
-			LinkedHashMap<String, Double> sortedMap = new LinkedHashMap<>();
-
-			// Use Comparator.reverseOrder() for reverse ordering
-			unsortedMap.entrySet().stream().sorted(HashMap.Entry.comparingByValue(Comparator.reverseOrder()))
-					.forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
-
-			Toggle.secondDataset = sortedMap;
 		} catch (Exception e) {
 			Reference.logger.error(e.getMessage(), e);
 		}
