@@ -111,22 +111,24 @@ public class Toggle implements Subcommand {
 						int demand = demandDataset.getOrDefault(rawNames.get(count), 0);
 
 						for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
-							long profit = Math.abs(entry.getValue().longValue());
-							IChatComponent result = new ChatComponentText(EnumChatFormatting.AQUA + "[NEC] "
-									+ EnumChatFormatting.YELLOW + entry.getKey() + " "
-									+ (profit > 200_000 || purse / 5 < 100_000 ? EnumChatFormatting.GREEN
-									: profit > 100_000 || purse / 5 < 200_000 ? EnumChatFormatting.GOLD
-									: EnumChatFormatting.YELLOW)
-									+ "+$" + Utils.formatValue(profit) + " " + EnumChatFormatting.GOLD + "PP:" + " "
-									+ EnumChatFormatting.GREEN + percentageProfit.get(count).intValue() + "%" + " "
-									+ EnumChatFormatting.GOLD
-									+ (demand == 0 ? "Sales:" + " " + EnumChatFormatting.GREEN + demand + "/day" : ""));
+							if(demand >= Config.demand) {
+								long profit = Math.abs(entry.getValue().longValue());
+								IChatComponent result = new ChatComponentText(EnumChatFormatting.AQUA + "[NEC] "
+										+ EnumChatFormatting.YELLOW + entry.getKey() + " "
+										+ (profit > 200_000 || purse / 5 < 100_000 ? EnumChatFormatting.GREEN
+										: profit > 100_000 || purse / 5 < 200_000 ? EnumChatFormatting.GOLD
+										: EnumChatFormatting.YELLOW)
+										+ "+$" + Utils.formatValue(profit) + " " + EnumChatFormatting.GOLD + "PP:" + " "
+										+ EnumChatFormatting.GREEN + percentageProfit.get(count).intValue() + "%" + " "
+										+ EnumChatFormatting.GOLD
+										+ (demand == 0 ? "Sales:" + " " + EnumChatFormatting.GREEN + demand + "/day" : ""));
 
-							ChatStyle style = new ChatStyle().setChatClickEvent(
-									new ClickEvent(ClickEvent.Action.RUN_COMMAND, commands.get(count)));
-							result.setChatStyle(style);
-							player.addChatMessage(result);
-							if (Config.alertSounds) USound.INSTANCE.playPlingSound();
+								ChatStyle style = new ChatStyle().setChatClickEvent(
+										new ClickEvent(ClickEvent.Action.RUN_COMMAND, commands.get(count)));
+								result.setChatStyle(style);
+								player.addChatMessage(result);
+								if (Config.alertSounds) USound.INSTANCE.playPlingSound();
+							}
 							count++;
 						}
 					}

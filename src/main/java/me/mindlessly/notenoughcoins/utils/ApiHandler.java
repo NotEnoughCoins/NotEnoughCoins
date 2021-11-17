@@ -71,10 +71,8 @@ public class ApiHandler {
 				}
 
 				if (jsonElement.getValue().getAsJsonObject().has("sales")) {
-					int sales = jsonElement.getValue().getAsJsonObject().get("sales").getAsInt();
-					if(sales >= Config.demand) {
-						demand.put(jsonElement.getKey(), sales);
-					}
+					demand.put(jsonElement.getKey(),
+							(jsonElement.getValue().getAsJsonObject().get("sales").getAsInt()));
 				}
 
 			}
