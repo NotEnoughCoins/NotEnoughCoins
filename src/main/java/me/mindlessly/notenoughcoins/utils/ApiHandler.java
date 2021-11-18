@@ -22,7 +22,7 @@ public class ApiHandler {
 			Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
 	private static final ArrayList<String> nameFilter = new ArrayList<>(Arrays.asList("STARRED", "SALMON", "PERFECT",
 			"BEASTMASTER", "MASTER_SKULL", "BLAZE", "TITANIUM", "SUPER_HEAVY", "WAND_OF", "FARM_ARMOR", "PURE_MITHRIL",
-			"STEEL_CHESTPLATE", "MIDAS", "TRIBAL_SPEAR"));
+			"STEEL_CHESTPLATE", "MIDAS", "TRIBAL_SPEAR", "PICKONIMBUS", "WOLF"));
 
 	public static void getBins(HashMap<String, Double> dataset) {
 		boolean skip;
