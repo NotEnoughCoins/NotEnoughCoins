@@ -32,6 +32,16 @@ public class Config extends Vigilant {
     public static int minProfit = 50000;
 
     @Property(
+            type = PropertyType.NUMBER,
+            category = "Flipping",
+            subcategory = "Basic",
+            name = "Demand",
+            description = "The minimum sales per day of a product for the mod to send you a flip",
+            max = Integer.MAX_VALUE
+    )
+    public static int demand = 3;
+
+    @Property(
             type = PropertyType.PERCENT_SLIDER,
             category = "Flipping",
             subcategory = "Basic",
