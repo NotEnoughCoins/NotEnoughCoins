@@ -5,8 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.config.Config;
-import net.minecraft.client.Minecraft;
+import me.mindlessly.notenoughcoins.Config;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;

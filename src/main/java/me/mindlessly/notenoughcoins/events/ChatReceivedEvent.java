@@ -1,7 +1,7 @@
 package me.mindlessly.notenoughcoins.events;
 
 import gg.essential.universal.UChat;
-import me.mindlessly.notenoughcoins.config.Config;
+import me.mindlessly.notenoughcoins.Config;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
