@@ -1,4 +1,4 @@
-package me.mindlessly.notenoughcoins.config;
+package me.mindlessly.notenoughcoins;
 
 import gg.essential.universal.UDesktop;
 import gg.essential.vigilance.Vigilant;
@@ -25,7 +25,7 @@ public class Config extends Vigilant {
             category = "Flipping",
             subcategory = "Basic",
             name = "Minimum Profit",
-            description = "The minimum amount of profit that is required for the mod to send you a flip",
+            description = "The minimum amount of profit that is required for the mod to send you the flip",
             max = Integer.MAX_VALUE,
             increment = 10000
     )
@@ -36,17 +36,17 @@ public class Config extends Vigilant {
             category = "Flipping",
             subcategory = "Basic",
             name = "Demand",
-            description = "The minimum sales per day of a product for the mod to send you a flip",
+            description = "The minimum sales per day that is required for the mod to send you the flip",
             max = Integer.MAX_VALUE
     )
-    public static int demand = 3;
+    public static int minDemand = 3;
 
     @Property(
             type = PropertyType.PERCENT_SLIDER,
             category = "Flipping",
             subcategory = "Basic",
             name = "Minimum Profit Percentage",
-            description = "The minimum percentage of profit that is required for the mod to send you a flip"
+            description = "The minimum percentage of profit that is required for the mod to send you the flip"
     )
     public static float minProfitPercentage = 0F;
 
@@ -90,7 +90,6 @@ public class Config extends Vigilant {
     }
 
     public static final File CONFIG_FILE = new File("config/nec.toml");
-    private boolean last = false;
 
     public Config() {
         super(CONFIG_FILE, "NEC Configuration");

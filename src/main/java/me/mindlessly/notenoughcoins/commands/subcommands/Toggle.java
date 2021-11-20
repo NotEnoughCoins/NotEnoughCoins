@@ -2,7 +2,7 @@ package me.mindlessly.notenoughcoins.commands.subcommands;
 
 import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
-import me.mindlessly.notenoughcoins.config.Config;
+import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -111,7 +111,7 @@ public class Toggle implements Subcommand {
 						int demand = demandDataset.getOrDefault(rawNames.get(count), 0);
 
 						for (Map.Entry<String, Double> entry : namedDataset.entrySet()) {
-							if(demand >= Config.demand) {
+							if(demand >= Config.minDemand) {
 								long profit = Math.abs(entry.getValue().longValue());
 								IChatComponent result = new ChatComponentText(EnumChatFormatting.AQUA + "[NEC] "
 										+ EnumChatFormatting.YELLOW + entry.getKey() + " "

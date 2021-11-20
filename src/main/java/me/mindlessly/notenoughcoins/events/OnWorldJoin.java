@@ -2,7 +2,7 @@ package me.mindlessly.notenoughcoins.events;
 
 import me.mindlessly.notenoughcoins.Main;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.config.Config;
+import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -18,7 +18,7 @@ public class OnWorldJoin {
 	public void onEntityJoinWorld(FMLNetworkEvent.ClientConnectedToServerEvent event) {
 		Timer timer = new Timer();
 		if (Config.enabled && !hasRan) {
-			hasRan = false;
+			hasRan = true;
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {

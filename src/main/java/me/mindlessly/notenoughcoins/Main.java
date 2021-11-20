@@ -4,7 +4,6 @@ import me.mindlessly.notenoughcoins.commands.NECCommand;
 import me.mindlessly.notenoughcoins.commands.subcommands.Help;
 import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.config.Config;
 import me.mindlessly.notenoughcoins.events.ChatReceivedEvent;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
 import net.minecraftforge.client.ClientCommandHandler;
