@@ -179,7 +179,7 @@ public class Utils {
 
     public static void blacklistMessage() {
         failedTimes++;
-        if (failedTimes > 3) {
+        if (failedTimes > 20) {
             Utils.sendMessageWithPrefix("&cFailed to fetch from NEC backend, this might be caused by one of the following reasons:\n" +
                 "&c1. The backend server is down, and should recover within in next few minutes or hours\n" +
                 "&c2. You have been blacklisted from the mod for using macro scripts\n" +
