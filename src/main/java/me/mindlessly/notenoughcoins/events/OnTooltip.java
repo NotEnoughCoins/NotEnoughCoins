@@ -20,11 +20,6 @@ public class OnTooltip {
             String bestMethod = null;
             int bestPrice = 0;
             boolean shifted = UKeyboard.isShiftKeyDown();
-            if (Main.averageItemMap.containsKey(id) &&
-                (Main.averageItemMap.get(id).ahAvgPrice - Utils.getTax(Main.averageItemMap.get(id).ahAvgPrice)) > bestPrice) {
-                bestPrice = Main.averageItemMap.get(id).ahAvgPrice - Utils.getTax(Main.averageItemMap.get(id).ahAvgPrice);
-                bestMethod = "Auction ($" + Utils.formatValue(shifted ? (long) bestPrice * event.itemStack.stackSize : bestPrice) + ")";
-            }
             if (Main.bazaarItem.containsKey(id) && Main.bazaarItem.get(id) > bestPrice) {
                 bestPrice = Main.bazaarItem.get(id);
                 bestMethod = "Bazaar ($" + Utils.formatValue(shifted ? (long) bestPrice * event.itemStack.stackSize : bestPrice) + ")";
