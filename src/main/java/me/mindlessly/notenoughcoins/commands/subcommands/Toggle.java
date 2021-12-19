@@ -79,7 +79,7 @@ public class Toggle implements Subcommand {
                                 }
                                 double profitPercentage = ((double) profit / (double) price);
                                 if (price <= Main.balance && profit >= Config.minProfit && profitPercentage >= Config.minProfitPercentage && demand >= Config.minDemand) { // min profit etc checks
-                                    if (!(price + item.get("profit").getAsInt() * 0.6 > Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice)) { // Manipulation checks
+                                    if (!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice)) { // Manipulation checks
                                         if (!Authenticator.myUUID.toLowerCase(Locale.ROOT).replaceAll("-", "").equals(item.get("auctioneer").getAsString())) { //not self
                                             Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                     Utils.getProfitText(profit) + " " + // profit
