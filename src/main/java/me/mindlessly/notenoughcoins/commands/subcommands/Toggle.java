@@ -61,8 +61,7 @@ public class Toggle implements Subcommand {
                          * {"amount":1,"auction_id":"770d177104dd4c62b3f5610bcb0269e0","auctioneer":"5c003dfe48e741e497dcedbb2fe13475",
                          * "bin":true,"category":"accessories","dungeon_level":null,"enchantments":{},"end":1638823899955,"hpb_count":0,
                          * "id":"SHARP_SHARK_TOOTH_NECKLACE","item_name":"Sharp Shark Tooth Necklace",
-                         * "lore":"\u00a77Strength: <REDACTED TO SAVE SPACE>", "pet_info":null,"price":135000,
-                         * "profile_id":"d2bcb7b76cd14837b19c03ea258e51fd","profit":5000,"rarity":"EPIC",
+                         * "pet_info":null,"price":135000, "profile_id":"d2bcb7b76cd14837b19c03ea258e51fd","profit":5000,"rarity":"EPIC",
                          * "recombobulated":false,"reforge":null,"starred":false,"start":1638802299955,"generated_at":1638802300983}
                          */
                         if (!Main.processedItem.containsKey(itemID)) { // havent been processed
