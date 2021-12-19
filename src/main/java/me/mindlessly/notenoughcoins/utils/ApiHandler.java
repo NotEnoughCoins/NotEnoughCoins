@@ -51,8 +51,7 @@ public class ApiHandler {
                 ScorePlayerTeam scorePlayerTeam = scoreboard.getPlayersTeam(score.getPlayerName());
                 String line = Utils.removeColorCodes(ScorePlayerTeam.formatPlayerName(scorePlayerTeam, score.getPlayerName()));
                 if (line.contains("Purse: ") || line.contains("Piggy: ")) {
-                    Main.balance = Double.parseDouble(line.replace("Purse: ", "")
-                        .replace("Piggy: ", "").replaceAll(",", ""));
+                    Main.balance = Double.parseDouble(line.replaceAll("[^\\d.]", ""));
                     return;
                 }
             }
