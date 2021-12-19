@@ -9,12 +9,16 @@ import me.mindlessly.notenoughcoins.Main;
 import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.objects.AverageItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,12 +46,13 @@ public class ApiHandler {
     public static void updatePurse() throws IOException {
         if (Utils.isOnSkyblock()) {
             Scoreboard scoreboard = Minecraft.getMinecraft().theWorld.getScoreboard();
-            Collection<ScoreObjective> sidebarObjectives = scoreboard.getScoreObjectives();
-            for (ScoreObjective objective : sidebarObjectives) {
-                if (objective.getDisplayName().contains("Purse: ") || objective.getDisplayName().contains("Piggy: ")) {
-                    Main.balance = Double.parseDouble(objective.getDisplayName().replace("Purse: ", "")
-                        .replace("Piggy: ", "").replace(",", ""));
-                    Reference.logger.info("Got balance from scoreboard: " + Main.balance);
+            List<Score> scores = new LinkedList<>(scoreboard.getSortedScores(scoreboard.getObjectiveInDisplaySlot(1)));
+            for (Score score : scores) {
+                ScorePlayerTeam scorePlayerTeam = scoreboard.getPlayersTeam(score.getPlayerName());
+                String line = Utils.removeColorCodes(ScorePlayerTeam.formatPlayerName(scorePlayerTeam, score.getPlayerName()));
+                if (line.contains("Purse: ") || line.contains("Piggy: ")) {
+                    Main.balance = Double.parseDouble(line.replace("Purse: ", "")
+                        .replace("Piggy: ", "").replaceAll(",", ""));
                     return;
                 }
             }
@@ -76,7 +81,6 @@ public class ApiHandler {
         }
         Main.balance = profilesArray.get(profileIndex).getAsJsonObject().get("members").getAsJsonObject().get(Authenticator.myUUID)
             .getAsJsonObject().get("coin_purse").getAsDouble();
-        Reference.logger.info("Got balance from API: " + Main.balance);
     }
 
     public static void updateLBIN() throws IOException {

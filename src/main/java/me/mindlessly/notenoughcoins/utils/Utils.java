@@ -199,4 +199,8 @@ public class Utils {
             }
         }).start();
     }
+
+    public static String removeColorCodes(String in) {
+        return in.replaceAll("(?i)\\u00A7.", "");
+    }
 }

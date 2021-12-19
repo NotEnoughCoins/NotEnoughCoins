@@ -17,8 +17,9 @@ public class Tasks {
                     break;
                 } catch (IOException e) {
                     try {
+                        Utils.sendMessageWithPrefix("&cFailed to update balance, please check if you set your API key correctly.");
                         Thread.sleep(60000); // Wait until the user sets the API key
-                    } catch (InterruptedException ex) {
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     e.printStackTrace();
