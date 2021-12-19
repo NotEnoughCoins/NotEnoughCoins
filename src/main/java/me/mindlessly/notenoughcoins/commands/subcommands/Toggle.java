@@ -45,6 +45,7 @@ public class Toggle implements Subcommand {
             public void run() {
                 Utils.sendMessageWithPrefix("&eFlipper starting...");
                 while (Config.enabled) {
+                    Date start = new Date();
                     JsonElement json;
                     try {
                         running = true;
@@ -83,7 +84,7 @@ public class Toggle implements Subcommand {
                                             Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                     Utils.getProfitText(profit) + " " + // profit
                                                     "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + "&eSPD: &a" + demand + " " + // price percentage and demand
-                                                    (Config.debug ? "&eL: &a" + (new Date().getTime() - item.get("generated_at").getAsLong()) + "ms" : ""), // debug
+                                                    (Config.debug ? "&eL: &a" + (new Date().getTime() - start.getTime()) + "ms" : ""), // debug
                                                 new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + itemID));
                                             if (Config.alertSounds && !Main.justPlayedASound) {
                                                 Main.justPlayedASound = true;
