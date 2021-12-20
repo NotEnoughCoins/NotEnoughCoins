@@ -9,6 +9,7 @@ import gg.essential.universal.UChat;
 import gg.essential.universal.wrappers.message.UTextComponent;
 import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Reference;
+import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.item.ItemStack;
@@ -186,6 +187,7 @@ public class Utils {
                 "&c3. You are using a version of the mod that is not compatible with the backend server\n" +
                 "&cTherefore the mod has disabled flipping, if you wish to re-enable it when this is sorted out, please use the command /nec or /nec toggle");
             Config.enabled = false;
+            Toggle.updateConfig(true);
             failedTimes = 0;
         }
     }

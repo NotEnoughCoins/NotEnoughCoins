@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Config extends Vigilant {
     public static ArrayList<String> categoryFilter = new ArrayList<>(
@@ -98,8 +100,12 @@ public class Config extends Vigilant {
     public Config() {
         super(CONFIG_FILE, "NEC Configuration", new JVMAnnotationPropertyCollector(), new CustomSorting());
         initialize();
-        registerListener("enabled", e -> Toggle.updateConfig(false));
-
+        registerListener("enabled", e -> new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Toggle.updateConfig(false);
+            }
+        }, 100)); // We have to run it later because listener is called before the variable is set
     }
 
     @Property(

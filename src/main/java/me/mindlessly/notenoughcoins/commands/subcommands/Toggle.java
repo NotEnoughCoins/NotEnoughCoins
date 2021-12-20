@@ -100,8 +100,8 @@ public class Toggle implements Subcommand {
                     }
                     Main.justPlayedASound = false;
                 }
-                Utils.sendMessageWithPrefix("&eFlipper stopping...");
                 running = false;
+                Utils.sendMessageWithPrefix("&eFlipper stopping...");
             }
         }, 0);
         new Timer().schedule(new TimerTask() {
