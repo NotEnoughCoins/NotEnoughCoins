@@ -87,7 +87,7 @@ public class ApiHandler {
         JsonObject json;
         json = Objects.requireNonNull(Authenticator.getAuthenticatedJson("https://nec.robothanzo.dev/lowest_bin"))
             .getAsJsonObject();
-        for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+        for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject("result").entrySet()) {
             Main.lbinItem.put(entry.getKey(), entry.getValue().getAsInt());
         }
     }
