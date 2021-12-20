@@ -53,7 +53,12 @@ public class Toggle implements Subcommand {
                     } catch (Exception e) {
                         e.printStackTrace();
                         blacklistMessage();
-                        break;
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                        continue;
                     }
                     long responseLatency = new Date().getTime() - start.getTime();
                     for (JsonElement element : json.getAsJsonObject().getAsJsonArray("result")) {
