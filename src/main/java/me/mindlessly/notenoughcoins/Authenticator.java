@@ -77,7 +77,7 @@ public class Authenticator {
         return token;
     }
 
-    public String authenticate(boolean withProgress) throws IOException, AuthenticationException, NullPointerException {
+    public void authenticate(boolean withProgress) throws IOException, AuthenticationException, NullPointerException {
         Session session = Minecraft.getMinecraft().getSession();
         String sessionToken = session.getToken(); // In case you are wondering, this is for authorization purposes and is never sent to the NEC server
         if (withProgress)
@@ -89,7 +89,6 @@ public class Authenticator {
         if (withProgress)
             progressBar.step("Authenticating (2/2)");
         this.token = Objects.requireNonNull(verifyAuth(tempToken));
-        return this.token;
     }
 
     public JsonObject getJwtPayload(String jwt) {

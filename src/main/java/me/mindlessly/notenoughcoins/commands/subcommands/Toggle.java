@@ -55,6 +55,7 @@ public class Toggle implements Subcommand {
                         blacklistMessage();
                         break;
                     }
+                    long responseLatency = new Date().getTime() - start.getTime();
                     for (JsonElement element : json.getAsJsonObject().getAsJsonArray("result")) {
                         JsonObject item = element.getAsJsonObject();
                         String itemID = item.get("auction_id").getAsString();
@@ -84,7 +85,8 @@ public class Toggle implements Subcommand {
                                             Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                     Utils.getProfitText(profit) + " " + // profit
                                                     "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + "&eSPD: &a" + demand + " " + // price percentage and demand
-                                                    (Config.debug ? "&eL: &a" + (new Date().getTime() - start.getTime()) + "ms" : ""), // debug
+                                                    (Config.debug ? "&eRL: &a" + responseLatency + "ms" : "") + // debug: response latency
+                                                    (Config.debug ? "&ePL: &a" + (new Date().getTime() - responseLatency) + "ms" : ""), // debug: processing latency
                                                 new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + itemID));
                                             if (Config.alertSounds && !Main.justPlayedASound) {
                                                 Main.justPlayedASound = true;
