@@ -85,8 +85,8 @@ public class Toggle implements Subcommand {
                                             Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                     Utils.getProfitText(profit) + " " + // profit
                                                     "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + "&eSPD: &a" + demand + " " + // price percentage and demand
-                                                    (Config.debug ? "&eRL: &a" + responseLatency + "ms" : "") + // debug: response latency
-                                                    (Config.debug ? "&ePL: &a" + (new Date().getTime() - responseLatency) + "ms" : ""), // debug: processing latency
+                                                    (Config.debug ? "&eRL: &a" + responseLatency + "ms" : "") + " " + // debug: response latency
+                                                    (Config.debug ? "&ePL: &a" + (new Date().getTime() - start.getTime() - responseLatency) + "ms" : "") + " ", // debug: processing latency
                                                 new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + itemID));
                                             if (Config.alertSounds && !Main.justPlayedASound) {
                                                 Main.justPlayedASound = true;
