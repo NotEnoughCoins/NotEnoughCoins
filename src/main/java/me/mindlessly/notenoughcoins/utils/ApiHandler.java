@@ -52,6 +52,7 @@ public class ApiHandler {
                 String line = Utils.removeColorCodes(ScorePlayerTeam.formatPlayerName(scorePlayerTeam, score.getPlayerName()));
                 if (line.contains("Purse: ") || line.contains("Piggy: ")) {
                     Main.balance = Double.parseDouble(line.replaceAll("[^\\d.]", ""));
+                    Reference.logger.info("Updated balance via scoreboard to: " + String.format("%.1f", Main.balance));
                     return;
                 }
             }
@@ -80,6 +81,7 @@ public class ApiHandler {
         }
         Main.balance = profilesArray.get(profileIndex).getAsJsonObject().get("members").getAsJsonObject().get(Authenticator.myUUID)
             .getAsJsonObject().get("coin_purse").getAsDouble();
+        Reference.logger.info("Updated balance via Hypixel API to: " + String.format("%.1f", Main.balance));
     }
 
     public static void updateLBIN() throws IOException {

@@ -12,7 +12,9 @@ import net.minecraft.event.ClickEvent;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
@@ -46,6 +48,7 @@ public class Toggle implements Subcommand {
             public void run() {
                 Utils.sendMessageWithPrefix("&eFlipper starting...");
                 while (Config.enabled) {
+                    if (Main.balance == 0) continue; // Don't flip when we haven't fetched the balance yet
                     Date start = new Date();
                     JsonElement json;
                     try {
@@ -105,22 +108,10 @@ public class Toggle implements Subcommand {
                         }
                     }
                     Main.justPlayedASound = false;
+                    Main.processedItem.entrySet().removeIf(item -> (Main.processedItem.get(item.getKey()).getTime() - new Date().getTime()) <= 0);
                 }
                 running = false;
                 Utils.sendMessageWithPrefix("&eFlipper stopping...");
-            }
-        }, 0);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                while (Config.enabled) {
-                    try {
-                        new LinkedList<>(Main.processedItem.keySet()).removeIf(itemID -> (Main.processedItem.get(itemID).getTime() - new Date().getTime()) <= 0);
-                        Thread.sleep(10000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }, 0);
     }
