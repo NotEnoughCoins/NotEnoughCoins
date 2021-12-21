@@ -23,7 +23,6 @@ public class Tasks {
                         ex.printStackTrace();
                     }
                     e.printStackTrace();
-                    break;
                 }
             }
         }

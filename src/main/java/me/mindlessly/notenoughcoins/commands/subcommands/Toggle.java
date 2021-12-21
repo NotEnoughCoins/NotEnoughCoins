@@ -12,6 +12,7 @@ import net.minecraft.event.ClickEvent;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
@@ -113,10 +114,10 @@ public class Toggle implements Subcommand {
             @Override
             public void run() {
                 while (Config.enabled) {
-                    Main.processedItem.keySet().removeIf(itemID -> (Main.processedItem.get(itemID).getTime() - new Date().getTime()) <= 0);
                     try {
+                        new LinkedList<>(Main.processedItem.keySet()).removeIf(itemID -> (Main.processedItem.get(itemID).getTime() - new Date().getTime()) <= 0);
                         Thread.sleep(10000);
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
