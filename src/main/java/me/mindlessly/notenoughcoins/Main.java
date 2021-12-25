@@ -4,7 +4,8 @@ import me.mindlessly.notenoughcoins.commands.NECCommand;
 import me.mindlessly.notenoughcoins.commands.subcommands.Help;
 import me.mindlessly.notenoughcoins.commands.subcommands.Subcommand;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.events.ChatReceivedEvent;
+import me.mindlessly.notenoughcoins.commands.subcommands.Token;
+import me.mindlessly.notenoughcoins.events.OnChatReceived;
 import me.mindlessly.notenoughcoins.events.OnTick;
 import me.mindlessly.notenoughcoins.events.OnTooltip;
 import me.mindlessly.notenoughcoins.events.OnWorldJoin;
@@ -30,7 +31,8 @@ public class Main {
     public static boolean checkedForUpdate = false;
     public static NECCommand commandManager = new NECCommand(new Subcommand[]{
         new Toggle(),
-        new Help()
+        new Help(),
+        new Token()
     });
     public static Map<String, AverageItem> averageItemMap = new HashMap<>();
     public static Map<String, Date> processedItem = new HashMap<>(); // Date is the expiry time, indicates when the auction ends and should be purged to save memory for the long run
@@ -57,7 +59,7 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new OnWorldJoin());
         MinecraftForge.EVENT_BUS.register(new OnTick());
         MinecraftForge.EVENT_BUS.register(new OnTooltip());
-        MinecraftForge.EVENT_BUS.register(new ChatReceivedEvent());
+        MinecraftForge.EVENT_BUS.register(new OnChatReceived());
         Tasks.updateAverageItem.start();
         Tasks.updateBalance.start();
         Tasks.updateBazaarItem.start();

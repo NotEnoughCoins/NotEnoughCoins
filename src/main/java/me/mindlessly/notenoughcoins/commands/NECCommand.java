@@ -46,8 +46,10 @@ public class NECCommand extends CommandBase {
 	public void sendHelp(ICommandSender sender) {
 		List<String> commandUsages = new LinkedList<>();
 		for (Subcommand subcommand : this.subcommands) {
-			commandUsages.add(EnumChatFormatting.AQUA + "/nec " + subcommand.getCommandName() + " "
-					+ subcommand.getCommandUsage(sender));
+            if(!subcommand.isHidden()) {
+                commandUsages.add(EnumChatFormatting.AQUA + "/nec " + subcommand.getCommandName() + " "
+                    + subcommand.getCommandUsage() + EnumChatFormatting.DARK_AQUA + " - " + subcommand.getCommandDescription());
+            }
 		}
 		sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + "NEC " + EnumChatFormatting.GREEN
 				+ Reference.VERSION + "\n" + String.join("\n", commandUsages)));
@@ -64,7 +66,7 @@ public class NECCommand extends CommandBase {
 				if (!subcommand.processCommand(sender, Arrays.copyOfRange(args, 1, args.length))) {
 					// processCommand returned false
 					Utils.sendMessageWithPrefix("&cFailed to execute command, command usage: /nec "
-							+ subcommand.getCommandName() + " " + subcommand.getCommandUsage(sender));
+							+ subcommand.getCommandName() + " " + subcommand.getCommandUsage());
 				}
 				return;
 			}

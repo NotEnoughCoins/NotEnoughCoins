@@ -1,17 +1,20 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
+import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Main;
+import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.event.ClickEvent;
 
-public class Help implements Subcommand {
+public class Token implements Subcommand {
     @Override
     public String getCommandName() {
-        return "help";
+        return "token";
     }
 
     @Override
     public boolean isHidden() {
-        return false;
+        return true;
     }
 
     @Override
@@ -21,12 +24,14 @@ public class Help implements Subcommand {
 
     @Override
     public String getCommandDescription() {
-        return "Sends the help message";
+        return "Shows the current session token for API debugging purposes, do NOT share this with anyone!";
     }
 
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
-        Main.commandManager.sendHelp(sender);
+        if (Config.debug) {
+            Utils.sendMessageWithPrefix("&7Click to copy the token", new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, Main.authenticator.getToken()));
+        }
         return true;
     }
 }

@@ -76,6 +76,24 @@ public class Config extends Vigilant {
     )
     public static String blacklistedIDs = "";
     @Property(
+        type = PropertyType.BUTTON,
+        category = "Flipping",
+        subcategory = "Advanced",
+        name = "Blacklist Configuration Website",
+        description = "Configure the blacklist via this website"
+    )
+    public static void blacklistConfigure() {
+        UDesktop.browse(URI.create("https://nec.robothanzo.dev/panel/#/itemBlacklist"));
+    }
+    @Property(
+        type = PropertyType.SWITCH,
+        category = "Flipping",
+        subcategory = "Advanced",
+        name = "Manipulation Check",
+        description = "Whether the mod should check if the item was manipulated before sending the flip, DISABLE THIS AT YOUR OWN RISK AS YOU CAN LOSE YOUR MONEY TO MARKET MANIPULATORS"
+    )
+    public static boolean manipulationCheck = true;
+    @Property(
         type = PropertyType.TEXT,
         category = "Confidential",
         name = "API Key", protectedText = true,
@@ -110,17 +128,6 @@ public class Config extends Vigilant {
 
     @Property(
         type = PropertyType.BUTTON,
-        category = "Flipping",
-        subcategory = "Advanced",
-        name = "Blacklist Configuration Website",
-        description = "Configure the blacklist via this website"
-    )
-    public static void blacklistConfigure() {
-        UDesktop.browse(URI.create("https://nec.robothanzo.dev/panel/#/itemBlacklist"));
-    }
-
-    @Property(
-        type = PropertyType.BUTTON,
         category = "Links",
         name = "Patreon",
         description = "Donate to cover the server's hosting costs!"
@@ -128,7 +135,6 @@ public class Config extends Vigilant {
     public static void patreon() {
         UDesktop.browse(URI.create("https://www.patreon.com/robothanzo"));
     }
-
     @Property(
         type = PropertyType.BUTTON,
         category = "Links",

@@ -6,10 +6,12 @@ import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.Authenticator;
 import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Main;
+import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.event.ClickEvent;
 
+import java.sql.Ref;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -89,7 +91,7 @@ public class Toggle implements Subcommand {
                                 }
                                 double profitPercentage = ((double) profit / (double) price);
                                 if (price <= Main.balance && profit >= Config.minProfit && profitPercentage >= Config.minProfitPercentage && demand >= Config.minDemand) { // min profit etc checks
-                                    if (!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice)) { // Manipulation checks
+                                    if ((!Config.manipulationCheck)||(!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice))) { // Manipulation checks
                                         if (!Authenticator.myUUID.toLowerCase(Locale.ROOT).replaceAll("-", "").equals(item.get("auctioneer").getAsString())) { //not self
                                             Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                     Utils.getProfitText(profit) + " " + // profit
@@ -102,6 +104,8 @@ public class Toggle implements Subcommand {
                                                 USound.INSTANCE.playPlingSound();
                                             }
                                         }
+                                    } else {
+                                        Reference.logger.info("Failed manipulation check for " + item.get("item_name").getAsString() + " price " + price + " profit " + profit + " avg " + Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice);
                                     }
                                 }
                             }
@@ -122,8 +126,18 @@ public class Toggle implements Subcommand {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
+    public boolean isHidden() {
+        return false;
+    }
+
+    @Override
+    public String getCommandUsage() {
         return "";
+    }
+
+    @Override
+    public String getCommandDescription() {
+        return "Toggles the flipper on or off";
     }
 
     @Override
