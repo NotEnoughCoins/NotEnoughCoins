@@ -48,9 +48,10 @@ public class Config extends Vigilant {
         subcategory = "Basic",
         name = "Minimum Demand",
         description = "The minimum sales per day that is required for the mod to send you the flip",
-        max = Integer.MAX_VALUE
+        max = Integer.MAX_VALUE,
+        increment = 5
     )
-    public static int minDemand = 3;
+    public static int minDemand = 10;
     @Property(
         type = PropertyType.PERCENT_SLIDER,
         category = "Flipping",
