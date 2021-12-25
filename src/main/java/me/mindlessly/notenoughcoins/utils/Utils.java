@@ -99,16 +99,20 @@ public class Utils {
     }
 
     public static String getProfitText(int profit) {
+        EnumChatFormatting color = EnumChatFormatting.GRAY;
+        if (profit >= 10_000_000) {
+            color = EnumChatFormatting.AQUA;
+        }
         if (profit >= 1_000_000) {
-            return "&a+$" + formatValue(profit);
+            color = EnumChatFormatting.GREEN;
         }
         if (profit >= 500_000) {
-            return "&6+$" + formatValue(profit);
+            color = EnumChatFormatting.GOLD;
         }
         if (profit >= 100_000) {
-            return "&e+$" + formatValue(profit);
+            color = EnumChatFormatting.DARK_GREEN;
         }
-        return "&7+$" + formatValue(profit);
+        return color + "+$" + formatValue(profit);
     }
 
     public static boolean isOnSkyblock() {
