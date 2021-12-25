@@ -104,13 +104,13 @@ public class Utils {
             color = EnumChatFormatting.AQUA;
         }
         if (profit >= 1_000_000) {
-            color = EnumChatFormatting.GREEN;
+            color = EnumChatFormatting.DARK_GREEN;
         }
         if (profit >= 500_000) {
-            color = EnumChatFormatting.GOLD;
+            color = EnumChatFormatting.GREEN;
         }
         if (profit >= 100_000) {
-            color = EnumChatFormatting.DARK_GREEN;
+            color = EnumChatFormatting.GOLD;
         }
         return color + "+$" + formatValue(profit);
     }
