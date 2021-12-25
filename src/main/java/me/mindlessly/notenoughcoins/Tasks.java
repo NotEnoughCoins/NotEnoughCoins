@@ -178,16 +178,14 @@ public class Tasks {
                             if (price <= Main.balance && profit >= Config.minProfit && profitPercentage >= Config.minProfitPercentage && demand >= Config.minDemand) { // min profit etc checks
                                 if ((!Config.manipulationCheck)||(!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice))) { // Manipulation checks
                                     if (!Authenticator.myUUID.toLowerCase(Locale.ROOT).replaceAll("-", "").equals(item.get("auctioneer").getAsString())) { //not self
-                                        String emphasize = ((profit >= 100000) ? "\n                              " : ""); // Whether to send a new line to emphasize the flip
-                                        Utils.sendMessageWithPrefix(emphasize +
-                                                "&e" + item.get("item_name").getAsString() + " " + // item name
+                                        Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
                                                 Utils.getProfitText(profit) + " " + // profit
                                                 "&eP: &a" + Utils.formatValue(price) + " " + // price
                                                 "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + // profit %
                                                 "&eSPD: &a" + demand + " " + // demand
                                                 (Config.debug ? "&eRL: &a" + responseLatency + "ms" : "") + " " + // debug: response latency
                                                 (Config.debug ? "&ePL: &a" + (new Date().getTime() - start.getTime() - responseLatency) + "ms" : "") + " " + // debug: processing latency
-                                                emphasize,
+                                                ((profit >= 100000) ? "\n" : ""), // emphasize flips with large profit by sending a new line
                                             new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + itemID));
                                         if (Config.alertSounds && !Main.justPlayedASound) {
                                             Main.justPlayedASound = true;
