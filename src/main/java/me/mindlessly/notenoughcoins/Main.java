@@ -64,6 +64,7 @@ public class Main {
         Tasks.updateBalance.start();
         Tasks.updateBazaarItem.start();
         Tasks.updateLBINItem.start();
+        Tasks.flipping.start();
         Utils.runInAThread(ApiHandler::updateNPC);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Reference.logger.info("Logging out...");

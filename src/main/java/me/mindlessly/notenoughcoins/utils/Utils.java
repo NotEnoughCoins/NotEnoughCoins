@@ -187,7 +187,7 @@ public class Utils {
                 "&c3. You are using a version of the mod that is not compatible with the backend server\n" +
                 "&cTherefore the mod has disabled flipping, if you wish to re-enable it when this is sorted out, please use the command /nec or /nec toggle");
             Config.enabled = false;
-            Toggle.updateConfig(true);
+            Toggle.updateConfig();
             failedTimes = 0;
         }
     }

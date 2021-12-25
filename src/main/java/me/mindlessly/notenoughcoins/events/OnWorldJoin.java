@@ -21,7 +21,7 @@ public class OnWorldJoin {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Toggle.updateConfig(true);
+                    Toggle.updateConfig();
                 }
             }, 2000);
         }
