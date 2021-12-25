@@ -115,6 +115,13 @@ public class Config extends Vigilant {
         description = "Shows the best way to sell an item on its lore, the one that sells for the most will be shown"
     )
     public static boolean bestSellingMethod = true;
+    @Property(
+        type = PropertyType.SWITCH,
+        category = "QOL",
+        name = "Hide spam messages",
+        description = "Hide messages that contain predefined keywords of scam advertisements and etc"
+    )
+    public static boolean hideSpam = true;
 
     public Config() {
         super(CONFIG_FILE, "NEC Configuration", new JVMAnnotationPropertyCollector(), new CustomSorting());

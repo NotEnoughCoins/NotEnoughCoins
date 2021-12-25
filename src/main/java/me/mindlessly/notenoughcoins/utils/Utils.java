@@ -39,10 +39,11 @@ public class Utils {
         return new DecimalFormat(".##").format(amount / (double) div) + suffix;
     }
 
-    static JsonElement getJson(String jsonUrl) throws IOException {
+    public static JsonElement getJson(String jsonUrl) throws IOException {
         URL url = new URL(jsonUrl);
         URLConnection conn = url.openConnection();
         conn.setRequestProperty("Connection", "close");
+        conn.setRequestProperty("User-Agent", "NotEnoughCoins/1.0");
         return new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
     }
 

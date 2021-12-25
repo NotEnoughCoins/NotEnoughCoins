@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
@@ -39,6 +41,7 @@ public class Main {
     public static Map<String, Integer> lbinItem = new HashMap<>();
     public static Map<String, Integer> bazaarItem = new HashMap<>(); // Long is the item's instant sell price
     public static Map<String, Integer> npcItem = new HashMap<>();
+    public static List<String> chatFilters = new LinkedList<>();
     public static double balance = 0;
     public static boolean justPlayedASound = false; // This is to prevent multiple flips coming in at once and dinging the heck out of the user
 
@@ -65,6 +68,7 @@ public class Main {
         Tasks.updateBazaarItem.start();
         Tasks.updateLBINItem.start();
         Tasks.flipping.start();
+        Tasks.updateFilters.start();
         Utils.runInAThread(ApiHandler::updateNPC);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Reference.logger.info("Logging out...");

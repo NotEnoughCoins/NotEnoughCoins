@@ -10,7 +10,10 @@ import net.minecraft.event.ClickEvent;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static me.mindlessly.notenoughcoins.utils.Utils.blacklistMessage;
@@ -204,4 +207,30 @@ public class Tasks {
             }
         }
     }, "Not Enough Coins Flipping Task");
+
+    public static Thread updateFilters = new Thread(() -> {
+        while (true) {
+            if (Config.hideSpam) {
+                List<String> filters = new LinkedList<>();
+                try {
+                    for (Map.Entry<String, JsonElement> f : Utils.getJson("https://nec.robothanzo.dev/filter").getAsJsonObject().getAsJsonObject("result").entrySet()) {
+                        for (JsonElement filter : f.getValue().getAsJsonArray()) {
+                            filters.add(filter.getAsString().toLowerCase(Locale.ROOT));
+                        }
+                    }
+                    Main.chatFilters = filters;
+                    Reference.logger.info("Filter: " + Main.chatFilters);
+                    Thread.sleep(60000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }, "Not Enough Coins Filters Updating Task");
 }
