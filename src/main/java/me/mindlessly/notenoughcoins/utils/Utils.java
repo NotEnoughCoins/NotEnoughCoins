@@ -100,17 +100,17 @@ public class Utils {
 
     public static String getProfitText(int profit) {
         EnumChatFormatting color = EnumChatFormatting.GRAY;
-        if (profit >= 10_000_000) {
-            color = EnumChatFormatting.AQUA;
-        }
-        if (profit >= 1_000_000) {
-            color = EnumChatFormatting.DARK_GREEN;
+        if (profit >= 100_000) {
+            color = EnumChatFormatting.GOLD;
         }
         if (profit >= 500_000) {
             color = EnumChatFormatting.GREEN;
         }
-        if (profit >= 100_000) {
-            color = EnumChatFormatting.GOLD;
+        if (profit >= 1_000_000) {
+            color = EnumChatFormatting.DARK_GREEN;
+        }
+        if (profit >= 10_000_000) {
+            color = EnumChatFormatting.AQUA;
         }
         return color + "+$" + formatValue(profit);
     }

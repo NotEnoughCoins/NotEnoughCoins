@@ -59,6 +59,7 @@ public class Toggle implements Subcommand {
     @Override
     public boolean processCommand(ICommandSender sender, String[] args) {
         Config.enabled = !Config.enabled;
+        Main.config.writeData();
         updateConfig();
         return true;
     }
