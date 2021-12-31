@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -43,18 +42,14 @@ public class Tasks {
                 try {
                     ApiHandler.updateBazaar();
                     Thread.sleep(2500);
-                } catch (InterruptedException | IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    Utils.blacklistMessage();
                     try {
                         Thread.sleep(60000); // sleep 60s if the API is down or got blacklisted
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                } // This shouldn't happen though
-
+                }
             } else {
                 try {
                     Thread.sleep(100);
