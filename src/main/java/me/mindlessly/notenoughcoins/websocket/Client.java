@@ -11,6 +11,7 @@ import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.objects.AverageItem;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.event.ClickEvent;
+import net.minecraft.util.ResourceLocation;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -84,7 +85,7 @@ public class Client extends WebSocketClient {
                                                     new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + auctionID));
                                                 if (Config.alertSounds && !Main.justPlayedASound) {
                                                     Main.justPlayedASound = true;
-                                                    USound.INSTANCE.playPlingSound();
+                                                    USound.INSTANCE.playSoundStatic(new ResourceLocation("note.pling"), 2F, 1.0F);
                                                 }
                                             }
                                         } else {
@@ -95,6 +96,7 @@ public class Client extends WebSocketClient {
                             }
                         }
                     }
+                    Main.justPlayedASound = false;
                     return;
                 case "lowest_bin":
                     for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject("result").entrySet()) {

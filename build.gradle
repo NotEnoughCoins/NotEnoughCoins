@@ -36,6 +36,7 @@ shadowJar {
     dependencies {
         include(dependency("gg.essential:loader-launchwrapper:1.1.2"))
         include(dependency("org.java-websocket:Java-WebSocket:1.5.2"))
+        include(dependency("org.slf4j:slf4j-api:1.7.25"))
     }
 }
 reobf {
