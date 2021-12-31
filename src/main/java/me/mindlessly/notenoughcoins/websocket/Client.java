@@ -119,6 +119,11 @@ public class Client extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         Reference.logger.warn("Websocket connection closed by " + (remote ? "remote peer" : "us") + " Code: " + code + " Reason: " + reason);
+        if (reason.contains("418")) {
+            Utils.sendMessageWithPrefix("&cFailed to fetch from NEC backend, this might be caused by:\n" +
+                "&cYou have been blacklisted from the mod for using macro scripts\n" +
+                "&cPlease join our discord server for more information (in /nec > links)");
+        }
         if (code > 1001) { // abnormal close
             connectWithToken();
             try {

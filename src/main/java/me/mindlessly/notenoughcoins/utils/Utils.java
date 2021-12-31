@@ -7,9 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import gg.essential.universal.UChat;
 import gg.essential.universal.wrappers.message.UTextComponent;
-import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Reference;
-import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.item.ItemStack;
@@ -32,7 +30,6 @@ public class Utils {
     //Stolen from Biscut & Moulberry and used for detecting whether in skyblock
     private static final Set<String> SKYBLOCK_IN_ALL_LANGUAGES = Sets.newHashSet("SKYBLOCK", "\u7A7A\u5C9B\u751F\u5B58", "\u7A7A\u5CF6\u751F\u5B58");
     private static boolean hasSkyblockScoreboard;
-    private static short failedTimes;
 
     private static String formatValue(final long amount, final long div, final char suffix) {
         return new DecimalFormat(".##").format(amount / (double) div) + suffix;
@@ -164,20 +161,6 @@ public class Utils {
         }
 
         return id;
-    }
-
-    public static void blacklistMessage() {
-        failedTimes++;
-        if (failedTimes > 20) {
-            Utils.sendMessageWithPrefix("&cFailed to fetch from NEC backend, this might be caused by one of the following reasons:\n" +
-                "&c1. The backend server is down, and should recover within in next few minutes or hours\n" +
-                "&c2. You have been blacklisted from the mod for using macro scripts\n" +
-                "&c3. You are using a version of the mod that is not compatible with the backend server\n" +
-                "&cTherefore the mod has disabled flipping, if you wish to re-enable it when this is sorted out, please use the command /nec or /nec toggle");
-            Config.enabled = false;
-            Toggle.updateConfig();
-            failedTimes = 0;
-        }
     }
 
     public static void runInAThread(Callable<Void> callable) {

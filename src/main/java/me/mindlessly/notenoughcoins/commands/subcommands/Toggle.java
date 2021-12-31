@@ -1,28 +1,9 @@
 package me.mindlessly.notenoughcoins.commands.subcommands;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import gg.essential.universal.USound;
-import me.mindlessly.notenoughcoins.Authenticator;
 import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Main;
-import me.mindlessly.notenoughcoins.Reference;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.event.ClickEvent;
-
-import java.sql.Ref;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static me.mindlessly.notenoughcoins.utils.Utils.blacklistMessage;
 
 public class Toggle implements Subcommand {
     public Toggle() {
