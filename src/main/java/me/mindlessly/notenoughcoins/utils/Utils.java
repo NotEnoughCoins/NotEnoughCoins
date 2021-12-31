@@ -25,7 +25,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -71,19 +70,6 @@ public class Utils {
         UTextComponent result = new UTextComponent(EnumChatFormatting.GOLD + ("[NEC] ") + message.replaceAll("&", "§"));
         result.setChatStyle(new ChatStyle().setChatClickEvent(clickEvent));
         UChat.chat(result);
-    }
-
-    public static void checkForUpdate() {
-        String latestVersion;
-        try {
-            latestVersion = Utils.getJson("https://api.github.com/repos/mindlesslydev/NotEnoughCoins/releases").getAsJsonArray().get(0).getAsJsonObject().get("tag_name").getAsString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        if (!Objects.equals(latestVersion, Reference.VERSION)) {
-            Utils.sendMessageWithPrefix("&aAn update (" + latestVersion + ") is available at https://github.com/mindlesslydev/NotEnoughCoins/releases", new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/mindlesslydev/NotEnoughCoins/releases"));
-        }
     }
 
     public static int getTax(int price) {
@@ -165,14 +151,11 @@ public class Utils {
                 String petInfo = ea.getString("petInfo");
                 if (petInfo.length() > 0) {
                     JsonObject petInfoObject = new GsonBuilder().setPrettyPrinting().create().fromJson(petInfo, JsonObject.class);
-                    id = petInfoObject.get("type").getAsString();
-                    String tier = petInfoObject.get("tier").getAsString();
-                    id += ";" + tier;
+                    id = petInfoObject.get("type").getAsString() + petInfoObject.get("tier").getAsString();
                 }
             }
             if ("ENCHANTED_BOOK".equals(id)) {
                 NBTTagCompound enchants = ea.getCompoundTag("enchantments");
-
                 for (String enchname : enchants.getKeySet()) {
                     id = enchname.toUpperCase() + ";" + enchants.getInteger(enchname);
                     break;

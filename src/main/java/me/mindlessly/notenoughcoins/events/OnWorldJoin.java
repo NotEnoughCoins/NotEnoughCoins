@@ -1,9 +1,7 @@
 package me.mindlessly.notenoughcoins.events;
 
 import me.mindlessly.notenoughcoins.Config;
-import me.mindlessly.notenoughcoins.Main;
 import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
-import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
@@ -22,15 +20,6 @@ public class OnWorldJoin {
                 @Override
                 public void run() {
                     Toggle.updateConfig();
-                }
-            }, 2000);
-        }
-        if (!Main.checkedForUpdate) {
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Utils.checkForUpdate();
-                    Main.checkedForUpdate = true;
                 }
             }, 2000);
         }

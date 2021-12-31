@@ -8,7 +8,6 @@ import gg.essential.vigilance.data.Property;
 import gg.essential.vigilance.data.PropertyData;
 import gg.essential.vigilance.data.PropertyType;
 import gg.essential.vigilance.data.SortingBehavior;
-import me.mindlessly.notenoughcoins.commands.subcommands.Toggle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -18,8 +17,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Config extends Vigilant {
     public static ArrayList<String> categoryFilter = new ArrayList<>(
@@ -32,6 +29,14 @@ public class Config extends Vigilant {
         description = "Whether the mod should check for and send flips"
     )
     public static boolean enabled = false;
+    @Property(
+        type = PropertyType.SWITCH,
+        category = "Flipping",
+        subcategory = "Basic",
+        name = "Enabled only in skyblock",
+        description = "Whether the mod should disable sending flips when not in SkyBlock"
+    )
+    public static boolean onlySkyblock = true;
     @Property(
         type = PropertyType.NUMBER,
         category = "Flipping",

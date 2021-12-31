@@ -6,17 +6,13 @@ import com.google.gson.JsonObject;
 import me.mindlessly.notenoughcoins.Authenticator;
 import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.Main;
-import me.mindlessly.notenoughcoins.Reference;
-import me.mindlessly.notenoughcoins.objects.AverageItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.Score;
-import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,24 +21,6 @@ import java.util.Objects;
 import static me.mindlessly.notenoughcoins.utils.Utils.getJson;
 
 public class ApiHandler {
-    public static void updateAverage() throws IOException, NullPointerException {
-        // example: "JUNGLE_KEY":{"auction":{"average_price":0,"sales":0},"bin":{"average_price":46397.21590909091,"sales":88},"sampled_days":1}
-        JsonObject json;
-        json = Objects.requireNonNull(Authenticator.getAuthenticatedJson("https://nec.robothanzo.dev/data?days=3")).getAsJsonObject();
-        for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
-            String item = entry.getKey();
-            if (!item.equals("success")) {
-                JsonObject itemDetails = json.getAsJsonObject(item);
-                int sampledDays = itemDetails.getAsJsonPrimitive("sampled_days").getAsInt();
-                int ahSales = Math.floorDiv(itemDetails.getAsJsonObject("auction").getAsJsonPrimitive("sales").getAsInt(), sampledDays);
-                int ahAvgPrice = (int) Math.floor(itemDetails.getAsJsonObject("auction").getAsJsonPrimitive("average_price").getAsDouble());
-                int binSales = Math.floorDiv(itemDetails.getAsJsonObject("bin").getAsJsonPrimitive("sales").getAsInt(), sampledDays);
-                // int binAvgPrice = (int)Math.floor(itemDetails.getAsJsonObject("bin").getAsJsonPrimitive("average_price").getAsDouble());
-                Main.averageItemMap.put(item, new AverageItem(item, ahSales + binSales, ahAvgPrice));
-            }
-        }
-    }
-
     public static void updatePurse() throws IOException {
         if (Utils.isOnSkyblock()) {
             Scoreboard scoreboard = Minecraft.getMinecraft().theWorld.getScoreboard();
@@ -80,16 +58,6 @@ public class ApiHandler {
         }
         Main.balance = profilesArray.get(profileIndex).getAsJsonObject().get("members").getAsJsonObject().get(Authenticator.myUUID)
             .getAsJsonObject().get("coin_purse").getAsDouble();
-    }
-
-    public static void updateLBIN() throws IOException {
-        // example: "ZOMBIE_SOLDIER_CUTLASS":1000000
-        JsonObject json;
-        json = Objects.requireNonNull(Authenticator.getAuthenticatedJson("https://nec.robothanzo.dev/lowest_bin"))
-            .getAsJsonObject();
-        for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject("result").entrySet()) {
-            Main.lbinItem.put(entry.getKey(), entry.getValue().getAsInt());
-        }
     }
 
     public static void updateBazaar() throws IOException {

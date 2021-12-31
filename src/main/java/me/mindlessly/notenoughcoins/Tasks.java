@@ -1,22 +1,14 @@
 package me.mindlessly.notenoughcoins;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.utils.ApiHandler;
 import me.mindlessly.notenoughcoins.utils.Utils;
-import net.minecraft.event.ClickEvent;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-
-import static me.mindlessly.notenoughcoins.utils.Utils.blacklistMessage;
 
 public class Tasks {
     public static Thread updateBalance = new Thread(() -> {
@@ -45,60 +37,6 @@ public class Tasks {
             }
         }
     }, "Not Enough Coins Balance Updating Task");
-    public static Thread updateAverageItem = new Thread(() -> {
-        while (true) {
-            if (Config.enabled || Config.bestSellingMethod) {
-                try {
-                    ApiHandler.updateAverage();
-                    Thread.sleep(10000);
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    Utils.blacklistMessage();
-                    try {
-                        Thread.sleep(60000); // sleep 60s if the API is down or got blacklisted
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                } // This shouldn't happen though
-
-            } else {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }, "Not Enough Coins Average Item Updating Task");
-    public static Thread updateLBINItem = new Thread(() -> {
-        while (true) {
-            if (Config.enabled || Config.bestSellingMethod) {
-                try {
-                    ApiHandler.updateLBIN();
-                    Thread.sleep(2500);
-                } catch (InterruptedException | IOException e) {
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    Utils.blacklistMessage();
-                    try {
-                        Thread.sleep(60000); // sleep 60s if the API is down or got blacklisted
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                } // This shouldn't happen though
-
-            } else {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }, "Not Enough Coins Lowest Buy-It-Now Updating Task");
     public static Thread updateBazaarItem = new Thread(() -> {
         while (true) {
             if (Config.enabled || Config.bestSellingMethod) {
@@ -126,95 +64,6 @@ public class Tasks {
             }
         }
     }, "Not Enough Coins Bazaar Updating Task");
-    public static Thread flipping = new Thread(() -> {
-        while (true) {
-            if (Config.enabled) {
-                if (Main.balance == 0D) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    continue;
-                }
-                Date start = new Date();
-                JsonElement json;
-                try {
-                    json = Objects.requireNonNull(Authenticator.getAuthenticatedJson("https://nec.robothanzo.dev/profit"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    blacklistMessage();
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                    continue;
-                }
-                long responseLatency = new Date().getTime() - start.getTime();
-                for (JsonElement element : json.getAsJsonObject().getAsJsonArray("result")) {
-                    JsonObject item = element.getAsJsonObject();
-                    String auctionID = item.get("auction_id").getAsString();
-                    String itemID = item.get("id").getAsString();
-                    /* example:
-                     * {"amount":1,"auction_id":"770d177104dd4c62b3f5610bcb0269e0","auctioneer":"5c003dfe48e741e497dcedbb2fe13475",
-                     * "bin":true,"category":"accessories","dungeon_level":null,"enchantments":{},"end":1638823899955,"hpb_count":0,
-                     * "id":"SHARP_SHARK_TOOTH_NECKLACE","item_name":"Sharp Shark Tooth Necklace",
-                     * "pet_info":null,"price":135000, "profile_id":"d2bcb7b76cd14837b19c03ea258e51fd","profit":5000,"rarity":"EPIC",
-                     * "recombobulated":false,"reforge":null,"starred":false,"start":1638802299955,"generated_at":1638802300983}
-                     */
-                    if (!Main.processedItem.containsKey(auctionID)) { // havent been processed
-                        Main.processedItem.put(auctionID, new Date(item.get("end").getAsLong()));
-                        if (!Config.categoryFilter.contains(item.get("category").getAsString().toUpperCase(Locale.ROOT)) && !Arrays.asList(Config.blacklistedIDs.split("\n")).contains(item.get("id").getAsString())) { // blacklist checks
-                            int price = item.get("price").getAsInt();
-                            int profit = Utils.getTaxedProfit(price, item.get("profit").getAsInt());
-                            int demand;
-                            try {
-                                demand = Main.averageItemMap.get(itemID).demand;
-                            } catch (NullPointerException e) {
-                                Main.processedItem.remove(auctionID);
-                                continue;
-                            }
-                            double profitPercentage = ((double) profit / (double) price);
-                            if (price <= Main.balance && profit >= Config.minProfit && profitPercentage >= Config.minProfitPercentage && demand >= Config.minDemand) { // min profit etc checks
-                                if ((!Config.manipulationCheck)||(!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(itemID).ahAvgPrice))) { // Manipulation checks
-                                    if (!Authenticator.myUUID.toLowerCase(Locale.ROOT).replaceAll("-", "").equals(item.get("auctioneer").getAsString())) { //not self
-                                        Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
-                                                Utils.getProfitText(profit) + " " + // profit
-                                                "&eP: &a" + Utils.formatValue(price) + " " + // price
-                                                "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + // profit %
-                                                "&eSPD: &a" + demand + " " + // demand
-                                                (Config.debug ? "\n&eCL: &a" + item.get("cache_latency").getAsInt() + "ms" : "") + " " + // debug: cache latency
-                                                (Config.debug ? "&eAL: &a" + item.get("api_latency").getAsInt() + "ms" : "") + " " + // debug: api latency
-                                                (Config.debug ? "&eRL: &a" + responseLatency + "ms" : "") + " " + // debug: response latency
-                                                (Config.debug ? "&ePL: &a" + (new Date().getTime() - start.getTime() - responseLatency) + "ms" : "") + " " + // debug: processing latency
-                                                (Config.debug ? "&eAA: &a" + Utils.formatValue(Main.averageItemMap.get(itemID).ahAvgPrice) : "") + " " + // debug: auction average
-                                                (Config.debug ? "&eLBIN: &a" + Utils.formatValue(Main.lbinItem.get(itemID)) : "") + " " + // debug: lowest buy-it-now
-                                                ((profit >= 100000) ? "\n" : ""), // emphasize flips with large profit by sending a new line
-                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/viewauction " + auctionID));
-                                        if (Config.alertSounds && !Main.justPlayedASound) {
-                                            Main.justPlayedASound = true;
-                                            USound.INSTANCE.playPlingSound();
-                                        }
-                                    }
-                                } else {
-                                    Reference.logger.info("Failed manipulation check for " + item.get("item_name").getAsString() + " price " + price + " profit " + profit + " avg " + Main.averageItemMap.get(item.get("id").getAsString()).ahAvgPrice);
-                                }
-                            }
-                        }
-                    }
-                }
-                Main.justPlayedASound = false;
-                Main.processedItem.entrySet().removeIf(item -> (Main.processedItem.get(item.getKey()).getTime() - new Date().getTime()) <= 0);
-            } else {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }, "Not Enough Coins Flipping Task");
 
     public static Thread updateFilters = new Thread(() -> {
         while (true) {
@@ -227,7 +76,6 @@ public class Tasks {
                         }
                     }
                     Main.chatFilters = filters;
-                    Reference.logger.info("Filter: " + Main.chatFilters);
                     Thread.sleep(60000);
                 } catch (Exception e) {
                     e.printStackTrace();
