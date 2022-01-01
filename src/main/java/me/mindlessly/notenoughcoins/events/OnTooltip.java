@@ -13,8 +13,12 @@ public class OnTooltip {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onTooltip(ItemTooltipEvent event) {
         if (!Utils.isOnSkyblock()) return;
+        String id = Utils.getIDFromItemStack(event.itemStack);
+        if (Config.debug&&id!=null) {
+            event.toolTip.add(EnumChatFormatting.YELLOW + EnumChatFormatting.BOLD.toString() + "Item ID: " +
+                EnumChatFormatting.GOLD + EnumChatFormatting.BOLD + id);
+        }
         if (Config.bestSellingMethod) {
-            String id = Utils.getIDFromItemStack(event.itemStack);
             if (id == null) return;
             if (id.equals("POTION")) return; // Potions are not supported
             String bestMethod = null;
