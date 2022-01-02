@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
 
+@IFMLLoadingPlugin.MCVersion("1.8.9")
 @IFMLLoadingPlugin.Name("NotEnoughCoins FTW")
 public class NotEnoughCoinsLoadingPlugin implements IFMLLoadingPlugin {
     @Override

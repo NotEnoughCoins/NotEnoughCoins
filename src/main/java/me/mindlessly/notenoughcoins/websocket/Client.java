@@ -22,10 +22,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client extends WebSocketClient {
+    private Date lastPing;
+    public long latency = -1; // in ms
+
     public Client(URI serverUri, Map<String, String> httpHeaders) {
         super(serverUri, httpHeaders);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                lastPing = new Date();
+                send("{\"type\":\"ping\"}");
+            }
+        }, 1000, 30000);
     }
 
     public static void connectWithToken() {
@@ -78,6 +90,7 @@ public class Client extends WebSocketClient {
                                                         "&eSPD: &a" + demand + " " + // demand
                                                         (Config.debug ? "\n&eCL: &a" + item.get("cache_latency").getAsInt() + "ms" : "") + " " + // debug: cache latency
                                                         (Config.debug ? "&eAL: &a" + item.get("api_latency").getAsInt() + "ms" : "") + " " + // debug: api latency
+                                                        (Config.debug ? "&eWL: &a" + latency + "ms" : "") + " " + // debug: websocket latency
                                                         (Config.debug ? "&ePL: &a" + (new Date().getTime() - start.getTime()) + "ms" : "") + " " + // debug: processing latency
                                                         (Config.debug ? "&eAA: &a" + Utils.formatValue(Main.averageItemMap.get(itemID).ahAvgPrice) : "") + " " + // debug: auction average
                                                         (Config.debug ? "&eLBIN: &a" + Utils.formatValue(Main.lbinItem.get(itemID)) : "") + " " + // debug: lowest buy-it-now
@@ -113,6 +126,11 @@ public class Client extends WebSocketClient {
                         int binSales = Math.floorDiv(itemDetails.getAsJsonObject("bin").getAsJsonPrimitive("sales").getAsInt(), sampledDays);
                         // int binAvgPrice = (int)Math.floor(itemDetails.getAsJsonObject("bin").getAsJsonPrimitive("average_price").getAsDouble());
                         Main.averageItemMap.put(item, new AverageItem(item, ahSales + binSales, ahAvgPrice));
+                    }
+                    return;
+                case "pong":
+                    if (lastPing!=null) {
+                        latency = (new Date().getTime() - lastPing.getTime()) / 2;
                     }
             }
         }
