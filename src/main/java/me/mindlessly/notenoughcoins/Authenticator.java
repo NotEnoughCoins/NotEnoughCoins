@@ -59,7 +59,7 @@ public class Authenticator {
         String payload = String.join("\n", IOUtils.readLines(connection.getErrorStream() == null ? connection.getInputStream() : connection.getErrorStream()));
         if (code >= 400) {
             Reference.logger.error(jsonUrl + " :: Received " + connection.getResponseCode() + " along with\n" + payload);
-            if (code==401) {
+            if (code == 401) {
                 try {
                     Main.authenticator.authenticate(true);
                 } catch (AuthenticationException e) {

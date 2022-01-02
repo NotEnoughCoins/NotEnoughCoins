@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Config extends Vigilant {
+    public static final File CONFIG_FILE = new File("config/nec.toml");
     public static ArrayList<String> categoryFilter = new ArrayList<>(
         Arrays.asList("TRAVEL_SCROLL", "COSMETIC", "DUNGEON_PASS", "ARROW_POISON", "PET_ITEM"));
     @Property(
@@ -82,16 +83,6 @@ public class Config extends Vigilant {
     )
     public static String blacklistedIDs = "";
     @Property(
-        type = PropertyType.BUTTON,
-        category = "Flipping",
-        subcategory = "Advanced",
-        name = "Blacklist Configuration Website",
-        description = "Configure the blacklist via this website"
-    )
-    public static void blacklistConfigure() {
-        UDesktop.browse(URI.create("https://nec.robothanzo.dev/panel/#/itemBlacklist"));
-    }
-    @Property(
         type = PropertyType.SWITCH,
         category = "Flipping",
         subcategory = "Advanced",
@@ -122,6 +113,13 @@ public class Config extends Vigilant {
     public static boolean bestSellingMethod = true;
     @Property(
         type = PropertyType.SWITCH,
+        category = "Money Saving",
+        name = "Best Selling Method Item Overlay",
+        description = "Shows a green overlay on the item if the current open menu is the best selling method for the item"
+    )
+    public static boolean bestSellingOverlay = true;
+    @Property(
+        type = PropertyType.SWITCH,
         category = "QOL",
         name = "Hide spam messages",
         description = "Hide messages that contain predefined keywords of scam advertisements and etc"
@@ -135,6 +133,17 @@ public class Config extends Vigilant {
 
     @Property(
         type = PropertyType.BUTTON,
+        category = "Flipping",
+        subcategory = "Advanced",
+        name = "Blacklist Configuration Website",
+        description = "Configure the blacklist via this website"
+    )
+    public static void blacklistConfigure() {
+        UDesktop.browse(URI.create("https://nec.robothanzo.dev/panel/#/itemBlacklist"));
+    }
+
+    @Property(
+        type = PropertyType.BUTTON,
         category = "Links",
         name = "Patreon",
         description = "Donate to cover the server's hosting costs!"
@@ -142,6 +151,7 @@ public class Config extends Vigilant {
     public static void patreon() {
         UDesktop.browse(URI.create("https://www.patreon.com/robothanzo"));
     }
+
     @Property(
         type = PropertyType.BUTTON,
         category = "Links",
@@ -151,8 +161,6 @@ public class Config extends Vigilant {
     public static void github() {
         UDesktop.browse(URI.create("https://github.com/mindlesslydev/NotEnoughCoins"));
     }
-
-    public static final File CONFIG_FILE = new File("config/nec.toml");
 
     @Property(
         type = PropertyType.BUTTON,

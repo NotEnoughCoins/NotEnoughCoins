@@ -3,7 +3,6 @@ package me.mindlessly.notenoughcoins.websocket;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.authlib.exceptions.AuthenticationException;
 import gg.essential.universal.USound;
 import me.mindlessly.notenoughcoins.Authenticator;
 import me.mindlessly.notenoughcoins.Config;
@@ -16,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;

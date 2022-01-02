@@ -7,9 +7,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import gg.essential.universal.UChat;
 import gg.essential.universal.wrappers.message.UTextComponent;
+import me.mindlessly.notenoughcoins.Main;
 import me.mindlessly.notenoughcoins.Reference;
+import me.mindlessly.notenoughcoins.objects.BestSellingMethod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.ScoreObjective;
@@ -23,6 +30,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -175,5 +185,25 @@ public class Utils {
 
     public static String removeColorCodes(String in) {
         return in.replaceAll("(?i)\\u00A7.", "");
+    }
+
+    public static Map.Entry<BestSellingMethod, Long> getBestSellingMethod(String id) {
+        if (id == null) return new AbstractMap.SimpleEntry<>(BestSellingMethod.NONE, 0L);
+        if (id.equals("POTION")) return new AbstractMap.SimpleEntry<>(BestSellingMethod.NONE, 0L);
+        BestSellingMethod method = BestSellingMethod.NONE;
+        long bestPrice = 0;
+        if (Main.lbinItem.containsKey(id) && Main.lbinItem.get(id) - getTax(Main.lbinItem.get(id)) > bestPrice) {
+            bestPrice = Main.lbinItem.get(id) - getTax(Main.lbinItem.get(id));
+            method = BestSellingMethod.LBIN;
+        }
+        if (Main.bazaarItem.containsKey(id) && Main.bazaarItem.get(id) > bestPrice) {
+            bestPrice = Main.bazaarItem.get(id);
+            method = BestSellingMethod.BAZAAR;
+        }
+        if (Main.npcItem.containsKey(id) && Main.npcItem.get(id) > bestPrice) {
+            bestPrice = Main.npcItem.get(id);
+            method = BestSellingMethod.NPC;
+        }
+        return new AbstractMap.SimpleEntry<>(method, bestPrice);
     }
 }

@@ -31,13 +31,17 @@ dependencies {
         exclude module: 'gson'
     }
     implementation('org.java-websocket:Java-WebSocket:1.5.2')
+    implementation('org.ow2.asm:asm:9.2')
 }
 shadowJar {
     dependencies {
         include(dependency("gg.essential:loader-launchwrapper:1.1.2"))
         include(dependency("org.java-websocket:Java-WebSocket:1.5.2"))
         include(dependency("org.slf4j:slf4j-api:1.7.25"))
+        include(dependency("org.ow2.asm:asm:9.2"))
     }
+    exclude('dummyThing')
+    exclude('META-INF/maven/')
 }
 reobf {
     shadowJar {} // Reobfuscate the shadowed JAR
@@ -47,8 +51,7 @@ test {
 }
 
 version = "0.9.2"
-group = "me.mindlessly.nec"
-archivesBaseName = "NotEnoughCoins"
+group = "me.mindlessly.notenoughcoins"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -62,9 +65,13 @@ minecraft {
 }
 
 jar {
-    manifest {
-        attributes("TweakClass": "gg.essential.loader.stage0.EssentialSetupTweaker")
-    }
+    manifest.attributes(
+            'FMLCorePlugin': "${project.group}.tweaker.NotEnoughCoinsLoadingPlugin",
+            'ForceLoadAsMod': true,
+            'FMLCorePluginContainsFMLMod': true,
+            'ModSide': 'CLIENT',
+            'TweakClass': 'gg.essential.loader.stage0.EssentialSetupTweaker'
+    )
 }
 sourceJar {
     enabled = false

@@ -25,7 +25,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;

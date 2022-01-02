@@ -11,10 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Locale;
 
 public class OnChatReceived {
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public void chat(ClientChatReceivedEvent event) {
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void chat(ClientChatReceivedEvent event) {
         String message = event.message.getUnformattedText();
-		if (message.startsWith("Your new API key is ")) {
+        if (message.startsWith("Your new API key is ")) {
             String key = message.split("key is ")[1];
             Config.apiKey = key;
             Utils.sendMessageWithPrefix("§aAPI Key set to " + key);
@@ -26,5 +26,5 @@ public class OnChatReceived {
                 return;
             }
         }
-	}
+    }
 }
