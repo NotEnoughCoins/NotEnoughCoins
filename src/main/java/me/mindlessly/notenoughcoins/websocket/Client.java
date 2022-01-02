@@ -71,7 +71,7 @@ public class Client extends WebSocketClient {
                                     if (price <= Main.balance && profit >= Config.minProfit && profitPercentage >= Config.minProfitPercentage && demand >= Config.minDemand) { // min profit etc checks
                                         if ((!Config.manipulationCheck) || (!((price + item.get("profit").getAsInt()) * 0.6 > Main.averageItemMap.get(itemID).ahAvgPrice))) { // Manipulation checks
                                             if (!Authenticator.myUUID.toLowerCase(Locale.ROOT).replaceAll("-", "").equals(item.get("auctioneer").getAsString())) { //not self
-                                                Utils.sendMessageWithPrefix("&e" + item.get("item_name").getAsString() + " " + // item name
+                                                Utils.sendMessageWithPrefix(Utils.getColorCodeFromRarity(item.get("rarity").getAsString()) + item.get("item_name").getAsString() + "&e " + // item name
                                                         Utils.getProfitText(profit) + " " + // profit
                                                         "&eP: &a" + Utils.formatValue(price) + " " + // price
                                                         "&ePP: &a" + (int) Math.floor(profitPercentage * 100) + "% " + // profit %

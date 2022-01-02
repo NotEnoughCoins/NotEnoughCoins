@@ -206,4 +206,28 @@ public class Utils {
         }
         return new AbstractMap.SimpleEntry<>(method, bestPrice);
     }
+
+    public static EnumChatFormatting getColorCodeFromRarity(String rarity) {
+        switch (rarity) {
+            case "COMMON":
+                return EnumChatFormatting.WHITE;
+            case "UNCOMMON":
+                return EnumChatFormatting.GREEN;
+            case "RARE":
+                return EnumChatFormatting.BLUE;
+            case "EPIC":
+                return EnumChatFormatting.DARK_PURPLE;
+            case "LEGENDARY":
+                return EnumChatFormatting.GOLD;
+            case "MYTHIC":
+                return EnumChatFormatting.LIGHT_PURPLE;
+            case "DIVINE":
+                return EnumChatFormatting.AQUA;
+            case "SPECIAL":
+            case "VERY_SPECIAL":
+                return EnumChatFormatting.RED;
+            default:
+                return EnumChatFormatting.WHITE;
+        }
+    }
 }
