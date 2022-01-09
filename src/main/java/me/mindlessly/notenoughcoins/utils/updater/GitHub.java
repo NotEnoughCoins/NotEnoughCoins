@@ -43,6 +43,9 @@ public class GitHub {
     }
 
     public static String getLatestVersion() {
+        if (latestRelease == null||!latestRelease.has("tag_name")) {
+            return Reference.VERSION;
+        }
         return latestRelease.get("tag_name").getAsString();
     }
 
