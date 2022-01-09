@@ -66,6 +66,8 @@ public class Main {
             while (progressBar.getStep() < (progressBar.getSteps() - 1))
                 progressBar.step("loading-failed-" + progressBar.getStep());
             e.printStackTrace();
+            Reference.logger.error("NotEnoughCoins have been disabled due to an error while authenticating. Please check the logs for more information.");
+            return;
         }
         progressBar.step("Registering events, commands, hooks & tasks");
         config.preload();
