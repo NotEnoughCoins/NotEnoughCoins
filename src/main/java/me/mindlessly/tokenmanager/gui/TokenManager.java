@@ -45,7 +45,7 @@ public class TokenManager extends GuiScreen {
 				this.fontRendererObj.FONT_HEIGHT);
 		token.setText("");
 		token.setVisible(true);
-		token.setMaxStringLength(400);
+		token.setMaxStringLength(410);
 		textFields.add(token);
 
 		newButton = new GuiButton(0, this.width / 2 - 100, guiTop + 160, "Save & Exit");
