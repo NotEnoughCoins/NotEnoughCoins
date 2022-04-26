@@ -1,0 +1,9 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "me.mindlessly.notenoughcoins.mixins",
+  "refmap": "mixins.nec.refmap.json",
+  "mixins": [
+    "MixinGuiContainer"
+  ],
+  "verbose": true
+}

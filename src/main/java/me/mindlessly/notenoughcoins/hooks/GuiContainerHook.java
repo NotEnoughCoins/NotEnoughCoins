@@ -1,11 +1,10 @@
-package me.mindlessly.notenoughcoins.tweaker.hooks;
+package me.mindlessly.notenoughcoins.hooks;
 
 import me.mindlessly.notenoughcoins.Config;
 import me.mindlessly.notenoughcoins.objects.BestSellingMethod;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -49,15 +48,15 @@ public class GuiContainerHook {
         return realInventory.hasCustomName() && realInventory.getDisplayName().getUnformattedText().contains("Auction");
     }
 
-    public static void drawSlot(GuiContainer guiContainer, Slot slot) {
+    public static void drawSlot(Container inventorySlots, Slot slot) {
         if (Utils.isOnSkyblock()) {
             if (Config.bestSellingOverlay && slot.getHasStack()) {
                 BestSellingMethod bestSellingMethod = Utils.getBestSellingMethod(Utils.getIDFromItemStack(slot.getStack())).getKey();
-                boolean drawOverlay = bestSellingMethod == BestSellingMethod.NPC && isSellMerchant(guiContainer.inventorySlots);
-                if (bestSellingMethod == BestSellingMethod.BAZAAR && isBazaar(guiContainer.inventorySlots)) {
+                boolean drawOverlay = bestSellingMethod == BestSellingMethod.NPC && isSellMerchant(inventorySlots);
+                if (bestSellingMethod == BestSellingMethod.BAZAAR && isBazaar(inventorySlots)) {
                     drawOverlay = true;
                 }
-                if (bestSellingMethod == BestSellingMethod.LBIN && isAuction(guiContainer.inventorySlots)) {
+                if (bestSellingMethod == BestSellingMethod.LBIN && isAuction(inventorySlots)) {
                     drawOverlay = true;
                 }
                 if (drawOverlay) {
