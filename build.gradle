@@ -7,7 +7,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.github.Skytils:ForgeGradle:6f5327'
+        classpath 'com.github.hard2make1name:ForgeGradle:e682169'
         classpath 'com.github.Skytils:mixingradle:d5f9873d60'
         classpath "com.github.johnrengelman:shadow:6.1.0"
     }
