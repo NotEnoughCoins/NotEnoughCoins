@@ -1,3 +1,5 @@
+# Future versions of NotEnoughCoins will be put behind a paywall. You can purchase it at https://payhip.com/b/Tr7kK . This is to ensure that the project can continue to be maintained.
+
 # NotEnoughCoins
 
 <img alt="Downloads" src="https://img.shields.io/github/downloads/mindlesslydev/notenoughcoins/total.svg" />
