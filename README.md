@@ -1,4 +1,4 @@
-# Future versions of NotEnoughCoins will be put behind a paywall. You can purchase it at https://payhip.com/b/Tr7kK . This is to ensure that the project can continue to be maintained.
+# Future versions of NotEnoughCoins will be put behind a paywall. You can purchase it at https://payhip.com/NotEnoughCoins . This is to ensure that the project can continue to be maintained.
 
 # NotEnoughCoins
 
@@ -8,7 +8,6 @@
 A SkyBlock Flipping Mod.
 
 Discord - https://discord.gg/NotEnoughCoins<br/>
-Premium - https://payhip.com/b/0MuhN<br/>
 CoinsClient - https://github.com/mindlesslydev/CoinsClient
 
 - `/nec` - Shows the config GUI
