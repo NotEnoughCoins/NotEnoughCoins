@@ -1,4 +1,4 @@
-# Future versions of NotEnoughCoins will be put behind a paywall. You can purchase it at http://notenoughcoins.net/ . This is to ensure that the project can continue to be maintained.
+# Future versions of NotEnoughCoins will be put behind a paywall. You can purchase it at https://notenoughcoins.net/ . This is to ensure that the project can continue to be maintained.
 
 # NotEnoughCoins
 
