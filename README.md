@@ -7,7 +7,9 @@
 
 A SkyBlock Flipping Mod.
 
+Discord - https://discord.gg/vd5U2CmB2q
 CoinsClient - https://github.com/mindlesslydev/CoinsClient
+
 
 - `/nec` - Shows the config GUI
 - `/nec help` - Shows the help message containing all the subcommands and their usage
