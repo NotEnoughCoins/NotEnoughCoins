@@ -7,7 +7,6 @@
 
 A SkyBlock Flipping Mod.
 
-Discord - https://discord.gg/NotEnoughCoins<br/>
 CoinsClient - https://github.com/mindlesslydev/CoinsClient
 
 - `/nec` - Shows the config GUI
