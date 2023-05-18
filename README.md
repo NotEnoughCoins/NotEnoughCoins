@@ -7,7 +7,7 @@
 
 A SkyBlock Flipping Mod.
 
-Discord - https://discord.gg/vd5U2CmB2q
+Discord - https://discord.gg/FxPXhD7wZZ
 <br>
 CoinsClient - https://github.com/mindlesslydev/CoinsClient
 
