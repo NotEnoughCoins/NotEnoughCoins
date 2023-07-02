@@ -6,6 +6,7 @@
 A SkyBlock Flipping Mod.
 
 Discord - https://discord.gg/FxPXhD7wZZ
+<br>
 NEC Premium - https://notenoughcoins.net/
 
 - `/nec` - Shows the config GUI (Temporarily disabled until new GUI is implemented)
