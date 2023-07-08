@@ -41,6 +41,11 @@ public class Toggle implements Subcommand {
 	@Override
 	public boolean processCommand(ICommandSender sender, String[] args) {
 		JsonObject config = ConfigHandler.getConfig();
+		if (!config.has("flipper")) {
+			ConfigHandler.write("flipper", Utils.gson.toJsonTree(true));
+			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
+			return true;
+		}
 		if (config.get("flipper").getAsBoolean()) {
 			ConfigHandler.write("flipper", Utils.gson.toJsonTree(false));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper disabled."));
@@ -48,7 +53,6 @@ public class Toggle implements Subcommand {
 			ConfigHandler.write("flipper", Utils.gson.toJsonTree(true));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
 		}
-		Client.start();
 		return true;
 	}
 }
