@@ -1,18 +1,20 @@
-# Minecraft Session Vulnerability POC 
+# NotEnoughCoins
 
-**Severity**: Moderate
+<img alt="Downloads" src="https://img.shields.io/github/downloads/mindlesslydev/notenoughcoins/total.svg" />
+<img alt="Downloads" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Drobothanzo%26type%3Dpatrons" />
 
-### Description
-Minecraft session tokens if hijacked by a malicious mod or other means can be used by any user 
+A SkyBlock Flipping Mod.
 
-### Reproduction
-Note - this is for educational purposes only and I highly advise against and do not condone session hijacking.
+Discord - https://notenoughcoins.net/discord
+<br>
+Buy Premium - https://notenoughcoins.net/
 
-- Add a session stealer to your mod
-- Load somebody's session ID with this mod
-- Shazam, you are in!
+- `/nec` - Shows the config GUI (Temporarily disabled until new GUI is implemented)
+- `/nec help` - Shows the help message containing all the subcommands and their usage
+- `/nec toggle` - Enables the mod to return a list of suggested items to flip whenever one is found.
+- `/nec minprofit <amount> ` - Set your minimum profit for flips.
+- `/nec minpercent <amount> ` - Set your minimum percentage profit for flips.
+- `/nec blacklist <add/remove> item ` - Enables the mod to return a list of suggested items to flip whenever one is found.
 
-### Resolution
-Mojang need to add an IP check to their authentication. When the token is created, in Mojang's server it should have a reference of the user's IP address. Then, if the token is hijacked and the hacker attempts to use the token, due to having a different IP address it will not work.
 
-
+# We are not liable for any coins you lost by buying items without checking, flips aren't always perfect
