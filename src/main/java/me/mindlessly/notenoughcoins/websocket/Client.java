@@ -108,7 +108,7 @@ public class Client {
 											.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
 													"/viewauction " + flip.get("uuid").getAsString())));
 
-									if (!config.has("toggle") || config.get("toggle").getAsBoolean()) {
+									if (config.get("toggle").getAsBoolean()) {
 										mc.thePlayer.addChatMessage(msg);
 									}
 								}
