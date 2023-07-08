@@ -41,16 +41,16 @@ public class Toggle implements Subcommand {
 	@Override
 	public boolean processCommand(ICommandSender sender, String[] args) {
 		JsonObject config = ConfigHandler.getConfig();
-		if (!config.has("flipper")) {
-			ConfigHandler.write("flipper", Utils.gson.toJsonTree(true));
+		if (!config.has("toggle")) {
+			ConfigHandler.write("toggle", Utils.gson.toJsonTree(true));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
 			return true;
 		}
-		if (config.get("flipper").getAsBoolean()) {
-			ConfigHandler.write("flipper", Utils.gson.toJsonTree(false));
+		if (config.get("toggle").getAsBoolean()) {
+			ConfigHandler.write("toggle", Utils.gson.toJsonTree(false));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper disabled."));
 		} else {
-			ConfigHandler.write("flipper", Utils.gson.toJsonTree(true));
+			ConfigHandler.write("toggle", Utils.gson.toJsonTree(true));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
 		}
 		return true;
