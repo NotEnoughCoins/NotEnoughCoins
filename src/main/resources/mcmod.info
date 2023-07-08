@@ -1,11 +1,11 @@
 [
   {
-    "modid": "tmr",
-    "name": "TokenManager",
-    "description": "Please fix your shit Mojang!",
+    "modid": "nec",
+    "name": "NotEnoughCoins",
+    "description": "Auction flipping mod for Hypixel Skyblock",
     "version": "${version}",
     "mcversion": "1.8.9",
-    "url": "a.com",
+    "url": "https://notenoughcoins.net",
     "updateUrl": "a.com",
     "authorList": [
       "Mindlessly"
