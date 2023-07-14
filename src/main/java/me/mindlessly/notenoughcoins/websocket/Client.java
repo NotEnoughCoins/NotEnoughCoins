@@ -78,13 +78,12 @@ public class Client {
 										stars = name.substring(index);
 										name = name.substring(0, index);
 									}
-									
-									
+
 									double price = flip.get("price").getAsDouble();
 									double listFor = flip.get("listFor").getAsDouble();
 									double profit = flip.get("profit").getAsDouble();
-									
-									if(price > Utils.getPurse()) {
+
+									if (price > Utils.getPurse()) {
 										continue;
 									}
 
@@ -100,8 +99,9 @@ public class Client {
 									ChatComponentText msg = new ChatComponentText(EnumChatFormatting.GOLD + "[NEC] "
 											+ Utils.getColorCodeFromRarity(flip.get("rarity").getAsString()) + name
 											+ EnumChatFormatting.GOLD + stars + EnumChatFormatting.GREEN + " "
-											+ Utils.formatPrice(flip.get("price").getAsDouble()) + EnumChatFormatting.WHITE + "->"
-											+ EnumChatFormatting.GREEN + Utils.formatPrice(flip.get("listFor").getAsDouble()) + " " + "+"
+											+ Utils.formatPrice(flip.get("price").getAsDouble())
+											+ EnumChatFormatting.WHITE + "->" + EnumChatFormatting.GREEN
+											+ Utils.formatPrice(flip.get("listFor").getAsDouble()) + " " + "+"
 											+ Utils.formatPrice(flip.get("profit").getAsDouble()));
 
 									msg.setChatStyle(new ChatStyle()
@@ -109,6 +109,7 @@ public class Client {
 													"/viewauction " + flip.get("uuid").getAsString())));
 
 									if (config.get("toggle").getAsBoolean()) {
+										mc.thePlayer.addChatMessage(new ChatComponentText(""));
 										mc.thePlayer.addChatMessage(msg);
 									}
 								}
@@ -131,26 +132,26 @@ public class Client {
 
 	public static void autoReconnect() {
 		scheduledExecutorService.scheduleAtFixedRate(() -> {
-			if(!isSocketConnected(socket)) {
+			if (!isSocketConnected(socket)) {
 				start();
 			}
 		}, 10, 1, TimeUnit.SECONDS);
-		
+
 	}
-	
-    private static boolean isSocketConnected(Socket socket) {
-        try {
-            // Check if the socket's input stream is closed
-            if (socket.getInputStream().read() == -1) {
-                return false;
-            }
 
-            // Check if the socket's output stream is closed
-            socket.getOutputStream().write(0);
-        } catch (IOException e) {
-            return false;
-        }
+	private static boolean isSocketConnected(Socket socket) {
+		try {
+			// Check if the socket's input stream is closed
+			if (socket.getInputStream().read() == -1) {
+				return false;
+			}
 
-        return true;
-    }
+			// Check if the socket's output stream is closed
+			socket.getOutputStream().write(0);
+		} catch (IOException e) {
+			return false;
+		}
+
+		return true;
+	}
 }
