@@ -10,6 +10,8 @@ import me.mindlessly.notenoughcoins.commands.subcommand.MinProfit;
 import me.mindlessly.notenoughcoins.commands.subcommand.Subcommand;
 import me.mindlessly.notenoughcoins.commands.subcommand.Toggle;
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.ApiHandler;
+import me.mindlessly.notenoughcoins.utils.Blacklist;
 import me.mindlessly.notenoughcoins.websocket.Client;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -23,13 +25,15 @@ public class Main {
 			new MinProfit(), new MinDemand(), new MinPercentageProfit() });
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event) throws IOException {
 		try {
 			ConfigHandler.init();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		ClientCommandHandler.instance.registerCommand(commandManager);
+		ApiHandler.getItems();
+		Blacklist.init();
 		Client.start();
 		Client.autoReconnect();
 	}

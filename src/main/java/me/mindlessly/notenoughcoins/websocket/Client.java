@@ -13,10 +13,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Blacklist;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
@@ -64,10 +67,20 @@ public class Client {
 							String jsonObject = matcher.group();
 
 							JsonObject config = ConfigHandler.getConfig();
-
 							try {
 								// Parse the JSON object and send the flip
+								JsonArray blacklist = Blacklist.json.get("items").getAsJsonArray();
 								JsonObject flip = new Gson().fromJson(jsonObject, JsonObject.class);
+								boolean skip = false;
+								for (JsonElement jsonElement : blacklist) {
+									if (jsonElement.getAsString().equals(flip.get("id").getAsString())) {
+										skip = true;
+										break;
+									}
+								}
+								if (skip) {
+									continue;
+								}
 								mc = Minecraft.getMinecraft();
 								if (mc.theWorld != null) {
 
