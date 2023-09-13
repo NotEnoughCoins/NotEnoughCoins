@@ -68,22 +68,17 @@ public class Client {
 
 							JsonObject config = ConfigHandler.getConfig();
 							try {
-								// Parse the JSON object and send the flip
-								JsonArray blacklist = Blacklist.json.get("items").getAsJsonArray();
+								// Parse the JSON object of the flip
 								JsonObject flip = new Gson().fromJson(jsonObject, JsonObject.class);
-								boolean skip = false;
-								for (JsonElement jsonElement : blacklist) {
-									if (jsonElement.getAsString().equals(flip.get("id").getAsString())) {
-										skip = true;
-										break;
-									}
-								}
+								JsonObject blacklist = Blacklist.json.get("items").getAsJsonObject();
+
+								boolean skip = getIfBlacklisted(blacklist, flip);
+
 								if (skip) {
 									continue;
 								}
 								mc = Minecraft.getMinecraft();
 								if (mc.theWorld != null) {
-
 									String name = flip.get("name").getAsString();
 									String stars = "";
 									int index = name.indexOf("✪");
@@ -141,6 +136,107 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static boolean getIfBlacklisted(JsonObject blacklist, JsonObject flip) {
+		JsonArray enchants = null;
+		JsonArray gems = null;
+		int upgradeLevel = 0;
+		JsonArray scrolls = null;
+		String reforge = null;
+		String enrichment = null;
+
+		String name = flip.get("name").getAsString();
+
+		if (flip.has("enchants")) {
+			enchants = flip.getAsJsonArray("enchants");
+		}
+		if (flip.has("gems")) {
+			gems = flip.getAsJsonArray("gems");
+		}
+		if (flip.has("upgrade_level")) {
+			upgradeLevel = flip.get("upgrade_level").getAsInt();
+		}
+		if (flip.has("scrolls")) {
+			scrolls = flip.getAsJsonArray("scrolls");
+		}
+		if (flip.has("reforge")) {
+			reforge = flip.get("reforge").getAsString();
+		}
+		if (flip.has("enrichment")) {
+			enrichment = flip.get("enrichment").getAsString();
+		}
+
+		if (blacklist.has(name)) {
+			JsonObject info = blacklist.get(name).getAsJsonObject();
+
+			if (info.has("all")) {
+				if (info.get("all").getAsBoolean()) {
+					return true;
+				}
+			}
+			if (info.has("clean")) {
+				if (info.get("clean").getAsBoolean()) {
+					if (enchants == null && gems == null && upgradeLevel == 0 && scrolls == null && reforge == null
+							&& enrichment == null) {
+						return true;
+					}
+				}
+			}
+			if (info.has("enchants") && enchants != null) {
+				JsonArray blacklistedEnchants = info.getAsJsonArray("enchants");
+				for (JsonElement enchant : blacklistedEnchants) {
+					for (JsonElement e : enchants) {
+						if (enchant.equals(e)) {
+							return true;
+						}
+					}
+				}
+
+			}
+			if (info.has("gems") && gems != null) {
+				// TODO - finish gem blacklist
+			}
+
+			if (info.has("stars")) {
+				JsonArray blacklistedStars = info.getAsJsonArray("stars");
+				for (JsonElement star : blacklistedStars) {
+					if (star.getAsInt() == upgradeLevel) {
+						return true;
+					}
+				}
+			}
+
+			if (info.has("scrolls") && scrolls != null) {
+				JsonArray blacklistedScrolls = info.getAsJsonArray("scrolls");
+				for (JsonElement scroll : blacklistedScrolls) {
+					for (JsonElement s : scrolls) {
+						if (scroll.equals(s)) {
+							return true;
+						}
+					}
+				}
+			}
+
+			if (info.has("reforges") && reforge != null) {
+				JsonArray blacklistedReforges = info.getAsJsonArray("reforges");
+				for (JsonElement r : blacklistedReforges) {
+					if (r.getAsString().equals("reforge")) {
+						return true;
+					}
+				}
+			}
+
+			if (info.has("enrichments") && enrichment != null) {
+				JsonArray blacklistedEnrichments = info.getAsJsonArray("enrichments");
+				for (JsonElement e : blacklistedEnrichments) {
+					if (e.getAsString().equals("enrichment")) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public static void autoReconnect() {

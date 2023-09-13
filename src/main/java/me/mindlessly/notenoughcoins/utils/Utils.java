@@ -3,10 +3,12 @@ package me.mindlessly.notenoughcoins.utils;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonReader;
 
@@ -91,5 +93,25 @@ public class Utils {
 
 	public static String removeColorCodes(String in) {
 		return in.replaceAll("(?i)\\u00A7.", "");
+	}
+	
+	public static JsonArray deleteAllFromJsonArray(JsonArray input, ArrayList<Integer> toSkip) {
+		JsonArray temp = new JsonArray();
+		for(int i = 0; i < input.size(); i++) {
+			if(!toSkip.contains(i)) {
+				temp.add(input.get(i));
+			}
+		}
+		return temp;
+	}
+	
+	public static JsonArray deleteFromJsonArray(JsonArray input, int toSkip) {
+		JsonArray temp = new JsonArray();
+		for(int i = 0; i < input.size(); i++) {
+			if(i != toSkip) {
+				temp.add(input.get(i));
+			}
+		}
+		return temp;
 	}
 }

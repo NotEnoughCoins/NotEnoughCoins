@@ -24,13 +24,14 @@ repositories {
     maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
 }
 dependencies {
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.2.4'
 }
+
 test {
     systemProperty "file.encoding", "utf-8"
 }
 
-version = "1.13"
+version = "1.14"
 group = "me.mindlessly.notenoughcoins"
 archivesBaseName = "NotEnoughCoins"
 
