@@ -33,7 +33,7 @@ public class ApiHandler {
 		reforges = Utils.getJson("https://notenoughcoins.net/static/reforges.json").getAsJsonArray();
 		skins = Utils.getJson("https://notenoughcoins.net/static/skins.json").getAsJsonObject();
 
-		// Credit to the NEU Repo for lists used in here for some blacklist stuff
+		// Credit to the NEU Repo for enchant list used in here for some blacklist stuff
 		enchants = Utils.getJson(
 				"https://raw.githubusercontent.com/NotEnoughUpdates/NotEnoughUpdates-REPO/master/constants/enchants.json")
 				.getAsJsonObject().get("enchants").getAsJsonObject();
