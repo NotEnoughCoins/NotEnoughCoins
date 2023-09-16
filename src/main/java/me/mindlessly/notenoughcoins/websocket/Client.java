@@ -146,7 +146,7 @@ public class Client {
 		String reforge = null;
 		String enrichment = null;
 
-		String name = flip.get("name").getAsString();
+		String id = flip.get("id").getAsString();
 
 		if (flip.has("enchants")) {
 			enchants = flip.getAsJsonArray("enchants");
@@ -167,8 +167,8 @@ public class Client {
 			enrichment = flip.get("enrichment").getAsString();
 		}
 
-		if (blacklist.has(name)) {
-			JsonObject info = blacklist.get(name).getAsJsonObject();
+		if (blacklist.has(id)) {
+			JsonObject info = blacklist.get(id).getAsJsonObject();
 
 			if (info.has("all")) {
 				if (info.get("all").getAsBoolean()) {
