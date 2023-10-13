@@ -11,10 +11,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -149,9 +149,10 @@ public class Blacklist {
 			}
 
 			// TODO - Finish different star params
-			if (attribute.contains("stars")) {
+			if (attribute.startsWith("stars")) {
 				if (attribute.contains(">=")) {
-					int start = Integer.valueOf(attribute.split(">=")[1]);
+					String starValue = StringUtils.strip(attribute.split(">=")[1]);
+					int start = Integer.valueOf(starValue);
 					if (start > 10 || start < 0) {
 						continue;
 					}
@@ -200,10 +201,21 @@ public class Blacklist {
 
 			}
 
-			if (attribute.contains("clean")) {
+			if (attribute.startsWith("minprofit = ")) {
+				double minProfit = Double.valueOf(attribute.split("minprofit = ")[1]);
+				info.add("minprofit", Utils.gson.toJsonTree(minProfit));
+			}
+
+			if (attribute.startsWith("minpercent = ")) {
+				double minPercent = Double.valueOf(attribute.split("minpercent = ")[1]);
+				info.add("minpercent", Utils.gson.toJsonTree(minPercent));
+			}
+
+			if (attribute.startsWith("clean")) {
 				info.add("clean", Utils.gson.toJsonTree(true));
 			}
 			// Handle other attributes
+
 		}
 		info.add("enchants", enchants);
 		info.add("stars", stars);
@@ -395,6 +407,18 @@ public class Blacklist {
 					continue;
 				}
 
+			}
+			
+			if (attribute.startsWith("minprofit")) {
+				if(info.has("minprofit")) {
+					info.remove("minprofit");
+				}
+			}
+
+			if (attribute.startsWith("minpercent")) {
+				if(info.has("minpercent")) {
+					info.remove("minpercent");
+				}
 			}
 
 			if (attribute.contains("clean")) {
