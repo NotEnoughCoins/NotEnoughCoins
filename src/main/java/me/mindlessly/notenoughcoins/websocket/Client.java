@@ -77,6 +77,25 @@ public class Client {
 								if (skip) {
 									continue;
 								}
+								
+								JsonObject override = null;
+								String id = flip.get("id").getAsString();
+								
+								if (blacklist.has(id)) {
+									override = blacklist.get(id).getAsJsonObject();
+								}
+								int minProfit = config.get("minprofit").getAsInt();
+								int minPercent = config.get("minpercent").getAsInt();
+
+								if (override != null) {
+									if (override.has("minprofit")) {
+										minProfit = override.get("minprofit").getAsInt();
+									}
+									if (override.has("minpercent")) {
+										minPercent = override.get("minpercent").getAsInt();
+									}
+								}
+								
 								mc = Minecraft.getMinecraft();
 								if (mc.theWorld != null) {
 									String name = flip.get("name").getAsString();
@@ -95,12 +114,11 @@ public class Client {
 										continue;
 									}
 
-									if (config.has("minProfit") && profit < config.get("minProfit").getAsInt()) {
+									if (profit < minProfit) {
 										continue;
 									}
 
-									if (config.has("minPercent")
-											&& (profit / listFor) * 100 < config.get("minPercent").getAsInt()) {
+									if ((profit / listFor) * 100 < minPercent) {
 										continue;
 									}
 
