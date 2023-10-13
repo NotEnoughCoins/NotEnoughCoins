@@ -201,13 +201,13 @@ public class Blacklist {
 
 			}
 
-			if (attribute.startsWith("minprofit = ")) {
-				double minProfit = Double.valueOf(attribute.split("minprofit = ")[1]);
+			if (attribute.startsWith("minprofit")) {
+				double minProfit = Double.valueOf(attribute.split("minprofit ")[1]);
 				info.add("minprofit", Utils.gson.toJsonTree(minProfit));
 			}
 
-			if (attribute.startsWith("minpercent = ")) {
-				double minPercent = Double.valueOf(attribute.split("minpercent = ")[1]);
+			if (attribute.startsWith("minpercent")) {
+				double minPercent = Double.valueOf(attribute.split("minpercent ")[1]);
 				info.add("minpercent", Utils.gson.toJsonTree(minPercent));
 			}
 
