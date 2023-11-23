@@ -30,7 +30,7 @@ public class ConfigHandler {
 			String jsonTxt = IOUtils.toString(is, "UTF-8");
 			config = new JsonParser().parse(jsonTxt).getAsJsonObject();
 			//Compatibility fix for some users
-			if(!config.has("minDemand")) {
+			if(!config.has("mindemand")) {
 				config.add("mindemand", Utils.gson.toJsonTree(0));
 				config.add("minprofit", Utils.gson.toJsonTree(0));
 				config.add("minpercent", Utils.gson.toJsonTree(0));
