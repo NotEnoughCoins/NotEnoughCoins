@@ -46,7 +46,7 @@ public class MinPercentageProfit implements Subcommand {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting positive integers!"));
 				return false;
 			}
-			ConfigHandler.write("minPercent", Utils.gson.toJsonTree(minProfit));
+			ConfigHandler.write("minpercent", Utils.gson.toJsonTree(minProfit));
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Minimum Percentage Profit to " + String.valueOf(minProfit)));
 			return true;

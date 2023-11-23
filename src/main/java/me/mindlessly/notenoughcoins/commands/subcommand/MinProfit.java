@@ -48,7 +48,7 @@ public class MinProfit implements Subcommand {
 						new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 5000000!"));
 				return false;
 			}
-			ConfigHandler.write("minProfit", Utils.gson.toJsonTree(minProfit));
+			ConfigHandler.write("minprofit", Utils.gson.toJsonTree(minProfit));
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Minimum Profit to " + String.valueOf(minProfit)));
 			return true;
