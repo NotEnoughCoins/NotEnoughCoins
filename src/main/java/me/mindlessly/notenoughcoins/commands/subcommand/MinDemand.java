@@ -47,7 +47,7 @@ public class MinDemand implements Subcommand {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 50!"));
 				return false;
 			}
-			ConfigHandler.write("minDemand", Utils.gson.toJsonTree(minDemand));
+			ConfigHandler.write("mindemand", Utils.gson.toJsonTree(minDemand));
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Minimum Demand to " + String.valueOf(minDemand)));
 			return true;

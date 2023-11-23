@@ -86,6 +86,7 @@ public class Client {
 								}
 								int minProfit = config.get("minprofit").getAsInt();
 								int minPercent = config.get("minpercent").getAsInt();
+								int minDemand = config.get("mindemand").getAsInt();
 
 								if (override != null) {
 									if (override.has("minprofit")) {
@@ -97,7 +98,7 @@ public class Client {
 								}
 								
 								mc = Minecraft.getMinecraft();
-								if (mc.theWorld != null) {
+								if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
 									String name = flip.get("name").getAsString();
 									String stars = "";
 									int index = name.indexOf("✪");
@@ -119,6 +120,10 @@ public class Client {
 									}
 
 									if ((profit / listFor) * 100 < minPercent) {
+										continue;
+									}
+									
+									if(flip.has("sales") && flip.get("sales").getAsInt() < minDemand) {
 										continue;
 									}
 
