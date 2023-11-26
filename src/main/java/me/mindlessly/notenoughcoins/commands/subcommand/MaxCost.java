@@ -58,7 +58,7 @@ public class MaxCost implements Subcommand {
 		}
 		ConfigHandler.write("maxcost", Utils.gson.toJsonTree(maxCost));
 		sender.addChatMessage(new ChatComponentText(
-				EnumChatFormatting.GREEN + "Successfully updated Max Cost Profit to " + String.valueOf(maxCost)));
+				EnumChatFormatting.GREEN + "Successfully updated Max Cost to " + String.valueOf(maxCost)));
 		return true;
 
 	}
