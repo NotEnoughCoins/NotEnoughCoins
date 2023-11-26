@@ -23,7 +23,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 
 public class Blacklist {
 
@@ -202,7 +205,13 @@ public class Blacklist {
 			}
 
 			if (attribute.startsWith("minprofit")) {
-				double minProfit = Double.valueOf(attribute.split("minprofit ")[1]);
+				double minProfit;
+				String toConvert = attribute.split("minprofit ")[1];
+				if (toConvert.matches("\\d+[mkb]")) {
+					minProfit = Utils.convertAbbreviatedNumber(toConvert);
+				} else {
+					minProfit = Integer.valueOf(toConvert);
+				}
 				info.add("minprofit", Utils.gson.toJsonTree(minProfit));
 			}
 
@@ -408,15 +417,15 @@ public class Blacklist {
 				}
 
 			}
-			
+
 			if (attribute.startsWith("minprofit")) {
-				if(info.has("minprofit")) {
+				if (info.has("minprofit")) {
 					info.remove("minprofit");
 				}
 			}
 
 			if (attribute.startsWith("minpercent")) {
-				if(info.has("minpercent")) {
+				if (info.has("minpercent")) {
 					info.remove("minpercent");
 				}
 			}
