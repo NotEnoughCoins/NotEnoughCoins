@@ -16,7 +16,7 @@ public class MaxCost implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "minpercent";
+		return "maxcost";
 	}
 
 	@Override
@@ -39,21 +39,27 @@ public class MaxCost implements Subcommand {
 		if (args.length != 1) {
 			return false;
 		}
-
-		try {
-			int maxCost = Integer.parseInt(args[0]);
-			if(maxCost < 0) {
-				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
+		
+		int maxCost;
+		if (args[0].matches("\\d+[mkb]")) {
+			maxCost = Utils.convertAbbreviatedNumber(args[0]);
+		}else {
+			try {
+				maxCost = Integer.parseInt(args[0]);
+			} catch (Exception e) {
+				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
 				return false;
 			}
-			ConfigHandler.write("maxcost", Utils.gson.toJsonTree(maxCost));
-			sender.addChatMessage(new ChatComponentText(
-					EnumChatFormatting.GREEN + "Successfully updated Minimum Percentage Profit to " + String.valueOf(maxCost)));
-			return true;
-		} catch (Exception e) {
-			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
+		}
+		if (maxCost < 0) {
+			sender.addChatMessage(
+					new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
 			return false;
 		}
+		ConfigHandler.write("maxcost", Utils.gson.toJsonTree(maxCost));
+		sender.addChatMessage(new ChatComponentText(
+				EnumChatFormatting.GREEN + "Successfully updated Max Cost Profit to " + String.valueOf(maxCost)));
+		return true;
 
 	}
 }
