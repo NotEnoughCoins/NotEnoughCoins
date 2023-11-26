@@ -114,4 +114,28 @@ public class Utils {
 		}
 		return temp;
 	}
+
+	public static int convertAbbreviatedNumber(String input) {
+        int multiplier = 1;
+
+        int numericValue = Integer.parseInt(input.substring(0, input.length() - 1));
+        
+        String suffix = input.substring(input.length() - 1);
+        switch (suffix) {
+            case "m":
+                multiplier = 1000000;
+                break;
+            case "k":
+                multiplier = 1000;
+                break;
+            case "b":
+                multiplier = 1000000000;
+                break;
+            default:
+            	multiplier = -1;
+            	break;
+        }
+
+        return numericValue * multiplier;
+	}
 }

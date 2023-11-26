@@ -40,22 +40,26 @@ public class MinProfit implements Subcommand {
 		if (args.length != 1) {
 			return false;
 		}
-
-		try {
-			int minProfit = Integer.parseInt(args[0]);
-			if (minProfit < 0 || minProfit > 50000000) {
-				sender.addChatMessage(
-						new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 5000000!"));
+		
+		int minProfit;
+		if (args[0].matches("\\d+[mkb]")) {
+			minProfit = Utils.convertAbbreviatedNumber(args[0]);
+		}else {
+			try {
+				minProfit = Integer.parseInt(args[0]);
+			} catch (Exception e) {
+				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
 				return false;
 			}
-			ConfigHandler.write("minprofit", Utils.gson.toJsonTree(minProfit));
-			sender.addChatMessage(new ChatComponentText(
-					EnumChatFormatting.GREEN + "Successfully updated Minimum Profit to " + String.valueOf(minProfit)));
-			return true;
-		} catch (Exception e) {
-			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
+		}
+		if (minProfit < 0 || minProfit > 50000000) {
+			sender.addChatMessage(
+					new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 5000000!"));
 			return false;
 		}
-
+		ConfigHandler.write("minprofit", Utils.gson.toJsonTree(minProfit));
+		sender.addChatMessage(new ChatComponentText(
+				EnumChatFormatting.GREEN + "Successfully updated Minimum Profit to " + String.valueOf(minProfit)));
+		return true;
 	}
 }

@@ -31,7 +31,7 @@ test {
     systemProperty "file.encoding", "utf-8"
 }
 
-version = "1.14.5"
+version = "1.14.6"
 group = "me.mindlessly.notenoughcoins"
 archivesBaseName = "NotEnoughCoins"
 
