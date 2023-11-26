@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import me.mindlessly.notenoughcoins.commands.NECCommand;
 import me.mindlessly.notenoughcoins.commands.subcommand.BlacklistCommand;
+import me.mindlessly.notenoughcoins.commands.subcommand.MaxCost;
 import me.mindlessly.notenoughcoins.commands.subcommand.MinDemand;
 import me.mindlessly.notenoughcoins.commands.subcommand.MinPercentageProfit;
 import me.mindlessly.notenoughcoins.commands.subcommand.MinProfit;
@@ -22,7 +23,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 public class Main {
 
 	public static NECCommand commandManager = new NECCommand(new Subcommand[] { new Toggle(), new BlacklistCommand(),
-			new MinProfit(), new MinDemand(), new MinPercentageProfit() });
+			new MinProfit(), new MinDemand(), new MinPercentageProfit(), new MaxCost()});
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) throws IOException {

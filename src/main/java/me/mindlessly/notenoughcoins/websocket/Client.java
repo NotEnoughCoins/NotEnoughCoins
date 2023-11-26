@@ -111,7 +111,10 @@ public class Client {
 									double listFor = flip.get("listFor").getAsDouble();
 									double profit = flip.get("profit").getAsDouble();
 
-									if (price > Utils.getPurse()) {
+									if(config.has("maxcost") && config.get("maxcost").getAsInt() < price) {
+										continue;
+			
+									}else if (price > Utils.getPurse()) {
 										continue;
 									}
 
@@ -126,6 +129,7 @@ public class Client {
 									if(flip.has("sales") && flip.get("sales").getAsInt() < minDemand) {
 										continue;
 									}
+									
 
 									ChatComponentText msg = new ChatComponentText(EnumChatFormatting.GOLD + "[NEC] "
 											+ Utils.getColorCodeFromRarity(flip.get("rarity").getAsString()) + name

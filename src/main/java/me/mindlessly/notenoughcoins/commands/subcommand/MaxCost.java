@@ -5,8 +5,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-public class MinPercentageProfit implements Subcommand {
-	public MinPercentageProfit() {
+public class MaxCost implements Subcommand {
+	public MaxCost() {
 
 	}
 
@@ -31,7 +31,7 @@ public class MinPercentageProfit implements Subcommand {
 
 	@Override
 	public String getCommandDescription() {
-		return "Set your minimum percentage profit";
+		return "Set the maximum buying price for a flip";
 	}
 
 	@Override
@@ -41,14 +41,14 @@ public class MinPercentageProfit implements Subcommand {
 		}
 
 		try {
-			int minProfit = Integer.parseInt(args[0]);
-			if(minProfit < 0) {
+			int maxCost = Integer.parseInt(args[0]);
+			if(maxCost < 0) {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
 				return false;
 			}
-			ConfigHandler.write("minpercent", Utils.gson.toJsonTree(minProfit));
+			ConfigHandler.write("maxcost", Utils.gson.toJsonTree(maxCost));
 			sender.addChatMessage(new ChatComponentText(
-					EnumChatFormatting.GREEN + "Successfully updated Minimum Percentage Profit to " + String.valueOf(minProfit)));
+					EnumChatFormatting.GREEN + "Successfully updated Minimum Percentage Profit to " + String.valueOf(maxCost)));
 			return true;
 		} catch (Exception e) {
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
