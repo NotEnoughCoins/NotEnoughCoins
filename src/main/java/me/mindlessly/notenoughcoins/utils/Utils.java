@@ -94,21 +94,21 @@ public class Utils {
 	public static String removeColorCodes(String in) {
 		return in.replaceAll("(?i)\\u00A7.", "");
 	}
-	
+
 	public static JsonArray deleteAllFromJsonArray(JsonArray input, ArrayList<Integer> toSkip) {
 		JsonArray temp = new JsonArray();
-		for(int i = 0; i < input.size(); i++) {
-			if(!toSkip.contains(i)) {
+		for (int i = 0; i < input.size(); i++) {
+			if (!toSkip.contains(i)) {
 				temp.add(input.get(i));
 			}
 		}
 		return temp;
 	}
-	
+
 	public static JsonArray deleteFromJsonArray(JsonArray input, int toSkip) {
 		JsonArray temp = new JsonArray();
-		for(int i = 0; i < input.size(); i++) {
-			if(i != toSkip) {
+		for (int i = 0; i < input.size(); i++) {
+			if (i != toSkip) {
 				temp.add(input.get(i));
 			}
 		}
@@ -116,26 +116,40 @@ public class Utils {
 	}
 
 	public static int convertAbbreviatedNumber(String input) {
-        int multiplier = 1;
+		int multiplier = 1;
 
-        int numericValue = Integer.parseInt(input.substring(0, input.length() - 1));
-        
-        String suffix = input.substring(input.length() - 1);
-        switch (suffix) {
-            case "m":
-                multiplier = 1000000;
-                break;
-            case "k":
-                multiplier = 1000;
-                break;
-            case "b":
-                multiplier = 1000000000;
-                break;
-            default:
-            	multiplier = -1;
-            	break;
-        }
+		int numericValue = Integer.parseInt(input.substring(0, input.length() - 1));
 
-        return numericValue * multiplier;
+		String suffix = input.substring(input.length() - 1);
+		switch (suffix) {
+		case "m":
+			multiplier = 1000000;
+			break;
+		case "k":
+			multiplier = 1000;
+			break;
+		case "b":
+			multiplier = 1000000000;
+			break;
+		default:
+			multiplier = -1;
+			break;
+		}
+
+		return numericValue * multiplier;
+	}
+
+	public static double getProfit(double price, double listFor) {
+		double listingFee = 0;
+		double tax = listFor * 0.01;
+		if (listFor < 10000000) {
+			listingFee = listFor * 0.01;
+		} else if (listFor >= 10000000 && listFor < 100000000) {
+			listingFee = listFor * 0.02;
+		} else if (listFor >= 100000000) {
+			listingFee = listFor * 0.025;
+		}
+
+		return (listFor - listingFee - tax - price) * 0.95;
 	}
 }

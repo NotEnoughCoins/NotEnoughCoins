@@ -77,10 +77,10 @@ public class Client {
 								if (skip) {
 									continue;
 								}
-								
+
 								JsonObject override = null;
 								String id = flip.get("id").getAsString();
-								
+
 								if (blacklist.has(id)) {
 									override = blacklist.get(id).getAsJsonObject();
 								}
@@ -96,7 +96,7 @@ public class Client {
 										minPercent = override.get("minpercent").getAsInt();
 									}
 								}
-								
+
 								mc = Minecraft.getMinecraft();
 								if (mc.theWorld != null && mc.theWorld.getScoreboard() != null) {
 									String name = flip.get("name").getAsString();
@@ -111,10 +111,16 @@ public class Client {
 									double listFor = flip.get("listFor").getAsDouble();
 									double profit = flip.get("profit").getAsDouble();
 
-									if(config.has("maxcost") && config.get("maxcost").getAsInt() < price) {
+									if (config.has("adjustment")) {
+										int adjustment = config.get("adjustment").getAsInt();
+										listFor = listFor * (double) (100 - adjustment) / 100;
+										profit = Utils.getProfit(price, listFor);
+									}
+
+									if (config.has("maxcost") && config.get("maxcost").getAsInt() < price) {
 										continue;
-			
-									}else if (price > Utils.getPurse()) {
+
+									} else if (price > Utils.getPurse()) {
 										continue;
 									}
 
@@ -125,19 +131,17 @@ public class Client {
 									if ((profit / listFor) * 100 < minPercent) {
 										continue;
 									}
-									
-									if(flip.has("sales") && flip.get("sales").getAsInt() < minDemand) {
+
+									if (flip.has("sales") && flip.get("sales").getAsInt() < minDemand) {
 										continue;
 									}
-									
 
 									ChatComponentText msg = new ChatComponentText(EnumChatFormatting.GOLD + "[NEC] "
 											+ Utils.getColorCodeFromRarity(flip.get("rarity").getAsString()) + name
 											+ EnumChatFormatting.GOLD + stars + EnumChatFormatting.GREEN + " "
-											+ Utils.formatPrice(flip.get("price").getAsDouble())
-											+ EnumChatFormatting.WHITE + "->" + EnumChatFormatting.GREEN
-											+ Utils.formatPrice(flip.get("listFor").getAsDouble()) + " " + "+"
-											+ Utils.formatPrice(flip.get("profit").getAsDouble()));
+											+ Utils.formatPrice(price) + EnumChatFormatting.WHITE + "->"
+											+ EnumChatFormatting.GREEN + Utils.formatPrice(listFor) + " " + "+"
+											+ Utils.formatPrice(profit));
 
 									msg.setChatStyle(new ChatStyle()
 											.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
