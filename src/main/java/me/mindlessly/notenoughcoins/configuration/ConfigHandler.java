@@ -29,8 +29,8 @@ public class ConfigHandler {
 			InputStream is = new FileInputStream(configFile);
 			String jsonTxt = IOUtils.toString(is, "UTF-8");
 			config = new JsonParser().parse(jsonTxt).getAsJsonObject();
-			//Compatibility fix for some users
-			if(!config.has("mindemand")) {
+			// Compatibility fix for some users
+			if (!config.has("mindemand")) {
 				config.add("mindemand", Utils.gson.toJsonTree(0));
 				config.add("minprofit", Utils.gson.toJsonTree(0));
 				config.add("minpercent", Utils.gson.toJsonTree(0));
@@ -63,6 +63,19 @@ public class ConfigHandler {
 
 	public static JsonObject getConfig() {
 		return config;
+	}
+
+	public static void remove(String string) {
+		JsonObject config = getConfig();
+		if (config.has(string)) {
+			config.remove(string);
+		}
+		try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), "utf-8"))) {
+			writer.write(config.toString());
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

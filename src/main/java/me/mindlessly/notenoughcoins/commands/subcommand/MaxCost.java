@@ -43,6 +43,11 @@ public class MaxCost implements Subcommand {
 		int maxCost;
 		if (args[0].matches("\\d+[mkb]")) {
 			maxCost = Utils.convertAbbreviatedNumber(args[0]);
+		}else if(args[0].equalsIgnoreCase("purse")) {
+			ConfigHandler.remove("maxcost");
+			sender.addChatMessage(new ChatComponentText(
+					EnumChatFormatting.GREEN + "Successfully updated Max Cost to use purse balance"));
+			return true;
 		}else {
 			try {
 				maxCost = Integer.parseInt(args[0]);
