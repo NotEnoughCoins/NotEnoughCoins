@@ -25,6 +25,9 @@ public class ApiHandler {
 			}
 			String name = item.get("name").getAsString();
 			String id = item.get("id").getAsString();
+			if(id.contains("STARRED")) {
+				continue;
+			}
 			String category = item.get("category").getAsString();
 			items.put(name, id);
 			itemTypes.put(id, category);
