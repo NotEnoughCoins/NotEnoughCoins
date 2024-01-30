@@ -1,6 +1,7 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
 
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -17,7 +18,7 @@ public class MinProfit implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "minprofit";
+		return Constants.MIN_PROFIT;
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class MinProfit implements Subcommand {
 					new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 5000000!"));
 			return false;
 		}
-		ConfigHandler.write("minprofit", Utils.gson.toJsonTree(minProfit));
+		ConfigHandler.write(Constants.MIN_PROFIT, Utils.gson.toJsonTree(minProfit));
 		sender.addChatMessage(new ChatComponentText(
 				EnumChatFormatting.GREEN + "Successfully updated Minimum Profit to " + String.valueOf(minProfit)));
 		return true;

@@ -1,5 +1,6 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -16,7 +17,7 @@ public class MaxCost implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "maxcost";
+		return Constants.MAX_COST;
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class MaxCost implements Subcommand {
 		if (args[0].matches("\\d+[mkb]")) {
 			maxCost = Utils.convertAbbreviatedNumber(args[0]);
 		}else if(args[0].equalsIgnoreCase("purse")) {
-			ConfigHandler.remove("maxcost");
+			ConfigHandler.remove(Constants.MAX_COST);
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Max Cost to use purse balance"));
 			return true;
@@ -61,7 +62,7 @@ public class MaxCost implements Subcommand {
 					new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
 			return false;
 		}
-		ConfigHandler.write("maxcost", Utils.gson.toJsonTree(maxCost));
+		ConfigHandler.write(Constants.MAX_COST, Utils.gson.toJsonTree(maxCost));
 		sender.addChatMessage(new ChatComponentText(
 				EnumChatFormatting.GREEN + "Successfully updated Max Cost to " + String.valueOf(maxCost)));
 		return true;

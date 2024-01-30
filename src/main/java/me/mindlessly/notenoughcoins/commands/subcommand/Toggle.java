@@ -3,6 +3,7 @@ package me.mindlessly.notenoughcoins.commands.subcommand;
 import com.google.gson.JsonObject;
 
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import me.mindlessly.notenoughcoins.websocket.Client;
 import net.minecraft.client.Minecraft;
@@ -20,7 +21,7 @@ public class Toggle implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "toggle";
+		return Constants.TOGGLE;
 	}
 
 	@Override
@@ -41,16 +42,16 @@ public class Toggle implements Subcommand {
 	@Override
 	public boolean processCommand(ICommandSender sender, String[] args) {
 		JsonObject config = ConfigHandler.getConfig();
-		if (!config.has("toggle")) {
-			ConfigHandler.write("toggle", Utils.gson.toJsonTree(true));
+		if (!config.has(Constants.TOGGLE)) {
+			ConfigHandler.write(Constants.TOGGLE, Utils.gson.toJsonTree(true));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
 			return true;
 		}
-		if (config.get("toggle").getAsBoolean()) {
-			ConfigHandler.write("toggle", Utils.gson.toJsonTree(false));
+		if (config.get(Constants.TOGGLE).getAsBoolean()) {
+			ConfigHandler.write(Constants.TOGGLE, Utils.gson.toJsonTree(false));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper disabled."));
 		} else {
-			ConfigHandler.write("toggle", Utils.gson.toJsonTree(true));
+			ConfigHandler.write(Constants.TOGGLE, Utils.gson.toJsonTree(true));
 			Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Flipper enabled."));
 		}
 		return true;

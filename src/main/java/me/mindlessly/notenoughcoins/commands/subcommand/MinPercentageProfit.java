@@ -1,5 +1,7 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
+
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -16,7 +18,7 @@ public class MinPercentageProfit implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "minpercent";
+		return Constants.MIN_PERCENTAGE_PROFIT;
 	}
 
 	@Override
@@ -42,13 +44,14 @@ public class MinPercentageProfit implements Subcommand {
 
 		try {
 			int minProfit = Integer.parseInt(args[0]);
-			if(minProfit < 0) {
-				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
+			if (minProfit < 0) {
+				sender.addChatMessage(new ChatComponentText(
+						EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
 				return false;
 			}
-			ConfigHandler.write("minpercent", Utils.gson.toJsonTree(minProfit));
-			sender.addChatMessage(new ChatComponentText(
-					EnumChatFormatting.GREEN + "Successfully updated Minimum Percentage Profit to " + String.valueOf(minProfit)));
+			ConfigHandler.write(Constants.MIN_PERCENTAGE_PROFIT, Utils.gson.toJsonTree(minProfit));
+			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN
+					+ "Successfully updated Minimum Percentage Profit to " + String.valueOf(minProfit)));
 			return true;
 		} catch (Exception e) {
 			sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "That is not a valid integer!"));
