@@ -1,5 +1,6 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -16,7 +17,7 @@ public class Adjustment implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "adjustment";
+		return Constants.ADJUSTMENT;
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class Adjustment implements Subcommand {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting integers greater than or equal to 0!"));
 				return false;
 			}
-			ConfigHandler.write("adjustment", Utils.gson.toJsonTree(adjustment));
+			ConfigHandler.write(Constants.ADJUSTMENT, Utils.gson.toJsonTree(adjustment));
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Adjustment to " + String.valueOf(adjustment)));
 			return true;
