@@ -1,6 +1,7 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
 
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -17,7 +18,7 @@ public class MinDemand implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "mindemand";
+		return Constants.MIN_DEMAND;
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class MinDemand implements Subcommand {
 				sender.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Only accepting values between 0 and 50!"));
 				return false;
 			}
-			ConfigHandler.write("mindemand", Utils.gson.toJsonTree(minDemand));
+			ConfigHandler.write(Constants.MIN_DEMAND, Utils.gson.toJsonTree(minDemand));
 			sender.addChatMessage(new ChatComponentText(
 					EnumChatFormatting.GREEN + "Successfully updated Minimum Demand to " + String.valueOf(minDemand)));
 			return true;

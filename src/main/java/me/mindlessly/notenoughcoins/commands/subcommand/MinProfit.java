@@ -1,6 +1,7 @@
 package me.mindlessly.notenoughcoins.commands.subcommand;
 
 import me.mindlessly.notenoughcoins.configuration.ConfigHandler;
+import me.mindlessly.notenoughcoins.utils.Constants;
 import me.mindlessly.notenoughcoins.utils.Utils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -17,7 +18,7 @@ public class MinProfit implements Subcommand {
 
 	@Override
 	public String getCommandName() {
-		return "minprofit";
+		return Constants.MIN_PROFIT;
 	}
 
 	@Override
