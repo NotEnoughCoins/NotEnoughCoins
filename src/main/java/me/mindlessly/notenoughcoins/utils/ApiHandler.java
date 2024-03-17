@@ -25,7 +25,7 @@ public class ApiHandler {
 			}
 			String name = item.get("name").getAsString();
 			String id = item.get("id").getAsString();
-			if(id.contains("STARRED")) {
+			if (id.contains("STARRED")) {
 				continue;
 			}
 			String category = item.get("category").getAsString();
@@ -37,10 +37,8 @@ public class ApiHandler {
 		skins = Utils.getJson("https://notenoughcoins.net/static/skins.json").getAsJsonObject();
 
 		// Credit to the NEU Repo for enchant list used in here for some blacklist stuff
-		enchants = Utils.getJson(
-				"https://raw.githubusercontent.com/NotEnoughUpdates/NotEnoughUpdates-REPO/master/constants/enchants.json")
-				.getAsJsonObject().get("enchants").getAsJsonObject();
-
+		enchants = Utils.getJson("https://notenoughcoins.net/static/enchants.json").getAsJsonObject().get("enchants")
+				.getAsJsonObject();
 	}
 
 }
