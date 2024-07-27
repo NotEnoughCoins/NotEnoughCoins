@@ -27,4 +27,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "TokenManager"
+rootProject.name = "NotEnoughCoins"
